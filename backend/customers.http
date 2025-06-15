@@ -1,0 +1,14 @@
+### Customers API Tests
+### Base URL: http://localhost:3001
+
+### Health Check
+GET http://localhost:3001/
+Accept: application/json
+
+###
+
+### Get All Customers
+GET http://localhost:3001/api/customers
+Accept: application/json
+
+###
