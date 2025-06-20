@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @custom-variant dark (&:is(.dark *));
 
@@ -67,12 +68,12 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
     font-family: 'Orbitron', monospace;
   }
   
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--doom-bg);
+    color: var(--doom-green);
     background-image: 
       radial-gradient(circle at 25% 25%, rgba(255, 102, 0, 0.1) 0%, transparent 50%),
       radial-gradient(circle at 75% 75%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
