@@ -17,6 +17,25 @@ function App() {
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [copied, setCopied] = useState(false);
 
+  // Função para determinar se o texto é longo e calcular altura apropriada
+  const getTextareaHeight = (text) => {
+    if (!text) return 'min-h-[250px]';
+    
+    const textLength = text.length;
+    const lineCount = text.split('\n').length;
+    
+    // Sistema de altura escalonado baseado no tamanho do texto
+    if (textLength > 2000 || lineCount > 25) {
+      return 'min-h-[1200px]'; // Textos muito longos - quase 5x a altura original
+    } else if (textLength > 1000 || lineCount > 15) {
+      return 'min-h-[800px]'; // Textos longos
+    } else if (textLength > 500 || lineCount > 8) {
+      return 'min-h-[600px]'; // Textos médios
+    }
+    
+    return 'min-h-[250px]'; // Altura padrão
+  };
+
   // Atualizar variáveis quando template é selecionado
   useEffect(() => {
     if (selectedTemplate) {
@@ -200,7 +219,7 @@ function App() {
               <Textarea
                 value={generatedPrompt}
                 readOnly
-                className="doom-textarea min-h-[250px] text-base leading-relaxed"
+                className={`doom-textarea ${getTextareaHeight(generatedPrompt)} text-base leading-relaxed`}
               />
               <div className="flex gap-4 mt-6">
                 <Button 
