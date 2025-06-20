@@ -1,0 +1,1 @@
+{"version":3,"file":"CustomersService.d.ts","sourceRoot":"","sources":["../../src/services/CustomersService.ts"],"names":[],"mappings":"AACA,OAAO,KAAK,EAAE,QAAQ,EAAE,qBAAqB,EAAE,MAAM,sBAAsB,CAAC;AAE5E,cAAM,gBAAgB;IACpB,eAAe,IAAI,QAAQ,EAAE;IAK7B,cAAc,CAAC,YAAY,EAAE,qBAAqB,GAAG,QAAQ;IAe7D,eAAe,CAAC,EAAE,EAAE,MAAM,GAAG,QAAQ,GAAG,SAAS;CAGlD;;AAGD,wBAAsC"}
