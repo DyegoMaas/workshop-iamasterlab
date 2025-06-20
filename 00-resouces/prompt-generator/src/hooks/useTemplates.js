@@ -11,34 +11,31 @@ export const useTemplates = () => {
       try {
         setLoading(true);
         
-        // Lista de templates disponíveis
-        const templateFiles = [
-          'creative-writing.txt',
-          'expert-analysis.txt',
-          'study-plan.txt',
-          'marketing-strategy.txt'
-        ];
+        // Carregar manifest com lista de templates
+        const manifestResponse = await fetch('/prompts/manifest.json');
+        if (!manifestResponse.ok) {
+          throw new Error('Failed to load templates manifest');
+        }
+        
+        const manifest = await manifestResponse.json();
+        const templateFiles = manifest.templates || [];
 
-        const templatePromises = templateFiles.map(async (filename) => {
+        const templatePromises = templateFiles.map(async (templateInfo) => {
           try {
-            const response = await fetch(`/prompts/${filename}`);
+            const response = await fetch(`/prompts/${templateInfo.filename}`);
             if (!response.ok) {
-              throw new Error(`Failed to load ${filename}`);
+              throw new Error(`Failed to load ${templateInfo.filename}`);
             }
             const content = await response.text();
             
-            // Extrair nome do template do filename
-            const name = filename.replace('.txt', '').replace(/-/g, ' ')
-              .replace(/\b\w/g, l => l.toUpperCase());
-            
             return {
-              id: filename.replace('.txt', ''),
-              name,
+              id: templateInfo.id,
+              name: templateInfo.name,
               content,
-              filename
+              filename: templateInfo.filename
             };
           } catch (err) {
-            console.error(`Error loading template ${filename}:`, err);
+            console.error(`Error loading template ${templateInfo.filename}:`, err);
             return null;
           }
         });

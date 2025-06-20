@@ -1,2 +1,0 @@
-Escreva uma história {{genre}} sobre {{protagonist}} que vive em {{setting}}. A história deve ter um tom {{tone}} e incluir os seguintes elementos: {{elements}}. A história deve ter aproximadamente {{length}} palavras e ser direcionada para {{audience}}.
-
