@@ -249,6 +249,9 @@ function App() {
         <div className="text-center mt-12 text-gray-500 font-mono text-sm">
           <div>DOOM 64 PROMPT GENERATOR v1.0</div>
           <div>MARS RESEARCH FACILITY - TEMPLATE DIVISION</div>
+          <div className="mt-4 text-xs text-gray-600">
+            © 2024 Todos os direitos reservados para Dyego Alekssander Maas
+          </div>
         </div>
       </div>
     </div>
