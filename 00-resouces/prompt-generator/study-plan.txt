@@ -1,0 +1,11 @@
+Crie um plano de estudos detalhado para aprender {{subject}} em {{timeframe}}. O estudante tem nível {{current_level}} e quer alcançar o nível {{target_level}}.
+
+Inclua:
+- Cronograma semanal com {{hours_per_week}} horas de estudo
+- Recursos recomendados (livros, cursos, vídeos)
+- Marcos de progresso e avaliações
+- Dicas específicas para {{learning_style}}
+- Projetos práticos relacionados a {{application_area}}
+
+Considere que o estudante tem disponibilidade {{availability}} e prefere {{preferred_format}}.
+

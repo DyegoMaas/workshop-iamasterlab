@@ -1,0 +1,307 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Importar fonte pixelada do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+@theme inline {
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0px;
+  /* Doom 64 Color Palette */
+  --doom-bg: #1a1a1a;
+  --doom-bg-secondary: #2d2d2d;
+  --doom-green: #00ff00;
+  --doom-green-dark: #00cc00;
+  --doom-orange: #ff6600;
+  --doom-orange-dark: #cc5500;
+  --doom-red: #ff0000;
+  --doom-yellow: #ffff00;
+  --doom-brown: #8b4513;
+  --doom-gray: #666666;
+  
+  --background: var(--doom-bg);
+  --foreground: var(--doom-green);
+  --card: var(--doom-bg-secondary);
+  --card-foreground: var(--doom-green);
+  --popover: var(--doom-bg-secondary);
+  --popover-foreground: var(--doom-green);
+  --primary: var(--doom-orange);
+  --primary-foreground: #000000;
+  --secondary: var(--doom-bg-secondary);
+  --secondary-foreground: var(--doom-green);
+  --muted: var(--doom-gray);
+  --muted-foreground: var(--doom-green-dark);
+  --accent: var(--doom-orange);
+  --accent-foreground: #000000;
+  --destructive: var(--doom-red);
+  --border: var(--doom-orange);
+  --input: var(--doom-bg-secondary);
+  --ring: var(--doom-orange);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    font-family: 'Orbitron', monospace;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(255, 102, 0, 0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(0, 255, 0, 0.1) 0%, transparent 50%),
+      linear-gradient(45deg, transparent 49%, rgba(255, 102, 0, 0.05) 50%, transparent 51%);
+    background-size: 200px 200px, 300px 300px, 50px 50px;
+    animation: backgroundShift 20s ease-in-out infinite;
+  }
+}
+
+/* Animações de fundo */
+@keyframes backgroundShift {
+  0%, 100% { background-position: 0% 0%, 100% 100%, 0% 0%; }
+  50% { background-position: 100% 100%, 0% 0%, 100% 100%; }
+}
+
+/* Efeito de scanlines */
+.doom-scanlines::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    transparent 50%,
+    rgba(0, 255, 0, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 1000;
+  animation: scanlines 0.1s linear infinite;
+}
+
+@keyframes scanlines {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(4px); }
+}
+
+/* Estilo dos títulos */
+.doom-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 
+    0 0 5px currentColor,
+    0 0 10px currentColor,
+    0 0 15px currentColor,
+    2px 2px 0px rgba(0, 0, 0, 0.8);
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from { 
+    text-shadow: 
+      0 0 5px currentColor,
+      0 0 10px currentColor,
+      0 0 15px currentColor,
+      2px 2px 0px rgba(0, 0, 0, 0.8);
+  }
+  to { 
+    text-shadow: 
+      0 0 10px currentColor,
+      0 0 20px currentColor,
+      0 0 30px currentColor,
+      2px 2px 0px rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Estilo dos cards */
+.doom-card {
+  background: linear-gradient(135deg, var(--doom-bg-secondary) 0%, rgba(45, 45, 45, 0.8) 100%);
+  border: 2px solid var(--doom-orange);
+  box-shadow: 
+    0 0 10px rgba(255, 102, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.doom-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 102, 0, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.doom-card:hover::before {
+  left: 100%;
+}
+
+/* Estilo dos botões */
+.doom-button {
+  background: linear-gradient(135deg, var(--doom-orange) 0%, var(--doom-orange-dark) 100%);
+  border: 2px solid var(--doom-orange);
+  color: #000000;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 
+    0 4px 0 var(--doom-orange-dark),
+    0 0 10px rgba(255, 102, 0, 0.5);
+  transition: all 0.1s;
+  position: relative;
+  overflow: hidden;
+}
+
+.doom-button:hover {
+  transform: translateY(2px);
+  box-shadow: 
+    0 2px 0 var(--doom-orange-dark),
+    0 0 15px rgba(255, 102, 0, 0.8);
+}
+
+.doom-button:active {
+  transform: translateY(4px);
+  box-shadow: 
+    0 0 0 var(--doom-orange-dark),
+    0 0 20px rgba(255, 102, 0, 1);
+}
+
+/* Estilo dos inputs */
+.doom-input {
+  background: var(--doom-bg-secondary);
+  border: 2px solid var(--doom-orange);
+  color: var(--doom-green);
+  font-family: 'Orbitron', monospace;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s;
+}
+
+.doom-input:focus {
+  border-color: var(--doom-green);
+  box-shadow: 
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(0, 255, 0, 0.5);
+  outline: none;
+}
+
+/* Estilo do select */
+.doom-select {
+  background: var(--doom-bg-secondary);
+  border: 2px solid var(--doom-orange);
+  color: var(--doom-green);
+  font-family: 'Orbitron', monospace;
+}
+
+/* Estilo do textarea */
+.doom-textarea {
+  background: var(--doom-bg-secondary);
+  border: 2px solid var(--doom-green);
+  color: var(--doom-green);
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+  resize: none;
+}
+
+/* Efeito de loading */
+.doom-loading {
+  animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes pulse {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+/* Efeito de glitch para erros */
+.doom-error {
+  animation: glitch 0.3s ease-in-out infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* Estilo das labels */
+.doom-label {
+  color: var(--doom-green);
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px currentColor;
+}
+
+/* Efeito de hover nos cards */
+.doom-card:hover {
+  border-color: var(--doom-green);
+  box-shadow: 
+    0 0 15px rgba(0, 255, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Estilo customizado para scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--doom-bg);
+  border: 1px solid var(--doom-orange);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--doom-orange);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--doom-green);
+}
+

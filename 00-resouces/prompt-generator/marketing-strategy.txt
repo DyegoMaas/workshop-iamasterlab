@@ -1,0 +1,18 @@
+Desenvolva uma estratégia de marketing para {{product_type}} direcionada a {{target_market}}. O orçamento disponível é {{budget}} e o prazo é {{timeline}}.
+
+Objetivos:
+- {{primary_goal}}
+- {{secondary_goal}}
+
+Canais a considerar: {{channels}}
+
+Inclua:
+1. Análise do público-alvo
+2. Posicionamento da marca
+3. Mix de marketing (4Ps)
+4. Cronograma de ações
+5. Métricas de sucesso
+6. Análise de concorrência focada em {{competitors}}
+
+Considere as restrições: {{constraints}} e o tom de comunicação deve ser {{brand_tone}}.
+

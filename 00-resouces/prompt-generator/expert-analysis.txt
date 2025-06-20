@@ -1,0 +1,10 @@
+Atue como um especialista em {{field}} com {{experience}} anos de experiência. Analise o seguinte problema: {{problem}}. 
+
+Forneça:
+1. Uma análise detalhada do problema
+2. {{solutions_count}} possíveis soluções
+3. Recomendações específicas para {{target_audience}}
+4. Considerações sobre {{constraints}}
+
+Use um tom {{tone}} e inclua exemplos práticos quando apropriado.
+
