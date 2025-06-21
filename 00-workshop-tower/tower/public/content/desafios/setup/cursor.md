@@ -18,7 +18,7 @@ Se não aparecer, você pode ajustar essa configuração em:
 
 ![Show Cursor Notepads](images/cursor-notepads-show.png)
 
-### Servidores MCP
+## Servidores MCP
 
 O site [smithery.ai](https://smithery.ai) é um repositório de servidores MCP. Acesse o site [smithery.ai](https://smithery.ai), e encontre os seguintes servidores MCP
  - **smithery-ai/server-sequential-thinking**
@@ -30,7 +30,7 @@ O site [smithery.ai](https://smithery.ai) é um repositório de servidores MCP. 
 Para instalar as extensões perplexity-ask e playwright-mcp acesse o site [smithery.ai](https://smithery.ai) e siga as instruções para instalação no Cursor.
 
 
-#### Instalação do Servidor MCP do Perplexity
+### Instalação do Servidor MCP do Perplexity
 
 Acesse o repositório git do [Perplexity](https://github.com/ppl-ai/modelcontextprotocol/tree/main) e siga as instruções de instalação.
 
@@ -40,3 +40,10 @@ Esta instalação será manual, através das configurações do Cursor:
 
 
 ❗**Importante:** para o Perplexity, você vai precisar de uma API Key. O instrutor vai fornecê-la durante o event.
+
+## Extensões
+
+Instale as seguintes extensões:
+1. REST Client: será usada para testes, dispensando Postman ou Insomnia
+
+💡Lembrete: a instalação de extensões no Cursor funciona exatamente como no VSCode.

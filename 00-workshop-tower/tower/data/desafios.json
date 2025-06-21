@@ -2,15 +2,23 @@
   "desafios": [
     {
       "id": "setup",
-      "titulo": "Setup Cursor",
+      "titulo": "Setup Workshop",
       "descricao": "Configuração inicial do Cursor para o desafio",
       "ordem": 1,
       "etapas": [
         {
-          "id": "instrucoes",
+          "id": "cursor",
           "titulo": "Instruções",
           "descricao": "Instruções para o setup inicial do Cursor",
           "ordem": 1,
+          "tipo": "pratica",
+          "tempoEstimado": 15
+        },
+        {
+          "id": "repositorio-workshop",
+          "titulo": "Clonar Repositório",
+          "descricao": "Clonar o repositório para o workshop",
+          "ordem": 2,
           "tipo": "pratica",
           "tempoEstimado": 15
         }
