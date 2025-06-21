@@ -20,11 +20,22 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
       return
     }
 
+    // AbortController para cancelar requisições anteriores
+    const abortController = new AbortController()
+
     const loadMarkdown = async () => {
       setLoading(true)
       try {
-        // Tentar carregar markdown da etapa
-        const response = await fetch(`/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}.md`)
+        // Tentar carregar markdown da etapa com signal para cancelamento
+        const response = await fetch(
+          `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}.md`,
+          { signal: abortController.signal }
+        )
+        
+        // Verificar se a requisição foi cancelada
+        if (abortController.signal.aborted) {
+          return
+        }
         
         if (response.ok) {
           const content = await response.text()
@@ -34,14 +45,26 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
           setMarkdownContent(generateDefaultContent(currentEtapa))
         }
       } catch (error) {
+        // Ignorar erros de abort
+        if (error instanceof Error && error.name === 'AbortError') {
+          return
+        }
         console.error('Erro ao carregar markdown:', error)
         setMarkdownContent(generateDefaultContent(currentEtapa))
       } finally {
-        setLoading(false)
+        // Só atualizar loading se não foi cancelado
+        if (!abortController.signal.aborted) {
+          setLoading(false)
+        }
       }
     }
 
     loadMarkdown()
+
+    // Cleanup: cancelar requisição se o componente for desmontado ou currentEtapa mudar
+    return () => {
+      abortController.abort()
+    }
   }, [currentEtapa])
 
   const generateDefaultContent = (etapa: { desafio: Desafio; etapa: Etapa }) => {
