@@ -4,7 +4,7 @@ Uma aplicação NextJS interativa que visualiza o progresso de um aluno no works
 
 ## ✨ Funcionalidades
 
-- 🎮 **Torre Interativa**: Visualização em grid hexagonal dos desafios
+- 🎮 **Torre Interativa**: Visualização vertical tipo Mortal Kombat dos desafios
 - 📊 **Progresso Persistente**: Estado salvo automaticamente no localStorage
 - 📚 **Conteúdo Dinâmico**: Markdown renderizado com sanitização
 - 🎨 **UI Moderna**: Interface responsiva com Tailwind CSS

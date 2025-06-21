@@ -48,7 +48,7 @@ Criar uma aplicação NextJS que visualiza o progresso de um aluno no workshop *
 ```
 
 ## 4. Componentes Principais
-- **TowerCanvas**: desenha torre em grid hexagonal via two.js; recebe lista de desafios & progresso.
+- **TowerCanvas**: desenha torre em via two.js; recebe lista de desafios & progresso.
 - **StageBlock**: bloco individual colorido, clicável.
 - **PlayerAvatar**: sprite animado posicionado ao lado do bloco atual.
 - **useProgressStore**: Zustand store (`progresso`, `nextStep`, `reset`).
