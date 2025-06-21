@@ -17,23 +17,38 @@ function App() {
   const [generatedPrompt, setGeneratedPrompt] = useState('');
   const [copied, setCopied] = useState(false);
 
-  // Função para determinar se o texto é longo e calcular altura apropriada
+  // Função para calcular altura dinâmica do textarea baseada no conteúdo
   const getTextareaHeight = (text) => {
     if (!text) return 'min-h-[250px]';
     
     const textLength = text.length;
     const lineCount = text.split('\n').length;
     
-    // Sistema de altura escalonado baseado no tamanho do texto
-    if (textLength > 2000 || lineCount > 25) {
-      return 'min-h-[1200px]'; // Textos muito longos - quase 5x a altura original
-    } else if (textLength > 1000 || lineCount > 15) {
-      return 'min-h-[800px]'; // Textos longos
-    } else if (textLength > 500 || lineCount > 8) {
-      return 'min-h-[600px]'; // Textos médios
+    // Calcula altura baseada no maior entre comprimento de texto e número de linhas
+    // Cada linha precisa de aproximadamente 24px (1.5rem line-height)
+    const heightByLines = Math.max(lineCount * 24, 250);
+    
+    // Altura baseada no comprimento do texto (aproximadamente 80 chars por linha)
+    const estimatedLines = Math.ceil(textLength / 80);
+    const heightByLength = Math.max(estimatedLines * 24, 250);
+    
+    // Usa o maior entre os dois cálculos, com um máximo de 1000px para usabilidade
+    const calculatedHeight = Math.min(Math.max(heightByLines, heightByLength), 1000);
+    
+    // Converte para classes Tailwind
+    if (calculatedHeight >= 1000) {
+      return 'min-h-[1000px] max-h-[1000px]';
+    } else if (calculatedHeight >= 800) {
+      return 'min-h-[800px]';
+    } else if (calculatedHeight >= 600) {
+      return 'min-h-[600px]';
+    } else if (calculatedHeight >= 400) {
+      return 'min-h-[400px]';
+    } else if (calculatedHeight >= 300) {
+      return 'min-h-[300px]';
     }
     
-    return 'min-h-[250px]'; // Altura padrão
+    return 'min-h-[250px]';
   };
 
   // Atualizar variáveis quando template é selecionado
@@ -211,15 +226,18 @@ function App() {
         {generatedPrompt && (
           <Card className="doom-card border-green-600">
             <CardHeader>
-              <CardTitle className="doom-title text-green-400 text-xl">
-                &gt;&gt; GENERATED PROMPT &lt;&lt;
+              <CardTitle className="doom-title text-green-400 text-xl flex items-center justify-between">
+                <span>&gt;&gt; GENERATED PROMPT &lt;&lt;</span>
+                <span className="text-sm font-mono text-gray-400">
+                  [{generatedPrompt.length} chars | {generatedPrompt.split('\n').length} lines]
+                </span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <Textarea
                 value={generatedPrompt}
                 readOnly
-                className={`doom-textarea ${getTextareaHeight(generatedPrompt)} text-base leading-relaxed`}
+                className={`doom-textarea ${getTextareaHeight(generatedPrompt)} text-base leading-relaxed resize-none overflow-y-auto`}
               />
               <div className="flex gap-4 mt-6">
                 <Button 
