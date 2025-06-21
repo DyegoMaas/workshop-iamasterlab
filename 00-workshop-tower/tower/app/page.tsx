@@ -10,6 +10,8 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/componen
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
+  const [selectedStepIndex, setSelectedStepIndex] = useState<number | null>(null)
+  
   const { 
     currentStepIndex, 
     completedSteps,
@@ -39,6 +41,20 @@ export default function Home() {
     item => item.desafio.id === currentStep.desafioId && item.etapa.id === currentStep.etapaId
   ) || null : null
 
+  // Determinar qual etapa mostrar no DetailPane (selecionada tem prioridade sobre a atual)
+  const displayEtapa = selectedStepIndex !== null && selectedStepIndex < allEtapas.length
+    ? allEtapas[selectedStepIndex]
+    : currentEtapa
+
+  const handleStepSelect = (index: number) => {
+    setSelectedStepIndex(index)
+  }
+
+  const handleReset = () => {
+    setSelectedStepIndex(null)
+    reset()
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Torre Canvas */}
@@ -59,12 +75,23 @@ export default function Home() {
               currentStepIndex={currentStepIndex}
               completedSteps={completedSteps}
               completeCurrentStep={completeCurrentStep}
+              onStepSelect={handleStepSelect}
+              selectedStepIndex={selectedStepIndex}
             />
           </CardContent>
           
-          <CardFooter className="flex justify-center">
+          <CardFooter className="flex justify-center gap-4">
+            {selectedStepIndex !== null && (
+              <Button
+                onClick={() => setSelectedStepIndex(null)}
+                variant="outline"
+                size="lg"
+              >
+                Voltar ao Atual
+              </Button>
+            )}
             <Button
-              onClick={reset}
+              onClick={handleReset}
               variant="destructive"
               size="lg"
             >
@@ -77,7 +104,7 @@ export default function Home() {
       {/* Detail Pane */}
       <div className="order-1 lg:order-2">
         <DetailPane 
-          currentEtapa={currentEtapa}
+          currentEtapa={displayEtapa}
         />
       </div>
     </div>

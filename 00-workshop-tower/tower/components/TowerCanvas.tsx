@@ -8,9 +8,18 @@ interface TowerCanvasProps {
   currentStepIndex: number
   completedSteps: Set<string>
   completeCurrentStep: () => void
+  onStepSelect?: (index: number) => void
+  selectedStepIndex?: number | null
 }
 
-export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, completeCurrentStep }: TowerCanvasProps) {
+export default function TowerCanvas({ 
+  etapas, 
+  currentStepIndex, 
+  completedSteps, 
+  completeCurrentStep,
+  onStepSelect,
+  selectedStepIndex
+}: TowerCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null)
   const [hoveredStepIndex, setHoveredStepIndex] = useState<number | null>(null)
   const [lightningFlash, setLightningFlash] = useState(false)
@@ -95,7 +104,9 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
     return 'locked'
   }
 
-  const getStepColor = (status: string) => {
+  const getStepColor = (status: string, isSelected: boolean = false) => {
+    if (isSelected) return 'bg-purple-500 border-purple-400 ring-4 ring-purple-300 ring-opacity-60 shadow-lg shadow-purple-500/50'
+    
     switch (status) {
       case 'completed': return 'bg-green-500 border-green-400 shadow-lg shadow-green-500/50'
       case 'current': return 'bg-blue-500 border-blue-400 animate-pulse shadow-lg shadow-blue-500/50'
@@ -134,10 +145,14 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
   const completedCount = completedSteps.size
   const liquidHeight = Math.max(0, (completedCount / etapas.length) * towerHeight)
 
-  // Determinar qual etapa mostrar no DetailPane (hover tem prioridade se for diferente da atual)
-  const displayStepIndex = hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex 
-    ? hoveredStepIndex 
-    : currentStepIndex
+  // Determinar qual etapa mostrar no DetailPane (seleção tem prioridade, depois hover, depois atual)
+  let validDisplayStepIndex = currentStepIndex
+  
+  if (typeof selectedStepIndex === 'number' && selectedStepIndex >= 0 && selectedStepIndex < etapas.length) {
+    validDisplayStepIndex = selectedStepIndex
+  } else if (hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex && hoveredStepIndex >= 0 && hoveredStepIndex < etapas.length) {
+    validDisplayStepIndex = hoveredStepIndex
+  }
 
   // Gerar gotas de chuva
   const rainDrops = Array.from({ length: 50 }, (_, i) => ({
@@ -264,16 +279,27 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
         {etapas.map(({ desafio, etapa }, index) => {
           const position = getGridPosition(index)
           const status = getStepStatus(index, desafio, etapa)
-          const colorClass = getStepColor(status)
+          const isSelected = selectedStepIndex === index
+          const colorClass = getStepColor(status, isSelected)
+          const isClickable = status === 'completed' || status === 'current'
+          
+          const handleStepClick = () => {
+            if (status === 'completed' && onStepSelect) {
+              onStepSelect(index)
+            } else if (status === 'current') {
+              // Manter comportamento atual para etapa atual
+            }
+          }
           
           return (
             <div key={`${desafio.id}-${etapa.id}`} className="absolute">
               {/* Bloco da torre */}
               <div
                 className={`w-24 h-24 rounded-xl border-4 ${colorClass} 
-                  flex flex-col items-center justify-center cursor-pointer
+                  flex flex-col items-center justify-center 
                   transition-all duration-300 hover:scale-110 hover:shadow-2xl
                   ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
+                  ${isClickable ? 'cursor-pointer' : 'cursor-default'}
                   backdrop-blur-sm relative z-10
                 `}
                 style={{
@@ -284,6 +310,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
                 title={`${desafio.titulo} - ${etapa.titulo}`}
                 onMouseEnter={() => setHoveredStepIndex(index)}
                 onMouseLeave={() => setHoveredStepIndex(null)}
+                onClick={handleStepClick}
               >
                 <div className="text-2xl mb-1">
                   {getTypeIcon(etapa.tipo)}
@@ -326,27 +353,27 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
         )}
 
         {/* Informações da etapa (atual ou em hover) */}
-        {displayStepIndex < etapas.length && (
+        {validDisplayStepIndex < etapas.length && (
           <div
             className="absolute bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-blue-400/50 
               shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20 transition-all duration-300 relative"
             style={{
               left: `120px`,
-              bottom: `${getGridPosition(displayStepIndex).y - 5}px`
+              bottom: `${getGridPosition(validDisplayStepIndex).y - 5}px`
             }}
           >
             <div className="text-blue-400 text-sm font-semibold mb-1">
-              {etapas[displayStepIndex].desafio.titulo}
+              {etapas[validDisplayStepIndex].desafio.titulo}
             </div>
             <div className="text-white text-lg font-bold mb-2">
-              {etapas[displayStepIndex].etapa.titulo}
+              {etapas[validDisplayStepIndex].etapa.titulo}
             </div>
             <div className="text-gray-300 text-sm leading-relaxed pr-12">
-              {etapas[displayStepIndex].etapa.descricao}
+              {etapas[validDisplayStepIndex].etapa.descricao}
             </div>
             
             {/* Botão de concluir - apenas para o nível atual */}
-            {displayStepIndex === currentStepIndex && hoveredStepIndex === null && (
+            {validDisplayStepIndex === currentStepIndex && hoveredStepIndex === null && typeof selectedStepIndex !== 'number' && (
               <button
                 onClick={completeCurrentStep}
                 className="absolute top-1/2 right-4 transform -translate-y-1/2 
@@ -359,8 +386,13 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
               </button>
             )}
             
-            {/* Indicador se é hover ou atual */}
-            {hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex && (
+            {/* Indicador se é hover, selecionado ou atual */}
+            {typeof selectedStepIndex === 'number' && selectedStepIndex !== currentStepIndex && (
+              <div className="text-purple-400 text-xs mt-2 font-semibold">
+                🎯 Nível selecionado {selectedStepIndex + 1}
+              </div>
+            )}
+            {hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex && typeof selectedStepIndex !== 'number' && (
               <div className="text-yellow-400 text-xs mt-2 font-semibold">
                 👁️ Visualizando nível {hoveredStepIndex + 1}
               </div>
