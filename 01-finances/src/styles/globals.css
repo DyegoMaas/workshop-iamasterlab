@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 3.1373%;
+    --foreground: 0 0% 100%;
+    --card: 220.0000 14.7541% 11.9608%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220.0000 14.7541% 11.9608%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 195 100% 60%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 330 100.0000% 80%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 212.7273 10.4762% 20.5882%;
+    --muted-foreground: 0 0% 62.7451%;
+    --accent: 189.6350 81.0651% 66.8627%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 100.0000% 60.7843%;
+    --destructive-foreground: 0 0% 0%;
+    --border: 0 0% 31.3725%;
+    --input: 0 0% 31.3725%;
+    --ring: 195 100% 60%;
+    --chart-1: 195 100% 60%;
+    --chart-2: 330 100.0000% 80%;
+    --chart-3: 189.6350 81.0651% 66.8627%;
+    --chart-4: 0 100.0000% 60.7843%;
+    --chart-5: 15.7143 17.5000% 47.0588%;
+    --sidebar: 220.0000 14.7541% 11.9608%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 195 100% 60%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 189.6350 81.0651% 66.8627%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 31.3725%;
+    --sidebar-ring: 195 100% 60%;
+    --font-sans: "Oxanium", sans-serif;
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: "Source Code Pro", monospace;
+    --radius: 0px;
+    --shadow-2xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.20);
+    --shadow-xs: 0px 2px 4px 0px hsl(0 0% 0% / 0.20);
+    --shadow-sm: 0px 2px 4px 0px hsl(0 0% 0% / 0.40), 0px 1px 2px -1px hsl(0 0% 0% / 0.40);
+    --shadow: 0px 2px 4px 0px hsl(0 0% 0% / 0.40), 0px 1px 2px -1px hsl(0 0% 0% / 0.40);
+    --shadow-md: 0px 2px 4px 0px hsl(0 0% 0% / 0.40), 0px 2px 4px -1px hsl(0 0% 0% / 0.40);
+    --shadow-lg: 0px 2px 4px 0px hsl(0 0% 0% / 0.40), 0px 4px 6px -1px hsl(0 0% 0% / 0.40);
+    --shadow-xl: 0px 2px 4px 0px hsl(0 0% 0% / 0.40), 0px 8px 10px -1px hsl(0 0% 0% / 0.40);
+    --shadow-2xl: 0px 2px 4px 0px hsl(0 0% 0% / 1.00);
+  }
+
+  .dark {
+    --background: 0 0% 3.9216%;
+    --foreground: 0 0% 100%;
+    --card: 220.0000 14.7541% 11.9608%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220.0000 14.7541% 11.9608%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 209.8824 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 285 100% 60%;
+    --secondary-foreground: 0 0% 0%;
+    --muted: 212.7273 10.4762% 20.5882%;
+    --muted-foreground: 0 0% 62.7451%;
+    --accent: 180 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 0%;
+    --border: 0 0% 31.3725%;
+    --input: 0 0% 31.3725%;
+    --ring: 209.8824 100% 50%;
+    --chart-1: 209.8824 100% 50%;
+    --chart-2: 285 100% 60%;
+    --chart-3: 180 100% 50%;
+    --chart-4: 0 100% 50%;
+    --chart-5: 15.7143 17.5000% 47.0588%;
+    --sidebar: 220.0000 14.7541% 11.9608%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 209.8824 100% 50%;
+    --sidebar-primary-foreground: 0 0% 0%;
+    --sidebar-accent: 180 100% 50%;
+    --sidebar-accent-foreground: 0 0% 0%;
+    --sidebar-border: 0 0% 31.3725%;
+    --sidebar-ring: 209.8824 100% 50%;
+    --font-sans: "Oxanium", sans-serif;
+    --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: "Source Code Pro", monospace;
+    --radius: 0px;
+    --shadow-2xs: 0px 2px 5px 0px hsl(0 0% 0% / 0.30);
+    --shadow-xs: 0px 2px 5px 0px hsl(0 0% 0% / 0.30);
+    --shadow-sm: 0px 2px 5px 0px hsl(0 0% 0% / 0.60), 0px 1px 2px -1px hsl(0 0% 0% / 0.60);
+    --shadow: 0px 2px 5px 0px hsl(0 0% 0% / 0.60), 0px 1px 2px -1px hsl(0 0% 0% / 0.60);
+    --shadow-md: 0px 2px 5px 0px hsl(0 0% 0% / 0.60), 0px 2px 4px -1px hsl(0 0% 0% / 0.60);
+    --shadow-lg: 0px 2px 5px 0px hsl(0 0% 0% / 0.60), 0px 4px 6px -1px hsl(0 0% 0% / 0.60);
+    --shadow-xl: 0px 2px 5px 0px hsl(0 0% 0% / 0.60), 0px 8px 10px -1px hsl(0 0% 0% / 0.60);
+    --shadow-2xl: 0px 2px 5px 0px hsl(0 0% 0% / 1.50);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+} 
