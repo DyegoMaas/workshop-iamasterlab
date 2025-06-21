@@ -58,18 +58,11 @@ export default function Home() {
               etapas={allEtapas}
               currentStepIndex={currentStepIndex}
               completedSteps={completedSteps}
+              completeCurrentStep={completeCurrentStep}
             />
           </CardContent>
           
-          <CardFooter className="flex justify-center space-x-4">
-            <Button
-              onClick={completeCurrentStep}
-              disabled={!currentEtapa}
-              size="lg"
-              className="bg-green-600 hover:bg-green-700 disabled:bg-slate-600 disabled:cursor-not-allowed"
-            >
-              Completar Etapa
-            </Button>
+          <CardFooter className="flex justify-center">
             <Button
               onClick={reset}
               variant="destructive"

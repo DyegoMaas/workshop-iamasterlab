@@ -7,9 +7,10 @@ interface TowerCanvasProps {
   etapas: Array<{ desafio: Desafio; etapa: Etapa }>
   currentStepIndex: number
   completedSteps: Set<string>
+  completeCurrentStep: () => void
 }
 
-export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }: TowerCanvasProps) {
+export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, completeCurrentStep }: TowerCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null)
   const [hoveredStepIndex, setHoveredStepIndex] = useState<number | null>(null)
 
@@ -203,9 +204,9 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
         {displayStepIndex < etapas.length && (
           <div
             className="absolute bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-blue-400/50 
-              shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20 transition-all duration-300"
+              shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20 transition-all duration-300 relative"
             style={{
-              left: `${getGridPosition(displayStepIndex).x + 360}px`,
+              left: `120px`,
               bottom: `${getGridPosition(displayStepIndex).y - 5}px`
             }}
           >
@@ -215,9 +216,23 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
             <div className="text-white text-lg font-bold mb-2">
               {etapas[displayStepIndex].etapa.titulo}
             </div>
-            <div className="text-gray-300 text-sm leading-relaxed">
+            <div className="text-gray-300 text-sm leading-relaxed pr-12">
               {etapas[displayStepIndex].etapa.descricao}
             </div>
+            
+            {/* Botão de concluir - apenas para o nível atual */}
+            {displayStepIndex === currentStepIndex && hoveredStepIndex === null && (
+              <button
+                onClick={completeCurrentStep}
+                className="absolute top-1/2 right-4 transform -translate-y-1/2 
+                  bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg 
+                  transition-colors duration-200 shadow-lg hover:shadow-green-500/30
+                  disabled:bg-gray-600 disabled:cursor-not-allowed"
+                title="Concluir Etapa"
+              >
+                <span className="text-lg">✓</span>
+              </button>
+            )}
             
             {/* Indicador se é hover ou atual */}
             {hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex && (
