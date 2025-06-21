@@ -38,7 +38,7 @@ jobs:
         npm run build
         
     - name: Deploy to Netlify
-      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+      if: github.ref == 'refs/heads/main'
       uses: nwtgck/actions-netlify@v3.0
       with:
         publish-dir: './00-workshop-tower/tower/.next'
