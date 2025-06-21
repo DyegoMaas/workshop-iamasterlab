@@ -181,3 +181,82 @@ Fase 2 – Contexto do Sistema
 
 **Próximos passos**
 - Após escolher o padrão, detalhar Fase 4 (especificação técnica) com tecnologias concretas, fases de implementação e riscos. 
+
+---
+
+**Fase 4 – Especificação Técnica (Padrão B escolhido)**
+
+1. Tecnologias Concretas e Justificativa
+   - **NextJS 13.4+ (App Router)** – estrutura `/app`, roteamento aninhado, loading segments; CSR puro (todos componentes `'use client'`).
+   - **TypeScript** – tipagem estática, melhor DX.
+   - **two.js** – renderização da torre em SVG/Canvas com animações.
+   - **Zustand** – store global minimalista e simples; boa integração com hooks.
+   - **react-markdown** + `remark-gfm` + `rehype-sanitize` – renderizar markdown seguro com suporte a tabelas/links.
+   - **Tailwind CSS** – utilitário de estilos rápido, facilita responsividade e dark mode.
+   - **zod** – valida JSON (`desafios.json`) no load garantindo formato correto.
+   - **ESLint + Prettier** – qualidade de código.
+   - **Jest + React Testing Library** – testes unitários/componentes.
+
+2. Fases de Implementação & Dependências
+   - **0. Bootstrap**: `npx create-next-app@latest` com TypeScript & App Router; instalar dependências (two.js, zustand, react-markdown, tailwind, zod).
+   - **1. Data Layer**: colocar `data/desafios.json`; criar `lib/data.ts` com `getDesafios()` + validação zod.
+   - **2. State Layer**: `lib/store.ts` (Zustand) gerenciando progresso com persistência `localStorage`.
+   - **3. UI Skeleton**: criar `/app/layout.tsx` e `/app/page.tsx`; montar `TowerCanvas`, `DetailPane` placeholders.
+   - **4. Tower Rendering**: implementar `TowerCanvas` com two.js, desenho estático dos blocos.
+   - **5. Interatividade**: conectar cliques/`concluir` ao store; animar `PlayerAvatar` (CSS keyframes ou two.js tween).
+   - **6. Markdown Detail**: carregar markdown via `await fetch('/content/desafios/${id}/${etapa}.md')`; renderizar em `DetailPane`.
+   - **7. Styling & Responsividade**: Tailwind classes, scroll do tower, dark mode.
+   - **8. Finishing Touches**: ErrorBoundary, accessibility, tests, lint.
+
+3. Riscos Técnicos & Mitigadores
+   - **Bundle pesado devido two.js** → lazy import (`dynamic(() => import('two.js'))`).
+   - **Markdown pode conter XSS** → `rehype-sanitize` com esquema seguro.
+   - **Performance torre grande** → limitar/tilear blocos visíveis, usar `requestAnimationFrame`.
+   - **Inconsistência de localStorage** → fallback para estado default; uso de JSON schema.
+   - **Caminhos de markdown quebrados** → teste automatizado (`jest`) que garante existência dos arquivos.
+
+4. Especificações de Componentes/ APIs
+
+   **TowerCanvas**
+   ```tsx
+   'use client';
+   interface TowerCanvasProps { desafios: Desafio[]; progresso: Progresso; onStepClick(d: Desafio, etapaIdx: number): void; }
+   ```
+   - Gera grid hexagonal; cada bloco tem dataset `data-desafio-id` & `data-etapa-idx`.
+   - Recebe callback para navegação.
+
+   **useProgressStore (Zustand)**
+   ```ts
+   export interface ProgressState {
+     progresso: Progresso;
+     nextStep(): void;
+     reset(): void;
+   }
+   ```
+   - Middleware `persist` salva em `localStorage('tower-progress')`.
+
+   **DetailPane**
+   ```tsx
+   'use client';
+   interface DetailPaneProps { desafio: Desafio; etapaIdx: number; }
+   ```
+   - Busca markdown `content/desafios/${desafio.id}/${etapaIdx + 1}.md`.
+   - Renderiza via `react-markdown` com plugins.
+
+   **API Helper** – `lib/markdown.ts`
+   ```ts
+   export async function getMarkdown(desafioId: number, etapaId: number): Promise<string> { ... }
+   ```
+
+5. Critérios de Sucesso Técnico
+   - Lighthouse Performance ≥ 80 mobile.
+   - Torre renderiza ≤ 2 s em desktop mid-tier.
+   - Progresso persiste após refresh/navegação.
+   - `npm run test` passa 100 % suites.
+   - Nenhum warning/acesso XSS detectado nas scans (e.g., `npm audit`, ESLint).
+   - UX: clicar "concluir" move personagem com animação < 500 ms e carrega markdown correto.
+
+**Confidence:** 92 %
+
+**Próximos passos**
+- Se estiver satisfeito, avançaremos para Fase 5 (Decisão de Transição). 
