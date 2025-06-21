@@ -67,6 +67,16 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
     ? hoveredStepIndex 
     : currentStepIndex
 
+  // Gerar gotas de chuva
+  const rainDrops = Array.from({ length: 50 }, (_, i) => ({
+    id: i,
+    x: Math.random() * 100, // posição horizontal em %
+    delay: Math.random() * 3, // delay inicial em segundos
+    duration: 1 + Math.random() * 2, // duração da animação
+    opacity: 0.1 + Math.random() * 0.3, // opacidade variável
+    length: 20 + Math.random() * 30 // comprimento da gota
+  }))
+
   return (
     <div className="relative w-full overflow-y-auto" style={{ height: `${Math.min(towerHeight, 600)}px` }}>
       <div 
@@ -77,6 +87,29 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
           background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%)'
         }}
       >
+        {/* Efeito de chuva ao fundo */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
+          {rainDrops.map((drop) => (
+            <div
+              key={drop.id}
+              className="absolute bg-blue-200/20 rounded-full"
+              style={{
+                left: `${drop.x}%`,
+                width: '2px',
+                height: `${drop.length}px`,
+                opacity: drop.opacity,
+                animationName: 'rainFall',
+                animationDuration: `${drop.duration}s`,
+                animationTimingFunction: 'linear',
+                animationIterationCount: 'infinite',
+                animationDelay: `${drop.delay}s`,
+                background: 'linear-gradient(to bottom, rgba(147, 197, 253, 0.3) 0%, transparent 100%)',
+                transform: 'translateY(-100vh)'
+              }}
+            />
+          ))}
+        </div>
+
         {/* Linha de base da torre */}
         <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50 z-10"></div>
         

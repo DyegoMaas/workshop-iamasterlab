@@ -169,6 +169,16 @@
   }
 }
 
+/* Animação para a chuva */
+@keyframes rainFall {
+  0% {
+    transform: translateY(-100vh);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
 /* Custom Theme Overrides */
 :root {
   --background: #303030;
