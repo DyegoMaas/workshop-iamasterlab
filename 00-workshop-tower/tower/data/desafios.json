@@ -111,6 +111,22 @@
           "tempoEstimado": 120
         }
       ]
+    },
+    {
+      "id": "pos-curso",
+      "titulo": "Parabéns! Curso Concluído",
+      "descricao": "Você completou todos os desafios do IA Master Lab!",
+      "ordem": 4,
+      "etapas": [
+        {
+          "id": "congratulacoes",
+          "titulo": "Certificação e Próximos Passos",
+          "descricao": "Acesse seus materiais de conclusão e próximos passos",
+          "ordem": 1,
+          "tipo": "conclusao",
+          "tempoEstimado": 5
+        }
+      ]
     }
   ]
 } 

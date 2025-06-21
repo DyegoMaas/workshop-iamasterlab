@@ -36,6 +36,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
       case 'teoria': return '📚'
       case 'pratica': return '⚡'
       case 'projeto': return '🚀'
+      case 'conclusao': return '⭐'
       default: return '📖'
     }
   }
