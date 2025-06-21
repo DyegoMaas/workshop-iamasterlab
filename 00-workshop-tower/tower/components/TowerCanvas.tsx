@@ -55,6 +55,10 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
   // Calcular altura total da torre
   const towerHeight = etapas.length * 90 + 80
 
+  // Calcular altura do líquido baseado no progresso (etapas completadas)
+  const completedCount = completedSteps.size
+  const liquidHeight = Math.max(0, (completedCount / etapas.length) * towerHeight)
+
   return (
     <div className="relative w-full overflow-y-auto" style={{ height: `${Math.min(towerHeight, 600)}px` }}>
       <div 
@@ -66,7 +70,63 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
         }}
       >
         {/* Linha de base da torre */}
-        <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-gray-400 to-transparent opacity-50 z-10"></div>
+        
+        {/* Líquido verde animado */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 transition-all duration-1000 ease-out overflow-hidden"
+          style={{ 
+            height: `${liquidHeight}px`,
+            background: 'linear-gradient(to top, rgba(34, 197, 94, 0.8) 0%, rgba(74, 222, 128, 0.6) 50%, rgba(134, 239, 172, 0.4) 100%)',
+            zIndex: 1
+          }}
+        >
+          {/* Ondas na superfície */}
+          <div 
+            className="absolute top-0 left-0 w-full h-8 overflow-hidden"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(134, 239, 172, 0.8) 0%, transparent 100%)'
+            }}
+          >
+            {/* Onda 1 */}
+            <div
+              className="absolute top-0 animate-pulse"
+              style={{
+                width: '200%',
+                height: '20px',
+                background: 'rgba(74, 222, 128, 0.6)',
+                borderRadius: '0 0 50% 50%',
+                left: '-50%',
+                animation: 'wave1 4s ease-in-out infinite',
+                animationName: 'wave1'
+              }}
+            ></div>
+            {/* Onda 2 */}
+            <div
+              className="absolute top-1"
+              style={{
+                width: '180%',
+                height: '15px',
+                background: 'rgba(134, 239, 172, 0.5)',
+                borderRadius: '0 0 50% 50%',
+                left: '-40%',
+                animation: 'wave2 3s ease-in-out infinite reverse',
+                animationName: 'wave2'
+              }}
+            ></div>
+          </div>
+          
+          {/* Bolhas ocasionais */}
+          {liquidHeight > 50 && (
+            <div className="absolute bottom-4 left-1/4 w-2 h-2 bg-green-300 rounded-full opacity-60 animate-bounce" style={{ animationDelay: '0s' }}></div>
+          )}
+          {liquidHeight > 100 && (
+            <div className="absolute bottom-8 right-1/3 w-1 h-1 bg-green-200 rounded-full opacity-40 animate-bounce" style={{ animationDelay: '1s' }}></div>
+          )}
+          {liquidHeight > 150 && (
+            <div className="absolute bottom-12 left-1/2 w-1.5 h-1.5 bg-green-300 rounded-full opacity-50 animate-bounce" style={{ animationDelay: '2s' }}></div>
+          )}
+        </div>
         
         {etapas.map(({ desafio, etapa }, index) => {
           const position = getGridPosition(index)
@@ -163,8 +223,6 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
           </div>
         )}
       </div>
-      
-
     </div>
   )
 } 
