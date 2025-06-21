@@ -260,3 +260,33 @@ Fase 2 – Contexto do Sistema
 
 **Próximos passos**
 - Se estiver satisfeito, avançaremos para Fase 5 (Decisão de Transição). 
+
+---
+
+**Fase 5 – Decisão de Transição**
+
+1. **Resumo da recomendação arquitetural**
+   - Adotar **NextJS 13+ App Router** em CSR com componentes client-only.
+   - Renderização gráfica via **two.js** carregado dinamicamente.
+   - Estado global simples em **Zustand** com persistência no `localStorage`.
+   - Conteúdo dinâmico: `desafios.json` + markdown por etapa; sanitização com `rehype-sanitize`.
+   - UI estilizada com **Tailwind CSS**; acessibilidade e responsividade garantidas.
+
+2. **Roadmap de implementação**
+   1. Bootstrap do projeto com dependências (2 h)
+   2. Data layer + validação zod (1 h)
+   3. State layer persistente (1 h)
+   4. Skeleton UI (2 h)
+   5. Renderização da torre em two.js (4 h)
+   6. Integração interatividade + animações (3 h)
+   7. Markdown detail view (2 h)
+   8. Styling & responsividade (2 h)
+   9. Testes e hardening (3 h)
+   10. Revisão e deploy (1 h)
+   *Total estimado: ~21 horas*
+
+3. **Confidence:** 93 %
+
+4. **Mensagem final**
+
+   I'm ready to build! Switch to Agent mode and tell me to continue. 
