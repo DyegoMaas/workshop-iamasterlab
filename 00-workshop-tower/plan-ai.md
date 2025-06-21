@@ -1,5 +1,9 @@
 # Plano de Implementação – IA Master Lab Tower
 
+## Objetivo
+
+Criar uma aplicação NextJS que visualiza o progresso de um aluno no workshop **IA Master Lab** através de uma "torre de desafios" interativa. A torre, inspirada em Mortal Kombat, mostrará cada desafio e suas etapas como blocos. O aluno poderá avançar na torre, visualizar o conteúdo de cada etapa (em Markdown) e ter seu progresso salvo localmente.
+
 ## 1. Arquitetura Adotada
 - **NextJS 13+ App Router** (Client Components only).
 - Aplicação **CSR** (nenhuma necessidade de SSR).

@@ -1,0 +1,100 @@
+{
+  "desafios": [
+    {
+      "id": "fundamentos",
+      "titulo": "Fundamentos de IA",
+      "descricao": "Conceitos básicos de inteligência artificial",
+      "ordem": 1,
+      "etapas": [
+        {
+          "id": "introducao",
+          "titulo": "Introdução à IA",
+          "descricao": "O que é inteligência artificial?",
+          "ordem": 1,
+          "tipo": "teoria",
+          "tempoEstimado": 30
+        },
+        {
+          "id": "historia",
+          "titulo": "História da IA",
+          "descricao": "Evolução da inteligência artificial",
+          "ordem": 2,
+          "tipo": "teoria",
+          "tempoEstimado": 25
+        },
+        {
+          "id": "aplicacoes",
+          "titulo": "Aplicações Práticas",
+          "descricao": "IA no mundo real",
+          "ordem": 3,
+          "tipo": "pratica",
+          "tempoEstimado": 45
+        }
+      ]
+    },
+    {
+      "id": "machine-learning",
+      "titulo": "Machine Learning",
+      "descricao": "Aprendizado de máquina na prática",
+      "ordem": 2,
+      "etapas": [
+        {
+          "id": "conceitos",
+          "titulo": "Conceitos de ML",
+          "descricao": "Fundamentos do aprendizado de máquina",
+          "ordem": 1,
+          "tipo": "teoria",
+          "tempoEstimado": 40
+        },
+        {
+          "id": "algoritmos",
+          "titulo": "Algoritmos Básicos",
+          "descricao": "Principais algoritmos de ML",
+          "ordem": 2,
+          "tipo": "pratica",
+          "tempoEstimado": 60
+        },
+        {
+          "id": "projeto",
+          "titulo": "Primeiro Projeto",
+          "descricao": "Construindo seu primeiro modelo",
+          "ordem": 3,
+          "tipo": "projeto",
+          "tempoEstimado": 90
+        }
+      ]
+    },
+    {
+      "id": "deep-learning",
+      "titulo": "Deep Learning",
+      "descricao": "Redes neurais profundas",
+      "ordem": 3,
+      "etapas": [
+        {
+          "id": "redes-neurais",
+          "titulo": "Redes Neurais",
+          "descricao": "Fundamentos das redes neurais",
+          "ordem": 1,
+          "tipo": "teoria",
+          "tempoEstimado": 50
+        },
+        {
+          "id": "cnn",
+          "titulo": "Redes Convolucionais",
+          "descricao": "CNNs para visão computacional",
+          "ordem": 2,
+          "tipo": "pratica",
+          "tempoEstimado": 75
+        },
+        {
+          "id": "projeto-final",
+          "titulo": "Projeto Final",
+          "descricao": "Aplicação completa de Deep Learning",
+          "ordem": 3,
+          "tipo": "projeto",
+          "tempoEstimado": 120
+        }
+      ]
+    }
+  ]
+} 
