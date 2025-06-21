@@ -77,4 +77,107 @@ Fase 2 – Contexto do Sistema
 
 **Próximos passos**
 - Aguardar resposta às perguntas acima.
-- Avançar para Fase 3 assim que clareadas, propondo 2-3 padrões arquiteturais e escolha de melhor. 
+- Avançar para Fase 3 assim que clareadas, propondo 2-3 padrões arquiteturais e escolha de melhor.
+
+---
+
+**Fase 3 – Design da Arquitetura**
+
+1. Padrões Arquiteturais Propostos (escolha 1)
+
+   **A. NextJS Pages Router (CSR predominante)**
+   - Tudo renderizado client-side; páginas tradicionais em `pages/`.
+   - Estado global via React Context + `useReducer`.
+   - two.js inicializado no `useEffect` do componente Tower.
+
+   *Vantagens*
+   - Simples, curva de aprendizagem baixa.
+   - Hot-reload rápido; bom para prototipagem.
+   - Zero configuração de Server Components.
+
+   *Desvantagens*
+   - Não aproveita novidades (Streaming, layouts hierárquicos) do App Router.
+   - Possível sobrecarga no bundle inicial se não modularizarmos two.js.
+
+   *Adequação*: Excelente para single-player client-side sem SSR.
+
+   **B. NextJS App Router (Client Components only)**
+   - Estrutura `/app` com `layout.tsx` e `page.tsx`; todos componentes marcados `'use client'`.
+   - Aproveita routing aninhado e loading UI.
+   - Estado global via Zustand (arquivo `store.ts`).
+
+   *Vantagens*
+   - Futuro do Next; layouts aninhados simplificam DetailPane.
+   - Segmentos de `loading.tsx` fornecem UX melhor em fetch de markdown.
+
+   *Desvantagens*
+   - Pode confundir time acostumado ao Pages Router.
+   - Documentação ainda evoluindo; algumas libs têm fricção com App Router.
+
+   *Adequação*: Muito boa se quisermos aderir ao roadmap do framework.
+
+   **C. Pure React + Vite (sem Next)**
+   - Aplicação SPA leve, bundler Vite, deploy via Netlify/Static.
+
+   *Vantagens*
+   - Build ultra-rápido, configuração mínima.
+   - Não traz sobrecarga de features que não usaremos (SSR).
+
+   *Desvantagens*
+   - Perdemos roteamento opinado, imagens otimizadas e convenções do Next.
+   - Requer escrevemos mais boilerplate (404, etc.).
+
+   *Adequação*: Interessante se quisermos simplicidade máxima, mas desalinhado com requisito NextJS.
+
+2. Recomendação
+
+   Sugiro **Padrão B: NextJS App Router (Client Components only)** por ser futuro do framework e oferecer melhor organização, mantendo CSR. Mas estou aberto à sua escolha.
+
+3. Componentes Centrais e Responsabilidades
+
+   - `TowerCanvas` (client): renderiza torre via two.js; recebe lista de desafios + progresso.
+   - `StageBlock` (client): bloco individual (etapa) com cor e onClick.
+   - `PlayerAvatar` (client): sprite animado ao lado do bloco atual.
+   - `ProgressContext` / `useProgressStore`: carrega/salva progresso no localStorage.
+   - `DetailPane` (client): exibe markdown da etapa usando `react-markdown` + plugins.
+   - `MarkdownRenderer` (client): wrapper com rehype-sanitize e suporte a imagens.
+
+4. Interfaces/Contratos
+
+   ```ts
+   // lib/types.ts
+   export interface Etapa { id: number; titulo: string; descricao: string; }
+   export interface Desafio {
+     id: number;
+     nome: string;
+     etapas: Etapa[];
+     cor: string;
+   }
+   export interface Progresso { desafioId: number; etapaIndex: number; }
+   ```
+
+   Componentes recebem apenas dados imutáveis acima; mutações via ações do store:
+   - `nextStep()`
+   - `reset()`
+
+5. Esquema de Dados
+
+   - JSON de desafios carregado via `fetch('/data/desafios.json')`.
+   - Markdown de cada etapa: caminho `content/desafios/{desafioId}/{etapaId}.md`.
+
+6. Preocupações Transversais
+
+   - **Persistência**: hook `useLocalStorage` para gravar `Progresso`.
+   - **Segurança**: `rehype-sanitize` ao renderizar markdown; cabeçalhos CSP via Next config.
+   - **Logging**: `@vercel/analytics` opcional ou console.debug no dev.
+   - **Erros**: Error Boundary em volta do `DetailPane`.
+   - **A11y**: tabindex nos blocos, textos alternativos em imagens do markdown.
+   - **Performance**: lazy-load two.js (`dynamic import`) e markdown.
+
+**Confidence:** 90 %
+
+**Perguntas em aberto**
+- Qual dos padrões (A, B ou C) prefere adotar? *Por favor escolha um para seguirmos.*
+
+**Próximos passos**
+- Após escolher o padrão, detalhar Fase 4 (especificação técnica) com tecnologias concretas, fases de implementação e riscos. 
