@@ -6,6 +6,7 @@ import { getAllEtapas } from '@/lib/data'
 import TowerCanvas from '@/components/TowerCanvas'
 import DetailPane from '@/components/DetailPane'
 import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
@@ -42,21 +43,25 @@ export default function Home() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Torre Canvas */}
       <div className="order-2 lg:order-1">
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border border-slate-700">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold text-white">Torre de Desafios</h2>
-            <div className="text-sm text-slate-300">
-              {getCompletionPercentage()}% completo ({completedSteps.size}/{getTotalSteps()})
+        <Card className="backdrop-blur-sm">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-2xl">Torre de Desafios</CardTitle>
+              <div className="text-sm text-muted-foreground">
+                {getCompletionPercentage()}% completo ({completedSteps.size}/{getTotalSteps()})
+              </div>
             </div>
-          </div>
+          </CardHeader>
           
-          <TowerCanvas 
-            etapas={allEtapas}
-            currentStepIndex={currentStepIndex}
-            completedSteps={completedSteps}
-          />
+          <CardContent>
+            <TowerCanvas 
+              etapas={allEtapas}
+              currentStepIndex={currentStepIndex}
+              completedSteps={completedSteps}
+            />
+          </CardContent>
           
-          <div className="mt-4 flex justify-center space-x-4">
+          <CardFooter className="flex justify-center space-x-4">
             <Button
               onClick={completeCurrentStep}
               disabled={!currentEtapa}
@@ -72,8 +77,8 @@ export default function Home() {
             >
               Reiniciar
             </Button>
-          </div>
-        </div>
+          </CardFooter>
+        </Card>
       </div>
 
       {/* Detail Pane */}

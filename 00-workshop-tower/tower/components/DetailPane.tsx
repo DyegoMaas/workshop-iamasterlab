@@ -5,6 +5,7 @@ import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
 import { type Desafio, type Etapa } from '@/lib/data'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 interface DetailPaneProps {
   currentEtapa: { desafio: Desafio; etapa: Etapa } | null
@@ -117,70 +118,72 @@ Complete esta etapa para avançar na torre de desafios!
 
   if (!currentEtapa) {
     return (
-      <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border border-slate-700">
-        <div className="text-center text-slate-400 py-12">
+      <Card className="backdrop-blur-sm">
+        <CardContent className="text-center py-12">
           <div className="text-6xl mb-4">🏰</div>
-          <h3 className="text-xl font-semibold mb-2">Bem-vindo à Torre!</h3>
-          <p>Selecione uma etapa para começar sua jornada no IA Master Lab.</p>
-        </div>
-      </div>
+          <CardTitle className="text-xl mb-2">Bem-vindo à Torre!</CardTitle>
+          <p className="text-muted-foreground">Selecione uma etapa para começar sua jornada no IA Master Lab.</p>
+        </CardContent>
+      </Card>
     )
   }
 
   return (
-    <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-6 border border-slate-700">
+    <Card className="backdrop-blur-sm">
       {/* Header da etapa */}
-      <div className="mb-6">
+      <CardHeader>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-2xl font-bold text-white">
+          <CardTitle className="text-2xl">
             {currentEtapa.etapa.titulo}
-          </h2>
+          </CardTitle>
           <div className={`px-3 py-1 rounded-full text-sm font-medium border ${getTypeColor(currentEtapa.etapa.tipo)}`}>
             {getTypeIcon(currentEtapa.etapa.tipo)} {currentEtapa.etapa.tipo}
           </div>
         </div>
         
-        <div className="text-slate-300 text-sm mb-2">
+        <div className="text-muted-foreground text-sm mb-2">
           <strong>Desafio:</strong> {currentEtapa.desafio.titulo}
         </div>
         
-        <div className="flex items-center space-x-4 text-slate-400 text-sm">
+        <div className="flex items-center space-x-4 text-muted-foreground text-sm">
           <span>⏱️ {currentEtapa.etapa.tempoEstimado} min</span>
           <span>📍 Etapa {currentEtapa.etapa.ordem}</span>
         </div>
-      </div>
+      </CardHeader>
 
       {/* Conteúdo markdown */}
-      <div className="prose prose-invert prose-slate max-w-none">
-        {loading ? (
-          <div className="flex items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent"></div>
-            <span className="ml-3 text-slate-300">Carregando conteúdo...</span>
-          </div>
-        ) : (
-          <div className="text-slate-200">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeSanitize]}
-              components={{
-                h1: ({ children }) => <h1 className="text-2xl font-bold text-white mb-4">{children}</h1>,
-                h2: ({ children }) => <h2 className="text-xl font-semibold text-white mb-3 mt-6">{children}</h2>,
-                h3: ({ children }) => <h3 className="text-lg font-medium text-white mb-2 mt-4">{children}</h3>,
-                p: ({ children }) => <p className="text-slate-200 mb-4 leading-relaxed">{children}</p>,
-                ul: ({ children }) => <ul className="list-disc list-inside text-slate-200 mb-4 space-y-1">{children}</ul>,
-                ol: ({ children }) => <ol className="list-decimal list-inside text-slate-200 mb-4 space-y-1">{children}</ol>,
-                li: ({ children }) => <li className="text-slate-200">{children}</li>,
-                code: ({ children }) => <code className="bg-slate-700 px-2 py-1 rounded text-blue-300 text-sm">{children}</code>,
-                pre: ({ children }) => <pre className="bg-slate-900 p-4 rounded-lg overflow-x-auto mb-4">{children}</pre>,
-                blockquote: ({ children }) => <blockquote className="border-l-4 border-blue-500 pl-4 italic text-slate-300 mb-4">{children}</blockquote>,
-                hr: () => <hr className="border-slate-600 my-6" />
-              }}
-            >
-              {markdownContent}
-            </ReactMarkdown>
-          </div>
-        )}
-      </div>
-    </div>
+      <CardContent>
+        <div className="prose prose-invert prose-slate max-w-none">
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent"></div>
+              <span className="ml-3 text-muted-foreground">Carregando conteúdo...</span>
+            </div>
+          ) : (
+            <div className="text-foreground">
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeSanitize]}
+                components={{
+                  h1: ({ children }) => <h1 className="text-2xl font-bold mb-4">{children}</h1>,
+                  h2: ({ children }) => <h2 className="text-xl font-semibold mb-3 mt-6">{children}</h2>,
+                  h3: ({ children }) => <h3 className="text-lg font-medium mb-2 mt-4">{children}</h3>,
+                  p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
+                  ul: ({ children }) => <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>,
+                  ol: ({ children }) => <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>,
+                  li: ({ children }) => <li>{children}</li>,
+                  code: ({ children }) => <code className="bg-muted px-2 py-1 rounded text-primary text-sm">{children}</code>,
+                  pre: ({ children }) => <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4">{children}</pre>,
+                  blockquote: ({ children }) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4">{children}</blockquote>,
+                  hr: () => <hr className="border-border my-6" />
+                }}
+              >
+                {markdownContent}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   )
 } 
