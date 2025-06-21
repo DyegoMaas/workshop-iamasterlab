@@ -98,23 +98,7 @@ Complete esta etapa para avançar na torre de desafios!
 *Conteúdo gerado automaticamente. Para personalizar, crie o arquivo markdown correspondente.*`
   }
 
-  const getTypeColor = (tipo: string) => {
-    switch (tipo) {
-      case 'teoria': return 'bg-blue-100 text-blue-800 border-blue-200'
-      case 'pratica': return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-      case 'projeto': return 'bg-purple-100 text-purple-800 border-purple-200'
-      default: return 'bg-gray-100 text-gray-800 border-gray-200'
-    }
-  }
 
-  const getTypeIcon = (tipo: string) => {
-    switch (tipo) {
-      case 'teoria': return '📚'
-      case 'pratica': return '⚡'
-      case 'projeto': return '🚀'
-      default: return '📖'
-    }
-  }
 
   if (!currentEtapa) {
     return (
