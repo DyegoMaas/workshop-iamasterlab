@@ -42,7 +42,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
 
   // Posicionamento vertical tipo torre - de baixo para cima
   const getGridPosition = (index: number) => {
-    const levelHeight = 90 // espaçamento entre níveis da torre
+    const levelHeight = 120 // espaçamento entre níveis da torre (aumentado para evitar sobreposição)
     const containerPadding = 40
     
     // Torre cresce de baixo para cima: primeiro bloco (index=0) embaixo, último (index=8) em cima
@@ -53,7 +53,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
   }
 
   // Calcular altura total da torre
-  const towerHeight = etapas.length * 90 + 80
+  const towerHeight = etapas.length * 120 + 80
 
   // Calcular altura do líquido baseado no progresso (etapas completadas)
   const completedCount = completedSteps.size
@@ -165,7 +165,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
                   style={{
                     left: `${position.x}px`,
                     bottom: `${position.y + 96}px`, // Conecta ao bloco de cima
-                    height: '42px', // conecta ao próximo bloco
+                    height: '24px', // conecta ao próximo bloco (ajustado para novo espaçamento)
                     transform: 'translateX(-50%)'
                   }}
                 ></div>
