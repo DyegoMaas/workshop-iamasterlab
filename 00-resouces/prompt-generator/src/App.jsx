@@ -119,7 +119,7 @@ function App() {
         <div className="text-center mb-8">
           <h1 className="text-5xl doom-title text-orange-400 mb-4">
             <Target className="inline-block mr-4" />
-            DOOM 64 PROMPT GENERATOR
+            IA MASTER LAB - PROMPT GENERATOR
             <Target className="inline-block ml-4" />
           </h1>
           <p className="text-xl font-mono text-green-400 tracking-wider">

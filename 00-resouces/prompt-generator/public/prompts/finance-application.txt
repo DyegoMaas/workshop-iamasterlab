@@ -66,4 +66,4 @@ IMPORTANT
 • Ensure `npm run build` passes  
 • Keep inline comments minimal
 
-LET’S CODE — que os mercados estejam verdes! 📈
+LET’S CODE!
