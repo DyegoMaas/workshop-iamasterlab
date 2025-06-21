@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button.jsx';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card.jsx';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.jsx';
@@ -18,40 +18,27 @@ function App() {
   const [originalPrompt, setOriginalPrompt] = useState('');
   const [isPromptEdited, setIsPromptEdited] = useState(false);
   const [copied, setCopied] = useState(false);
+  const textareaRef = useRef(null);
 
-  // Função para calcular altura dinâmica do textarea baseada no conteúdo
-  const getTextareaHeight = (text) => {
-    if (!text) return 'min-h-[250px]';
-    
-    const textLength = text.length;
-    const lineCount = text.split('\n').length;
-    
-    // Calcula altura baseada no maior entre comprimento de texto e número de linhas
-    // Cada linha precisa de aproximadamente 24px (1.5rem line-height)
-    const heightByLines = Math.max(lineCount * 24, 250);
-    
-    // Altura baseada no comprimento do texto (aproximadamente 80 chars por linha)
-    const estimatedLines = Math.ceil(textLength / 80);
-    const heightByLength = Math.max(estimatedLines * 24, 250);
-    
-    // Usa o maior entre os dois cálculos, com um máximo de 1000px para usabilidade
-    const calculatedHeight = Math.min(Math.max(heightByLines, heightByLength), 1000);
-    
-    // Converte para classes Tailwind
-    if (calculatedHeight >= 1000) {
-      return 'min-h-[1000px] max-h-[1000px]';
-    } else if (calculatedHeight >= 800) {
-      return 'min-h-[800px]';
-    } else if (calculatedHeight >= 600) {
-      return 'min-h-[600px]';
-    } else if (calculatedHeight >= 400) {
-      return 'min-h-[400px]';
-    } else if (calculatedHeight >= 300) {
-      return 'min-h-[300px]';
+  // Função para ajustar altura da textarea automaticamente
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      const textarea = textareaRef.current;
+      // Reset height to auto to get the correct scrollHeight
+      textarea.style.height = 'auto';
+      // Set the height to the scrollHeight with a minimum of 250px
+      const newHeight = Math.max(textarea.scrollHeight, 250);
+      textarea.style.height = `${newHeight}px`;
     }
-    
-    return 'min-h-[250px]';
   };
+
+  // Ajustar altura quando o prompt gerado muda
+  useEffect(() => {
+    if (generatedPrompt) {
+      // Use setTimeout to ensure DOM is updated
+      setTimeout(adjustTextareaHeight, 0);
+    }
+  }, [generatedPrompt]);
 
   // Atualizar variáveis quando template é selecionado
   useEffect(() => {
@@ -93,6 +80,8 @@ function App() {
   const handlePromptChange = (e) => {
     setGeneratedPrompt(e.target.value);
     setIsPromptEdited(e.target.value !== originalPrompt);
+    // Ajustar altura quando o usuário edita o prompt
+    setTimeout(adjustTextareaHeight, 0);
   };
 
   const resetPrompt = () => {
@@ -261,9 +250,10 @@ function App() {
                 Click to edit the generated prompt
               </div>
               <Textarea
+                ref={textareaRef}
                 value={generatedPrompt}
                 onChange={handlePromptChange}
-                className={`doom-textarea ${getTextareaHeight(generatedPrompt)} text-base leading-relaxed resize-none overflow-y-auto`}
+                className="doom-textarea min-h-[250px] text-base leading-relaxed resize-none overflow-hidden"
                 placeholder="[ EDITABLE ] Your generated prompt will appear here and can be edited..."
               />
               <div className="flex gap-4 mt-6">
