@@ -5,6 +5,7 @@ import useProgressStore from '@/lib/store'
 import { getAllEtapas } from '@/lib/data'
 import TowerCanvas from '@/components/TowerCanvas'
 import DetailPane from '@/components/DetailPane'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
@@ -56,19 +57,21 @@ export default function Home() {
           />
           
           <div className="mt-4 flex justify-center space-x-4">
-            <button
+            <Button
               onClick={completeCurrentStep}
               disabled={!currentEtapa}
-              className="px-6 py-2 bg-green-600 hover:bg-green-700 disabled:bg-slate-600 disabled:cursor-not-allowed text-white rounded-lg font-medium transition-colors"
+              size="lg"
+              className="bg-green-600 hover:bg-green-700 disabled:bg-slate-600 disabled:cursor-not-allowed"
             >
               Completar Etapa
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={reset}
-              className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+              variant="destructive"
+              size="lg"
             >
               Reiniciar
-            </button>
+            </Button>
           </div>
         </div>
       </div>
