@@ -47,7 +47,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
     
     // Torre cresce de baixo para cima: primeiro bloco (index=0) embaixo, último (index=8) em cima
     return {
-      x: 0, // centralizado horizontalmente
+      x: -100, // movido para a esquerda
       y: index * levelHeight + containerPadding
     }
   }
@@ -136,9 +136,8 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
             className="absolute bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-blue-400/50 
               shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20"
             style={{
-              left: `${getGridPosition(currentStepIndex).x + 140}px`,
-              bottom: `${getGridPosition(currentStepIndex).y}px`,
-              transform: 'translateY(50%)'
+              left: `${getGridPosition(currentStepIndex).x + 360}px`,
+              bottom: `${getGridPosition(currentStepIndex).y - 5}px`
             }}
           >
             <div className="text-blue-400 text-sm font-semibold mb-1">
@@ -165,26 +164,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
         )}
       </div>
       
-      {/* Legenda */}
-      <div className="absolute top-4 left-4 text-xs text-slate-300 space-y-1 bg-black/50 p-3 rounded-lg backdrop-blur-sm">
-        <div className="text-sm font-bold mb-2 text-white">Torre de Desafios</div>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-green-500 rounded shadow-sm"></div>
-          <span>Completo</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-blue-500 rounded animate-pulse shadow-sm"></div>
-          <span>Atual</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-yellow-500 rounded shadow-sm"></div>
-          <span>Disponível</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-gray-600 rounded shadow-sm"></div>
-          <span>Bloqueado</span>
-        </div>
-      </div>
+
     </div>
   )
 } 
