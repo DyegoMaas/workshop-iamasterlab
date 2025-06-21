@@ -16,6 +16,39 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
   const [lightningFlash, setLightningFlash] = useState(false)
   const [lightningPosition, setLightningPosition] = useState({ x: 50, rotation: -10 })
 
+  // Scroll automático para a etapa atual
+  useEffect(() => {
+    if (canvasRef.current && currentStepIndex < etapas.length) {
+      const container = canvasRef.current.parentElement // o div com overflow-y-auto
+      if (container) {
+        const levelHeight = 120
+        const containerPadding = 40
+        
+        // Calcular posição da etapa atual (mesma lógica do getGridPosition)
+        const currentStepPosition = currentStepIndex * levelHeight + containerPadding
+        
+        // Altura total da torre
+        const towerHeight = etapas.length * 120 + 80
+        
+        // Altura da viewport
+        const viewportHeight = Math.min(towerHeight, 600)
+        
+        // Calcular scroll position para centralizar a etapa atual
+        // Como usamos bottom positioning, precisamos inverter o cálculo
+        const scrollPosition = towerHeight - currentStepPosition - (viewportHeight / 2)
+        
+        // Garantir que não ultrapasse os limites
+        const maxScroll = towerHeight - viewportHeight
+        const finalScrollPosition = Math.max(0, Math.min(scrollPosition, maxScroll))
+        
+        container.scrollTo({
+          top: finalScrollPosition,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }, [currentStepIndex, etapas.length])
+
   // Efeito de raio com timing aleatório
   useEffect(() => {
     // Calcular percentual de conclusão
