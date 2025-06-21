@@ -193,13 +193,12 @@ Fase 2 – Contexto do Sistema
    - **Zustand** – store global minimalista e simples; boa integração com hooks.
    - **react-markdown** + `remark-gfm` + `rehype-sanitize` – renderizar markdown seguro com suporte a tabelas/links.
    - **Tailwind CSS** – utilitário de estilos rápido, facilita responsividade e dark mode.
-   - **zod** – valida JSON (`desafios.json`) no load garantindo formato correto.
    - **ESLint + Prettier** – qualidade de código.
    - **Jest + React Testing Library** – testes unitários/componentes.
 
 2. Fases de Implementação & Dependências
-   - **0. Bootstrap**: `npx create-next-app@latest` com TypeScript & App Router; instalar dependências (two.js, zustand, react-markdown, tailwind, zod).
-   - **1. Data Layer**: colocar `data/desafios.json`; criar `lib/data.ts` com `getDesafios()` + validação zod.
+   - **0. Bootstrap**: `npx create-next-app@latest` com TypeScript & App Router; instalar dependências (two.js, zustand, react-markdown, tailwind).
+   - **1. Data Layer**: colocar `data/desafios.json`; criar `lib/data.ts` com `getDesafios()`.
    - **2. State Layer**: `lib/store.ts` (Zustand) gerenciando progresso com persistência `localStorage`.
    - **3. UI Skeleton**: criar `/app/layout.tsx` e `/app/page.tsx`; montar `TowerCanvas`, `DetailPane` placeholders.
    - **4. Tower Rendering**: implementar `TowerCanvas` com two.js, desenho estático dos blocos.
@@ -274,7 +273,7 @@ Fase 2 – Contexto do Sistema
 
 2. **Roadmap de implementação**
    1. Bootstrap do projeto com dependências (2 h)
-   2. Data layer + validação zod (1 h)
+   2. Data layer (1 h)
    3. State layer persistente (1 h)
    4. Skeleton UI (2 h)
    5. Renderização da torre em two.js (4 h)
