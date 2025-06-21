@@ -10,6 +10,7 @@ Uma aplicação NextJS interativa que visualiza o progresso de um aluno no works
 - 🎨 **UI Moderna**: Interface responsiva com Tailwind CSS
 - 👤 **Avatar Animado**: Personagem que acompanha o progresso
 - 🏆 **Sistema de Conquistas**: Etapas completadas e porcentagem de progresso
+- ⭐ **Nível de Conclusão**: Etapa final com congratulações e materiais pós-curso
 
 ## 🚀 Como Executar
 
@@ -70,7 +71,7 @@ Cada etapa contém:
 - `titulo`: Nome da etapa
 - `descricao`: Descrição breve
 - `ordem`: Ordem dentro do desafio
-- `tipo`: 'teoria' | 'pratica' | 'projeto'
+- `tipo`: 'teoria' | 'pratica' | 'projeto' | 'conclusao'
 - `tempoEstimado`: Minutos estimados
 
 ## 🎯 Estado da Aplicação
@@ -125,12 +126,23 @@ Instruções para continuar...
 - 📚 **Teoria**: Azul
 - ⚡ **Prática**: Amarelo
 - 🚀 **Projeto**: Roxo
+- ⭐ **Conclusão**: Dourado (nível final)
 
 ### Estados da Torre
 - 🟢 **Completo**: Verde
 - 🔵 **Atual**: Azul (pulsante)
 - 🟡 **Disponível**: Amarelo
 - ⚫ **Bloqueado**: Cinza
+
+## 🏰 Estrutura da Torre
+
+A torre possui **11 etapas** distribuídas em 5 desafios:
+
+1. **Setup Inicial** (1 etapa)
+2. **Fundamentos de IA** (3 etapas)
+3. **Machine Learning** (3 etapas)
+4. **Deep Learning** (3 etapas)
+5. **⭐ Conclusão** (1 etapa) - Nível especial com congratulações e materiais pós-curso
 
 ## 📊 Métricas
 
@@ -139,6 +151,7 @@ Instruções para continuar...
 - ✅ Sem vulnerabilidades XSS
 - ✅ Persistência funcionando
 - ✅ Responsividade mobile
+- ✅ 11 etapas implementadas com nível de conclusão
 
 ## 🚀 Deploy
 
