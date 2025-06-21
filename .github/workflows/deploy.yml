@@ -45,7 +45,7 @@ jobs:
       if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
       uses: nwtgck/actions-netlify@v3.0
       with:
-        publish-dir: './00-workshop-tower/tower/.next'
+        publish-dir: './00-workshop-tower/tower/out'
         production-branch: main
         github-token: ${{ secrets.GITHUB_TOKEN }}
         deploy-message: "Deploy Tower from GitHub Actions"
