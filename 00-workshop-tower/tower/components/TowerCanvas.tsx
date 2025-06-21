@@ -18,6 +18,14 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
 
   // Efeito de raio com timing aleatório
   useEffect(() => {
+    // Calcular percentual de conclusão
+    const completionPercentage = completedSteps.size / etapas.length
+    
+    // Multiplicador de intervalo baseado no progresso (1x a 4x)
+    // 0% completo = 1x (mais frequente)
+    // 100% completo = 4x (menos frequente)
+    const frequencyMultiplier = 1 + (completionPercentage * 3)
+    
     const triggerLightning = () => {
       // Gerar posição e rotação aleatórias
       setLightningPosition({
@@ -31,17 +39,19 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
       const flashDuration = 100 + Math.random() * 100
       setTimeout(() => setLightningFlash(false), flashDuration)
       
-      // Próximo raio após 2-8 segundos
-      const nextInterval = 2000 + Math.random() * 6000
-      setTimeout(triggerLightning, nextInterval)
+      // Próximo raio após 2-8 segundos * multiplicador de frequência
+      const baseInterval = 2000 + Math.random() * 6000
+      const adjustedInterval = baseInterval * frequencyMultiplier
+      setTimeout(triggerLightning, adjustedInterval)
     }
 
-    // Primeiro raio após 1-3 segundos
-    const initialDelay = 1000 + Math.random() * 2000
-    const timeoutId = setTimeout(triggerLightning, initialDelay)
+    // Primeiro raio após 1-3 segundos * multiplicador de frequência
+    const baseInitialDelay = 1000 + Math.random() * 2000
+    const adjustedInitialDelay = baseInitialDelay * frequencyMultiplier
+    const timeoutId = setTimeout(triggerLightning, adjustedInitialDelay)
 
     return () => clearTimeout(timeoutId)
-  }, [])
+  }, [completedSteps.size, etapas.length]) // Reagir às mudanças no progresso
 
   const getStepStatus = (index: number, desafio: Desafio, etapa: Etapa) => {
     const stepId = `${desafio.id}-${etapa.id}`

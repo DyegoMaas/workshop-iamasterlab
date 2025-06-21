@@ -2,7 +2,7 @@
   "desafios": [
     {
       "id": "setup",
-      "titulo": "Setup Inicial do Cursor",
+      "titulo": "Setup Cursor",
       "descricao": "Configuração inicial do Cursor para o desafio",
       "ordem": 1,
       "etapas": [

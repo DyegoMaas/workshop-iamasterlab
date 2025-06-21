@@ -118,16 +118,8 @@ Complete esta etapa para avançar na torre de desafios!
       <CardHeader>
         <div className="flex items-center justify-between mb-3">
           <CardTitle className="text-2xl">
-            {currentEtapa.etapa.titulo}
+            {currentEtapa.desafio.titulo} - {currentEtapa.etapa.titulo}
           </CardTitle>         
-        </div>
-        
-        <div className="text-muted-foreground text-sm mb-2">
-          <strong>Desafio:</strong> {currentEtapa.desafio.titulo}
-        </div>
-        
-        <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-          <span>📍 Etapa {currentEtapa.etapa.ordem}</span>
         </div>
       </CardHeader>
 
