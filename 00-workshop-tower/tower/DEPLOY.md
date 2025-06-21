@@ -21,7 +21,7 @@ Este projeto está configurado para deploy automático no Netlify via GitHub Act
 No seu repositório GitHub, vá em **Settings > Secrets and variables > Actions** e adicione:
 
 - `NETLIFY_AUTH_TOKEN`: Token de autenticação do Netlify
-- `NETLIFY_SITE_ID`: ID do site criado no Netlify
+- `NETLIFY_SITE_ID`: ID do site criado no Netlify 
 
 #### Como obter o NETLIFY_AUTH_TOKEN:
 1. No Netlify, vá em **User settings > Applications > Personal access tokens**
