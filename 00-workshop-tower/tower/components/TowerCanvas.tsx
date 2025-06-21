@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { type Desafio, type Etapa } from '@/lib/data'
 
 interface TowerCanvasProps {
@@ -11,6 +11,7 @@ interface TowerCanvasProps {
 
 export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }: TowerCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null)
+  const [hoveredStepIndex, setHoveredStepIndex] = useState<number | null>(null)
 
   const getStepStatus = (index: number, desafio: Desafio, etapa: Etapa) => {
     const stepId = `${desafio.id}-${etapa.id}`
@@ -59,6 +60,11 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
   // Calcular altura do líquido baseado no progresso (etapas completadas)
   const completedCount = completedSteps.size
   const liquidHeight = Math.max(0, (completedCount / etapas.length) * towerHeight)
+
+  // Determinar qual etapa mostrar no DetailPane (hover tem prioridade se for diferente da atual)
+  const displayStepIndex = hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex 
+    ? hoveredStepIndex 
+    : currentStepIndex
 
   return (
     <div className="relative w-full overflow-y-auto" style={{ height: `${Math.min(towerHeight, 600)}px` }}>
@@ -150,6 +156,8 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
                   transform: 'translateX(-50%)'
                 }}
                 title={`${desafio.titulo} - ${etapa.titulo}`}
+                onMouseEnter={() => setHoveredStepIndex(index)}
+                onMouseLeave={() => setHoveredStepIndex(null)}
               >
                 <div className="text-2xl mb-1">
                   {getTypeIcon(etapa.tipo)}
@@ -191,25 +199,32 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
           </div>
         )}
 
-        {/* Informações da etapa atual */}
-        {currentStepIndex < etapas.length && (
+        {/* Informações da etapa (atual ou em hover) */}
+        {displayStepIndex < etapas.length && (
           <div
             className="absolute bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-blue-400/50 
-              shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20"
+              shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20 transition-all duration-300"
             style={{
-              left: `${getGridPosition(currentStepIndex).x + 360}px`,
-              bottom: `${getGridPosition(currentStepIndex).y - 5}px`
+              left: `${getGridPosition(displayStepIndex).x + 360}px`,
+              bottom: `${getGridPosition(displayStepIndex).y - 5}px`
             }}
           >
             <div className="text-blue-400 text-sm font-semibold mb-1">
-              {etapas[currentStepIndex].desafio.titulo}
+              {etapas[displayStepIndex].desafio.titulo}
             </div>
             <div className="text-white text-lg font-bold mb-2">
-              {etapas[currentStepIndex].etapa.titulo}
+              {etapas[displayStepIndex].etapa.titulo}
             </div>
             <div className="text-gray-300 text-sm leading-relaxed">
-              {etapas[currentStepIndex].etapa.descricao}
+              {etapas[displayStepIndex].etapa.descricao}
             </div>
+            
+            {/* Indicador se é hover ou atual */}
+            {hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex && (
+              <div className="text-yellow-400 text-xs mt-2 font-semibold">
+                👁️ Visualizando nível {hoveredStepIndex + 1}
+              </div>
+            )}
             
             {/* Seta apontando para o bloco */}
             <div 
