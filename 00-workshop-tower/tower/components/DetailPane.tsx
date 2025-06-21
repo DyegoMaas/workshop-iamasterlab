@@ -135,10 +135,7 @@ Complete esta etapa para avançar na torre de desafios!
         <div className="flex items-center justify-between mb-3">
           <CardTitle className="text-2xl">
             {currentEtapa.etapa.titulo}
-          </CardTitle>
-          <div className={`px-3 py-1 rounded-full text-sm font-medium border ${getTypeColor(currentEtapa.etapa.tipo)}`}>
-            {getTypeIcon(currentEtapa.etapa.tipo)} {currentEtapa.etapa.tipo}
-          </div>
+          </CardTitle>         
         </div>
         
         <div className="text-muted-foreground text-sm mb-2">
@@ -146,7 +143,6 @@ Complete esta etapa para avançar na torre de desafios!
         </div>
         
         <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-          <span>⏱️ {currentEtapa.etapa.tempoEstimado} min</span>
           <span>📍 Etapa {currentEtapa.etapa.ordem}</span>
         </div>
       </CardHeader>
