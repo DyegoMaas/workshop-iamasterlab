@@ -65,6 +65,7 @@ Acesse o site [TweakCn](https://tweakcn.com/editor/theme?tab=ai) e gere um templ
 
 Copie o código CSS para Tailwind.
 
+Dentro do repositório clonado, acesse o diretório /00-resources/prompt-generator
 
 Construa o seguinte prompt no Cursor:
 
