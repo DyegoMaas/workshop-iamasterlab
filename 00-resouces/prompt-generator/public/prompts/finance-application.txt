@@ -1,57 +1,70 @@
-You are a senior full-stack engineer expert in Next.js 15+, React 19, TypeScript,
-TailwindCSS 3.4 and shadcn/ui.  
-Produce production-ready code that compiles after `npm i && npm run build`.
+Você é um engenheiro full-stack sênior especializado em Next.js 14+, React 19,
+TypeScript, TailwindCSS 3.4 e shadcn/ui.
+Todo o código deve compilar com npm i && npm run build.
 
-No prose, no markdown, no emojis outside files.
-
-──────────────────────
-📝 CORE REQUIREMENTS
-──────────────────────
-1. **SSR ENABLED**  
-   • Use `app/` router with `export const dynamic = "force-dynamic"`  
-2. **TailwindCSS v4** fully configured (`tailwind.config.ts`, JIT)  
-3. **shadcn/ui** installed; wrapper `src/ui/ShadThemeProvider.tsx` (theme `"light"`); demo components `Button`, `Card`, `Input`  
-4. **Financial Dashboard** (`/`)  
-   • Header fixo com logo “💹 TechStocks” e navegação fictícia  
-   • Hero com CTA “Adicionar ação” (`Button`)  
-   • **Stock Grid SSR**: para NVDA, GOOG, AMZN, MSFT, META  
-        – Mostrar **price, daily % change, last-updated**  
-        – Dados vindos de `https://query1.finance.yahoo.com/v7/finance/quote?symbols=NVDA,GOOG,AMZN,MSFT,META`  
-        – Se `process.env.FETCH_STOCKS_OFFLINE === "true"`, usar mock JSON `src/lib/mockQuotes.ts`  
-   • **Mini-chart**: componente `StockSparkline.tsx` (Recharts) exibindo últimos 7 fechamentos (endpoint:  
-     `https://query1.finance.yahoo.com/v8/finance/chart/{SYMBOL}?range=7d&interval=1d`)  
-5. **Best Practices**  
-   • ESLint, Prettier, TypeScript strict, `next/image`, `next/font/google` (Inter)  
-   • Lazy-load charts com `React.lazy` + `Suspense`  
-   • SEO default metas (`next/seo`) e ARIA labels  
-6. **Tests** — `__tests__/dashboard.test.tsx` (Vitest + Testing Library) verifica render de símbolo NVDA  
-7. **package.json scripts** — `dev`, `build`, `start`, `lint`, `test`, `type-check`  
-8. **Dockerfile** multi-stage (node:lts-alpine) geração imagem slim
+Gere uma aplicação financeira que atenda aos seguintes requisitos.
 
 ──────────────────────
-📁 EXPECTED STRUCTURE
+📝 REQUISITOS PRINCIPAIS
+──────────────────────
+
+SSR ATIVADO
+• Use o roteador app/ com export const dynamic = "force-dynamic".
+
+TailwindCSS v4 totalmente configurado (tailwind.config.ts, JIT).
+
+shadcn/ui instalado; wrapper src/ui/ShadThemeProvider.tsx (tema "light"); exemplos de Button, Card, Input, DateRangePicker (composable headless shadcn).
+
+Dashboard Financeiro (/)
+• Header fixo “💹 TechStocks Pro” + navegação fictícia.
+• Hero com CTA “Adicionar ação”.
+• Stock Grid SSR: NVDA, GOOG, AMZN, MSFT, META.
+– Mostrar preço, variação diária (%), última atualização.
+– Preço atual vindo do endpoint Alpha Vantage:
+https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${SYMBOL}&apikey=${process.env.ALPHA_VANTAGE_KEY}.
+• Gráfico Histórico: componente StockChart.tsx (Recharts AreaChart) exibindo os preços de fechamento dos últimos 12 meses;
+– Buscar via TIME_SERIES_DAILY_ADJUSTED & outputsize=full;
+– Permitir filtrar período com DateRangePicker (ex.: YTD, 6 M, 1 M, intervalo personalizado).
+– Filtragem executada no cliente após o fetch SSR.
+– Quando process.env.FETCH_STOCKS_OFFLINE === "true" usar src/lib/mockSeries.ts.
+
+Boas Práticas
+• ESLint, Prettier, TypeScript strict, next/font/google (Inter), next/image quando aplicável.
+• Lazy-load dos gráficos (React.lazy + Suspense).
+• Metas SEO padrão (next/seo) e ARIA em todos os controles interativos.
+
+Testes — __tests__/dashboard.test.tsx (Vitest + Testing Library) verifica renderização do gráfico NVDA e a alteração ao ajustar o filtro.
+
+Scripts no package.json — dev, build, start, lint, test, type-check.
+
+Dockerfile multi-stage (node:lts-alpine) gerando imagem slim.
+
+──────────────────────
+📁 ESTRUTURA ESPERADA
 ──────────────────────
 /
+├─ app/
+│ └─ page.tsx # dashboard SSR
 ├─ src/
-│  ├─ app/                      # SSR routes
-│  │   └─ page.tsx              # dashboard
-│  ├─ components/
-│  │   └─ StockSparkline.tsx
-│  ├─ ui/
-│  ├─ lib/
-│  │   └─ mockQuotes.ts
-│  └─ styles/
+│ ├─ components/
+│ │ ├─ StockSparkline.tsx
+│ │ └─ StockChart.tsx
+│ ├─ ui/ # ShadThemeProvider + DateRangePicker
+│ ├─ lib/
+│ │ ├─ fetchAlpha.ts # camada de dados
+│ │ └─ mockSeries.ts
+│ └─ styles/
 ├─ public/
-├─ __tests__/
+├─ tests/
 ├─ tailwind.config.ts
 ├─ postcss.config.js
 └─ Dockerfile
 
 ──────────────────────
-🌱 OPTIONAL EXTRAS (if tokens allow)
+🌱 EXTRAS OPCIONAIS (se caber nos tokens)
 ──────────────────────
-• `.env.example` with `YAHOO_API_URL` and `FETCH_STOCKS_OFFLINE`  
-• Simple GitHub Actions CI (lint → test → build)
+• .env.example com ALPHA_VANTAGE_KEY, ALPHA_VANTAGE_URL, FETCH_STOCKS_OFFLINE.
+• GitHub Actions CI (lint → test → build).
 
 ──────────────────────
 🎨 [template-css]
@@ -60,10 +73,10 @@ No prose, no markdown, no emojis outside files.
 {{css_template}}
 
 ──────────────────────
-IMPORTANT
+IMPORTANTE
 ──────────────────────
-• Use relative imports under `src/` only  
-• Ensure `npm run build` passes  
-• Keep inline comments minimal
+• Use apenas imports relativos dentro de src/.
+• Garanta que npm run build seja concluído sem erros.
+• Mantenha comentários inline no mínimo.
 
 LET’S CODE!
