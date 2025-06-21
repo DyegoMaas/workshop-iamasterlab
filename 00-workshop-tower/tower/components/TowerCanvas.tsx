@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { type Desafio, type Etapa } from '@/lib/data'
 
 interface TowerCanvasProps {
@@ -13,6 +13,35 @@ interface TowerCanvasProps {
 export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, completeCurrentStep }: TowerCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null)
   const [hoveredStepIndex, setHoveredStepIndex] = useState<number | null>(null)
+  const [lightningFlash, setLightningFlash] = useState(false)
+  const [lightningPosition, setLightningPosition] = useState({ x: 50, rotation: -10 })
+
+  // Efeito de raio com timing aleatório
+  useEffect(() => {
+    const triggerLightning = () => {
+      // Gerar posição e rotação aleatórias
+      setLightningPosition({
+        x: 10 + Math.random() * 80, // 10% a 90% da largura
+        rotation: -15 + Math.random() * 30 // -15° a +15°
+      })
+      
+      setLightningFlash(true)
+      
+      // Duração do flash (100-200ms)
+      const flashDuration = 100 + Math.random() * 100
+      setTimeout(() => setLightningFlash(false), flashDuration)
+      
+      // Próximo raio após 2-8 segundos
+      const nextInterval = 2000 + Math.random() * 6000
+      setTimeout(triggerLightning, nextInterval)
+    }
+
+    // Primeiro raio após 1-3 segundos
+    const initialDelay = 1000 + Math.random() * 2000
+    const timeoutId = setTimeout(triggerLightning, initialDelay)
+
+    return () => clearTimeout(timeoutId)
+  }, [])
 
   const getStepStatus = (index: number, desafio: Desafio, etapa: Etapa) => {
     const stepId = `${desafio.id}-${etapa.id}`
@@ -81,12 +110,32 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps, 
     <div className="relative w-full overflow-y-auto" style={{ height: `${Math.min(towerHeight, 600)}px` }}>
       <div 
         ref={canvasRef}
-        className="relative flex flex-col items-center justify-end min-h-full"
+        className="relative flex flex-col items-center justify-end min-h-full transition-all duration-100"
         style={{ 
           height: `${towerHeight}px`,
-          background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%)'
+          background: lightningFlash 
+            ? 'linear-gradient(to top, rgba(200, 220, 255, 0.3) 0%, rgba(150, 200, 255, 0.2) 50%, rgba(100, 150, 255, 0.1) 100%)'
+            : 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%)'
         }}
       >
+        {/* Efeito de raio */}
+        {lightningFlash && (
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              top: '0px',
+              left: `${lightningPosition.x}%`,
+              width: '3px',
+              height: '100%',
+              background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.9) 0%, rgba(200, 230, 255, 0.7) 30%, rgba(150, 200, 255, 0.5) 60%, transparent 100%)',
+              boxShadow: '0 0 15px 5px rgba(255, 255, 255, 0.8), 0 0 30px 10px rgba(150, 200, 255, 0.4)',
+              transform: `translateX(-50%) rotate(${lightningPosition.rotation}deg)`,
+              zIndex: -1,
+              animation: 'lightningShake 0.15s ease-in-out'
+            }}
+          />
+        )}
+
         {/* Efeito de chuva ao fundo */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
           {rainDrops.map((drop) => (

@@ -179,6 +179,16 @@
   }
 }
 
+/* Animação para o tremor do raio */
+@keyframes lightningShake {
+  0% { transform: translateX(-50%) rotate(var(--rotation, -10deg)) scaleY(1); }
+  20% { transform: translateX(-52%) rotate(calc(var(--rotation, -10deg) + 3deg)) scaleY(1.02); }
+  40% { transform: translateX(-48%) rotate(calc(var(--rotation, -10deg) - 2deg)) scaleY(0.98); }
+  60% { transform: translateX(-50%) rotate(calc(var(--rotation, -10deg) + 1deg)) scaleY(1.01); }
+  80% { transform: translateX(-51%) rotate(calc(var(--rotation, -10deg) - 1deg)) scaleY(0.99); }
+  100% { transform: translateX(-50%) rotate(var(--rotation, -10deg)) scaleY(1); }
+}
+
 /* Custom Theme Overrides */
 :root {
   --background: #303030;
