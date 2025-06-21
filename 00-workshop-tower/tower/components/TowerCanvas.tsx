@@ -45,12 +45,10 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
     const levelHeight = 90 // espaçamento entre níveis da torre
     const containerPadding = 40
     
-    // Inverter para torre: primeiro bloco embaixo, último em cima
-    const levelFromTop = etapas.length - 1 - index
-    
+    // Torre cresce de baixo para cima: primeiro bloco (index=0) embaixo, último (index=8) em cima
     return {
       x: 0, // centralizado horizontalmente
-      y: levelFromTop * levelHeight + containerPadding
+      y: index * levelHeight + containerPadding
     }
   }
 
@@ -87,7 +85,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
                 `}
                 style={{
                   left: `${position.x}px`,
-                  top: `${position.y}px`,
+                  bottom: `${position.y}px`,
                   transform: 'translateX(-50%)'
                 }}
                 title={`${desafio.titulo} - ${etapa.titulo}`}
@@ -101,13 +99,13 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
               </div>
               
               {/* Conectores entre níveis */}
-              {index > 0 && (
+              {index < etapas.length - 1 && (
                 <div
                   className="absolute w-1 bg-gradient-to-t from-gray-400 to-gray-600 opacity-60 z-0"
                   style={{
                     left: `${position.x}px`,
-                    top: `${position.y - 48}px`, // Meio do espaço entre blocos
-                    height: '42px', // conecta ao bloco anterior
+                    bottom: `${position.y + 96}px`, // Conecta ao bloco de cima
+                    height: '42px', // conecta ao próximo bloco
                     transform: 'translateX(-50%)'
                   }}
                 ></div>
@@ -124,7 +122,7 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
               animate-bounce shadow-lg shadow-purple-500/50 z-10"
             style={{
               left: `${getGridPosition(currentStepIndex).x + 50}px`,
-              top: `${getGridPosition(currentStepIndex).y + 28}px`,
+              bottom: `${getGridPosition(currentStepIndex).y + 28}px`,
               transform: 'translateX(-50%)'
             }}
           >
