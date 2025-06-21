@@ -7,10 +7,18 @@
       "ordem": 1,
       "etapas": [
         {
+          "id": "boas-vindas",
+          "titulo": "Boas Vindas",
+          "descricao": "Boas vindas ao workshop",
+          "ordem": 1,
+          "tipo": "teoria",
+          "tempoEstimado": 15
+        },
+        {
           "id": "cursor",
           "titulo": "Instruções",
           "descricao": "Instruções para o setup inicial do Cursor",
-          "ordem": 1,
+          "ordem": 2,
           "tipo": "pratica",
           "tempoEstimado": 15
         },
@@ -18,7 +26,7 @@
           "id": "repositorio-workshop",
           "titulo": "Clonar Repositório",
           "descricao": "Clonar o repositório para o workshop",
-          "ordem": 2,
+          "ordem": 3,
           "tipo": "pratica",
           "tempoEstimado": 15
         }
