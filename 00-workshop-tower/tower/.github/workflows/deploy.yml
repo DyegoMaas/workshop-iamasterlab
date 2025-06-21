@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd 00-workshop-tower/tower
-        npm ci
+        npm ci 
         
     - name: Run linting
       run: |
