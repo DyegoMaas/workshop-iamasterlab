@@ -129,6 +129,40 @@ export default function TowerCanvas({ etapas, currentStepIndex, completedSteps }
             👤
           </div>
         )}
+
+        {/* Informações da etapa atual */}
+        {currentStepIndex < etapas.length && (
+          <div
+            className="absolute bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-blue-400/50 
+              shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20"
+            style={{
+              left: `${getGridPosition(currentStepIndex).x + 140}px`,
+              bottom: `${getGridPosition(currentStepIndex).y}px`,
+              transform: 'translateY(50%)'
+            }}
+          >
+            <div className="text-blue-400 text-sm font-semibold mb-1">
+              {etapas[currentStepIndex].desafio.titulo}
+            </div>
+            <div className="text-white text-lg font-bold mb-2">
+              {etapas[currentStepIndex].etapa.titulo}
+            </div>
+            <div className="text-gray-300 text-sm leading-relaxed">
+              {etapas[currentStepIndex].etapa.descricao}
+            </div>
+            
+            {/* Seta apontando para o bloco */}
+            <div 
+              className="absolute w-0 h-0 border-t-[8px] border-b-[8px] border-r-[12px] 
+                border-t-transparent border-b-transparent border-r-black/80"
+              style={{
+                left: '-12px',
+                top: '50%',
+                transform: 'translateY(-50%)'
+              }}
+            ></div>
+          </div>
+        )}
       </div>
       
       {/* Legenda */}
