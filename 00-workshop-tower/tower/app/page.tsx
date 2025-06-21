@@ -46,7 +46,7 @@ export default function Home() {
     ? allEtapas[selectedStepIndex]
     : currentEtapa
 
-  const handleStepSelect = (index: number) => {
+  const handleStepSelect = (index: number | null) => {
     setSelectedStepIndex(index)
   }
 
@@ -80,16 +80,7 @@ export default function Home() {
             />
           </CardContent>
           
-          <CardFooter className="flex justify-center gap-4">
-            {selectedStepIndex !== null && (
-              <Button
-                onClick={() => setSelectedStepIndex(null)}
-                variant="outline"
-                size="lg"
-              >
-                Voltar ao Atual
-              </Button>
-            )}
+          <CardFooter className="flex justify-center">
             <Button
               onClick={handleReset}
               variant="destructive"

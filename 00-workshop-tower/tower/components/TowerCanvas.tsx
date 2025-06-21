@@ -8,7 +8,7 @@ interface TowerCanvasProps {
   currentStepIndex: number
   completedSteps: Set<string>
   completeCurrentStep: () => void
-  onStepSelect?: (index: number) => void
+  onStepSelect?: (index: number | null) => void
   selectedStepIndex?: number | null
 }
 
@@ -286,8 +286,9 @@ export default function TowerCanvas({
           const handleStepClick = () => {
             if (status === 'completed' && onStepSelect) {
               onStepSelect(index)
-            } else if (status === 'current') {
-              // Manter comportamento atual para etapa atual
+            } else if (status === 'current' && onStepSelect) {
+              // Se clicar na etapa atual, desselecionar (voltar ao atual)
+              onStepSelect(null)
             }
           }
           
@@ -372,8 +373,8 @@ export default function TowerCanvas({
               {etapas[validDisplayStepIndex].etapa.descricao}
             </div>
             
-            {/* Botão de concluir - apenas para o nível atual */}
-            {validDisplayStepIndex === currentStepIndex && hoveredStepIndex === null && typeof selectedStepIndex !== 'number' && (
+            {/* Botão de concluir - apenas para o nível atual quando não há seleção */}
+            {validDisplayStepIndex === currentStepIndex && typeof selectedStepIndex !== 'number' && hoveredStepIndex === null && (
               <button
                 onClick={completeCurrentStep}
                 className="absolute top-1/2 right-4 transform -translate-y-1/2 
