@@ -69,9 +69,10 @@ Dockerfile multi-stage (node:lts-alpine) gerando imagem slim.
 ──────────────────────
 🎨 [template-css]
 ──────────────────────
-// file: src/styles/theme-overrides.css
+Para o tema CSS, utilize o tema abaixo:
+```css
 {{css_template}}
-
+```
 ──────────────────────
 IMPORTANTE
 ──────────────────────

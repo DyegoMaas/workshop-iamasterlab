@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Input } from '@/components/ui/input.jsx';
 import { Label } from '@/components/ui/label.jsx';
 import { Textarea } from '@/components/ui/textarea.jsx';
-import { Copy, Zap, Target } from 'lucide-react';
+import { Copy, Zap, Target, Edit3 } from 'lucide-react';
 import { useTemplates, extractVariables, renderTemplate, formatVariableName } from './hooks/useTemplates.js';
 import './App.css';
 
@@ -15,6 +15,8 @@ function App() {
   const [variables, setVariables] = useState([]);
   const [values, setValues] = useState({});
   const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [originalPrompt, setOriginalPrompt] = useState('');
+  const [isPromptEdited, setIsPromptEdited] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Função para calcular altura dinâmica do textarea baseada no conteúdo
@@ -83,7 +85,19 @@ function App() {
     if (selectedTemplate) {
       const rendered = renderTemplate(selectedTemplate.content, values);
       setGeneratedPrompt(rendered);
+      setOriginalPrompt(rendered);
+      setIsPromptEdited(false); // Reset edit status when generating new prompt
     }
+  };
+
+  const handlePromptChange = (e) => {
+    setGeneratedPrompt(e.target.value);
+    setIsPromptEdited(e.target.value !== originalPrompt);
+  };
+
+  const resetPrompt = () => {
+    setGeneratedPrompt(originalPrompt);
+    setIsPromptEdited(false);
   };
 
   const copyToClipboard = async () => {
@@ -227,17 +241,30 @@ function App() {
           <Card className="doom-card border-green-600">
             <CardHeader>
               <CardTitle className="doom-title text-green-400 text-xl flex items-center justify-between">
-                <span>&gt;&gt; GENERATED PROMPT &lt;&lt;</span>
+                <span className="flex items-center">
+                  <Edit3 className="mr-2 text-green-400" size={20} />
+                  &gt;&gt; GENERATED PROMPT &lt;&lt;
+                  {isPromptEdited && (
+                    <span className="text-yellow-400 text-sm ml-2 font-mono">
+                      [EDITED]
+                    </span>
+                  )}
+                </span>
                 <span className="text-sm font-mono text-gray-400">
                   [{generatedPrompt.length} chars | {generatedPrompt.split('\n').length} lines]
                 </span>
               </CardTitle>
             </CardHeader>
             <CardContent>
+              <div className="mb-3 text-sm text-gray-400 font-mono flex items-center">
+                <Edit3 size={14} className="mr-1" />
+                Click to edit the generated prompt
+              </div>
               <Textarea
                 value={generatedPrompt}
-                readOnly
+                onChange={handlePromptChange}
                 className={`doom-textarea ${getTextareaHeight(generatedPrompt)} text-base leading-relaxed resize-none overflow-y-auto`}
+                placeholder="[ EDITABLE ] Your generated prompt will appear here and can be edited..."
               />
               <div className="flex gap-4 mt-6">
                 <Button 
@@ -247,8 +274,20 @@ function App() {
                   <Copy className="mr-2" />
                   {copied ? 'COPIED!' : 'COPY TO CLIPBOARD'}
                 </Button>
+                {isPromptEdited && (
+                  <Button 
+                    onClick={resetPrompt}
+                    className="doom-button bg-orange-600 hover:bg-orange-700"
+                  >
+                    RESET
+                  </Button>
+                )}
                 <Button 
-                  onClick={() => setGeneratedPrompt('')}
+                  onClick={() => {
+                    setGeneratedPrompt('');
+                    setOriginalPrompt('');
+                    setIsPromptEdited(false);
+                  }}
                   className="doom-button bg-red-600 hover:bg-red-700"
                 >
                   CLEAR
