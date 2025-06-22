@@ -55,4 +55,5 @@ jobs:
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TOWER_SITE_ID }}
+        REQUIRE_TEAM_PASSWORD: true
       timeout-minutes: 1 
