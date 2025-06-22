@@ -362,56 +362,81 @@ export default function TowerCanvas({
           
           return (
             <div key={`${desafio.id}-${etapa.id}`} className="absolute">
-              {/* Bloco da torre - agora retangular com conteúdo */}
-              <div
-                className={`w-80 h-20 rounded-xl border-4 ${colorClass} 
-                  flex items-center justify-start 
-                  transition-all duration-300 hover:scale-105 hover:shadow-2xl
-                  ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
-                  ${isClickable ? 'cursor-pointer' : 'cursor-default'}
-                  backdrop-blur-sm relative z-10 overflow-hidden
-                `}
-                style={{
-                  left: `${position.x + 150}px`,
-                  bottom: `${position.y}px`,
-                  transform: 'translateX(-50%)'
-                }}
-                title={`${desafio.titulo} - ${etapa.titulo}`}
-
-                onClick={handleStepClick}
-              >
-                {/* Barra de progresso do checklist */}
-                {checklistProgress && (
-                  <div
-                    className={`absolute inset-0 ${getProgressBarColor(checklistProgress.percentage)} 
-                      transition-all duration-500 ease-out opacity-30 rounded-lg`}
-                    style={{
-                      width: `${checklistProgress.percentage}%`,
-                      zIndex: -1
-                    }}
-                  />
-                )}
-                
-                <div className="text-left p-3 w-full relative z-10">
-                  <div className="text-xs text-white/70 mb-1 font-medium">
-                    {desafio.titulo}
-                  </div>
-                  <div className="text-sm text-white font-bold mb-1 leading-tight">
-                    {etapa.titulo}
-                  </div>
-                  <div className="flex items-center justify-between w-full">
-                    <div className="text-xs text-white/80 leading-tight line-clamp-1 flex-1">
-                      {etapa.descricao}
-                    </div>
-                    {/* Indicador de progresso do checklist */}
-                    {checklistProgress && (
-                      <div className="text-xs text-white/90 font-semibold ml-2 bg-black/20 px-2 py-1 rounded">
-                        {checklistProgress.completed}/{checklistProgress.total}
-                      </div>
-                    )}
+              {/* Renderizar círculo para discussões ou retângulo para outros tipos */}
+              {etapa.tipo === 'discussao' ? (
+                // Círculo para discussões
+                <div
+                  className={`w-20 h-20 rounded-full border-4 ${colorClass} 
+                    flex items-center justify-center 
+                    transition-all duration-300 hover:scale-105 hover:shadow-2xl
+                    ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
+                    ${isClickable ? 'cursor-pointer' : 'cursor-default'}
+                    backdrop-blur-sm relative z-10 overflow-hidden
+                  `}
+                  style={{
+                    left: `${position.x + 150}px`,
+                    bottom: `${position.y}px`,
+                    transform: 'translateX(-50%)'
+                  }}
+                  title={`${desafio.titulo} - ${etapa.titulo}`}
+                  onClick={handleStepClick}
+                >
+                  {/* Ícone de discussão */}
+                  <div className="text-2xl text-white">
+                    💬
                   </div>
                 </div>
-              </div>
+              ) : (
+                // Bloco retangular para outros tipos
+                <div
+                  className={`w-80 h-20 rounded-xl border-4 ${colorClass} 
+                    flex items-center justify-start 
+                    transition-all duration-300 hover:scale-105 hover:shadow-2xl
+                    ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
+                    ${isClickable ? 'cursor-pointer' : 'cursor-default'}
+                    backdrop-blur-sm relative z-10 overflow-hidden
+                  `}
+                  style={{
+                    left: `${position.x + 150}px`,
+                    bottom: `${position.y}px`,
+                    transform: 'translateX(-50%)'
+                  }}
+                  title={`${desafio.titulo} - ${etapa.titulo}`}
+                  onClick={handleStepClick}
+                >
+                  {/* Barra de progresso do checklist */}
+                  {checklistProgress && (
+                    <div
+                      className={`absolute inset-0 ${getProgressBarColor(checklistProgress.percentage)} 
+                        transition-all duration-500 ease-out opacity-30 rounded-lg`}
+                      style={{
+                        width: `${checklistProgress.percentage}%`,
+                        zIndex: -1
+                      }}
+                    />
+                  )}
+                  
+                  <div className="text-left p-3 w-full relative z-10">
+                    <div className="text-xs text-white/70 mb-1 font-medium">
+                      {desafio.titulo}
+                    </div>
+                    <div className="text-sm text-white font-bold mb-1 leading-tight">
+                      {etapa.titulo}
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="text-xs text-white/80 leading-tight line-clamp-1 flex-1">
+                        {etapa.descricao}
+                      </div>
+                      {/* Indicador de progresso do checklist */}
+                      {checklistProgress && (
+                        <div className="text-xs text-white/90 font-semibold ml-2 bg-black/20 px-2 py-1 rounded">
+                          {checklistProgress.completed}/{checklistProgress.total}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
               
               {/* Conectores entre níveis */}
               {index < etapas.length - 1 && (

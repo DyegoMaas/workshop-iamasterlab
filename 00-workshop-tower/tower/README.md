@@ -74,7 +74,7 @@ Cada etapa contém:
 - `titulo`: Nome da etapa
 - `descricao`: Descrição breve
 - `ordem`: Ordem dentro do desafio
-- `tipo`: 'teoria' | 'pratica' | 'projeto' | 'conclusao'
+- `tipo`: 'teoria' | 'pratica' | 'projeto' | 'discussao' | 'conclusao'
 - `tempoEstimado`: Minutos estimados
 
 ## 🎯 Estado da Aplicação
@@ -157,6 +157,7 @@ cp .env.local.example .env.local
 - 📚 **Teoria**: Azul
 - ⚡ **Prática**: Amarelo
 - 🚀 **Projeto**: Roxo
+- 💬 **Discussão**: Círculo (mesmo sistema de cores baseado no status)
 - ⭐ **Conclusão**: Dourado (nível final)
 
 ### Estados da Torre

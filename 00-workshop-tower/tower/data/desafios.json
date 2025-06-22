@@ -216,6 +216,30 @@
               "tipo": "texto"
             }
           ]
+        },
+        {
+          "id": "discussao-experiencias-agentes",
+          "titulo": "Discussão: Experiências com Agentes",
+          "descricao": "Compartilhe e discuta as diferentes experiências com agentes padrão vs customizados",
+          "ordem": 3,
+          "tipo": "discussao",
+          "tempoEstimado": 20,
+          "perguntas": [
+            {
+              "id": "principal-diferenca",
+              "titulo": "Qual foi a principal diferença que você notou?",
+              "descricao": "Entre o agente padrão e o Engineer, qual diferença mais chamou atenção?",
+              "ordem": 1,
+              "tipo": "texto"
+            },
+            {
+              "id": "casos-uso-agentes",
+              "titulo": "Em que situações usaria cada tipo de agente?",
+              "descricao": "Quando preferiria usar o agente padrão vs o Engineer?",
+              "ordem": 2,
+              "tipo": "texto"
+            }
+          ]
         }
       ]
     },
