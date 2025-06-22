@@ -382,7 +382,7 @@ export default function TowerCanvas({
         {/* Avatar do jogador */}
         {currentStepIndex < etapas.length && (
           <div
-            className="absolute transition-all duration-500 z-10"
+            className="absolute transition-all duration-500 z-10 group"
             style={{
               left: `${getGridPosition(currentStepIndex).x + 110}px`,
               bottom: `${getGridPosition(currentStepIndex).y + 15}px`,
@@ -392,15 +392,17 @@ export default function TowerCanvas({
             {/* Avatar */}
             <div className="w-10 h-10 bg-purple-500 rounded-full border-4 border-purple-300 
               flex items-center justify-center text-white font-bold 
-              animate-bounce shadow-lg shadow-purple-500/50">
+              animate-bounce shadow-lg shadow-purple-500/50 hover:scale-110 
+              transition-transform duration-200 cursor-pointer">
               👤
             </div>
             
-            {/* Nome da equipe centralizado acima do avatar */}
+            {/* Nome da equipe centralizado acima do avatar - visível apenas no hover */}
             {teamName && (
               <div
                 className="absolute bg-purple-600/90 text-white px-3 py-1 rounded-lg text-sm font-semibold
-                  backdrop-blur-sm border border-purple-400/50 shadow-lg whitespace-nowrap"
+                  backdrop-blur-sm border border-purple-400/50 shadow-lg whitespace-nowrap
+                  opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 style={{
                   left: '50%',
                   top: '-35px', // Posicionado acima do avatar
