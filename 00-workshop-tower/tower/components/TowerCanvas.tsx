@@ -153,8 +153,14 @@ export default function TowerCanvas({
   const completedCount = completedSteps.size
   const liquidHeight = Math.max(0, (completedCount / etapas.length) * towerHeight)
 
-  // Gerar gotas de chuva
-  const rainDrops = Array.from({ length: 50 }, (_, i) => ({
+  // Gerar gotas de chuva - quantidade diminui com o progresso
+  const completionPercentage = completedSteps.size / etapas.length
+  // Começar com 50 gotas e diminuir até 10 gotas quando completo
+  const maxRainDrops = 50
+  const minRainDrops = 10
+  const rainDropCount = Math.round(maxRainDrops - (completionPercentage * (maxRainDrops - minRainDrops)))
+  
+  const rainDrops = Array.from({ length: rainDropCount }, (_, i) => ({
     id: i,
     x: Math.random() * 100, // posição horizontal em %
     delay: Math.random() * 3, // delay inicial em segundos
