@@ -1,12 +1,19 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { clsx } from 'clsx';
 
-export const Select = ({ onValueChange, children }) => {
+export const Select = ({ onValueChange, value, children }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedValue, setSelectedValue] = useState(value || '');
   const [triggerRect, setTriggerRect] = useState(null);
   const triggerRef = useRef(null);
   const contentRef = useRef(null);
+
+  // Atualiza o estado interno quando o valor prop muda
+  useEffect(() => {
+    if (value !== undefined) {
+      setSelectedValue(value);
+    }
+  }, [value]);
 
   const handleClickOutside = useCallback((event) => {
     if (
@@ -59,7 +66,8 @@ export const Select = ({ onValueChange, children }) => {
         if (child.type === SelectTrigger) {
           return React.cloneElement(child, { 
             onClick: toggleOpen,
-            ref: triggerRef
+            ref: triggerRef,
+            selectedValue
           });
         }
         if (child.type === SelectContent && isOpen) {
@@ -75,7 +83,7 @@ export const Select = ({ onValueChange, children }) => {
   );
 };
 
-export const SelectTrigger = React.forwardRef(({ className, children, onClick }, ref) => {
+export const SelectTrigger = React.forwardRef(({ className, children, onClick, selectedValue }, ref) => {
   const handleClick = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -96,15 +104,36 @@ export const SelectTrigger = React.forwardRef(({ className, children, onClick },
       )}
       onClick={handleClick}
     >
-      {children}
+      {React.Children.map(children, child => {
+        if (child.type === SelectValue) {
+          return React.cloneElement(child, { selectedValue });
+        }
+        return child;
+      })}
     </button>
   );
 });
 SelectTrigger.displayName = 'SelectTrigger';
 
-export const SelectValue = ({ placeholder }) => (
-  <span className="text-muted-foreground">{placeholder}</span>
-);
+export const SelectValue = ({ placeholder, selectedValue }) => {
+  // Para o dropdown de fontes, criamos um mapeamento dos valores para labels
+  const getDisplayText = (value) => {
+    const fontLabels = {
+      'orbitron': 'ORBITRON (THEME)',
+      'arial': 'ARIAL', 
+      'roboto': 'ROBOTO'
+    };
+    return fontLabels[value] || value;
+  };
+
+  const displayText = selectedValue ? getDisplayText(selectedValue) : placeholder;
+  
+  return (
+    <span className={selectedValue ? "text-green-400" : "text-muted-foreground"}>
+      {displayText}
+    </span>
+  );
+};
 
 export const SelectContent = React.forwardRef(({ className, children, onSelect, triggerRect }, ref) => {
   if (!triggerRect) return null;

@@ -263,7 +263,7 @@ function App() {
                 <div className="flex items-center gap-2">
                   <span className="text-xs">FONT:</span>
                   <Select value={selectedFont} onValueChange={setSelectedFont}>
-                    <SelectTrigger className="w-48 h-10 text-xs doom-select">
+                    <SelectTrigger className="w-56 h-10 text-xs doom-select">
                       <SelectValue placeholder="Select font..." />
                     </SelectTrigger>
                     <SelectContent className="doom-select">
