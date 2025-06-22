@@ -4,7 +4,6 @@ Uma aplicação NextJS interativa que visualiza o progresso de um aluno no works
 
 ## ✨ Funcionalidades
 
-- 🔐 **Autenticação Secreta**: Senha de acesso ao evento (IAMASTERLAB)
 - 🎮 **Torre Interativa**: Visualização vertical tipo Mortal Kombat dos desafios
 - 📊 **Progresso Persistente**: Estado salvo automaticamente no localStorage
 - 📚 **Conteúdo Dinâmico**: Markdown renderizado com sanitização
