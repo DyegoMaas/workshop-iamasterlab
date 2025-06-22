@@ -134,6 +134,23 @@ O site possui proteção por senha para acesso exclusivo aos participantes do ev
 - **Validação**: Mensagens de erro para senhas incorretas
 - **UX**: Modal responsivo com componentes shadcn/ui
 
+### Configuração para Desenvolvimento
+
+Para facilitar o desenvolvimento local, use as seguintes variáveis de ambiente:
+
+```bash
+# Copie .env.local.example para .env.local
+cp .env.local.example .env.local
+```
+
+**Variáveis disponíveis:**
+- `NEXT_PUBLIC_REQUIRE_TEAM_PASSWORD=false` - Pula validação de senha em desenvolvimento
+- `NEXT_PUBLIC_TEAM_PASSWORD=IAMASTERLAB` - Senha padrão quando validação está desabilitada
+
+**Comportamento:**
+- **Produção** (padrão): Requer nome da equipe + senha
+- **Desenvolvimento** (`REQUIRE_TEAM_PASSWORD=false`): Apenas nome da equipe
+
 ## 🎨 Personalização
 
 ### Cores dos Tipos de Etapa

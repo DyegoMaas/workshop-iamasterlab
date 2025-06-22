@@ -18,6 +18,10 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
+  // Configuração de desenvolvimento - ler variáveis de ambiente
+  const requirePassword = process.env.NEXT_PUBLIC_REQUIRE_TEAM_PASSWORD !== 'false'
+  const defaultPassword = process.env.NEXT_PUBLIC_TEAM_PASSWORD || SECRET_PASSWORD
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -33,7 +37,10 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
     // Simular um pequeno delay para UX
     await new Promise(resolve => setTimeout(resolve, 500))
 
-    if (password.trim().toUpperCase() === SECRET_PASSWORD) {
+    // Usar senha padrão se não for requerida, senão validar entrada
+    const passwordToValidate = requirePassword ? password.trim().toUpperCase() : defaultPassword
+    
+    if (passwordToValidate === SECRET_PASSWORD) {
       // Salvar no localStorage
       localStorage.setItem('iamasterlab-authenticated', 'true')
       onAuthenticated(teamName.trim())
@@ -59,7 +66,10 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
             🔐 Acesso Restrito
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
-            Digite o nome da sua equipe e a senha secreta do evento
+            {requirePassword 
+              ? 'Digite o nome da sua equipe e a senha secreta do evento'
+              : 'Digite o nome da sua equipe (modo desenvolvimento)'
+            }
           </DialogDescription>
         </DialogHeader>
         
@@ -76,25 +86,33 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
             />
           </div>
           
-          <div className="space-y-2">
-            <Input
-              type="password"
-              placeholder="Digite a senha..."
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="text-center text-lg h-12"
-              disabled={isLoading}
-            />
-            {error && (
-              <p className="text-red-500 text-sm text-center">{error}</p>
-            )}
-          </div>
+          {requirePassword && (
+            <div className="space-y-2">
+              <Input
+                type="password"
+                placeholder="Digite a senha..."
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="text-center text-lg h-12"
+                disabled={isLoading}
+              />
+              {error && (
+                <p className="text-red-500 text-sm text-center">{error}</p>
+              )}
+            </div>
+          )}
+          
+          {!requirePassword && (
+            <div className="text-center text-sm text-muted-foreground bg-blue-50 p-3 rounded-lg">
+              <p>💡 Modo desenvolvimento: senha não requerida</p>
+            </div>
+          )}
           
           <Button 
             type="submit" 
             className="w-full h-12 text-lg"
-            disabled={isLoading || !teamName.trim() || !password.trim()}
+            disabled={isLoading || !teamName.trim() || (requirePassword && !password.trim())}
           >
             {isLoading ? '🔍 Verificando...' : '🚀 Entrar'}
           </Button>
