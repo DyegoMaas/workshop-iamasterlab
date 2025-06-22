@@ -33,8 +33,6 @@ function useDebounce<T>(value: T, delay: number): T {
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
-  const [salvandoRespostas, setSalvandoRespostas] = useState(false)
-  const [respostasSalvas, setRespostasSalvas] = useState(false)
   
   // Estado local para as respostas (para evitar re-render a cada tecla)
   const [localResponses, setLocalResponses] = useState<Record<string, string>>({})
@@ -331,36 +329,11 @@ Complete esta etapa para avançar na torre de desafios!
                 ))}
             </div>
             
-            {/* Botão de Salvar */}
+            {/* Progresso salvo automaticamente */}
             <div className="flex justify-end mt-6">
-              <Button
-                onClick={() => {
-                  setSalvandoRespostas(true)
-                  setTimeout(() => {
-                    setSalvandoRespostas(false)
-                    setRespostasSalvas(true)
-                    setTimeout(() => {
-                      setRespostasSalvas(false)
-                    }, 2000)
-                  }, 300)
-                }}
-                disabled={salvandoRespostas}
-                className="min-w-[120px]"
-              >
-                {salvandoRespostas ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                    Salvando...
-                  </>
-                ) : respostasSalvas ? (
-                  <>
-                    <span className="mr-2">✓</span>
-                    Salvo!
-                  </>
-                ) : (
-                  'Salvar'
-                )}
-              </Button>
+              <p className="text-sm text-muted-foreground">
+                ✓ Progresso salvo automaticamente
+              </p>
             </div>
           </CardContent>
         </>
