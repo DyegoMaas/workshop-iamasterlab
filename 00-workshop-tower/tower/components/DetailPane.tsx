@@ -24,8 +24,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     checklistProgress, 
     toggleChecklistItem: toggleChecklistItemStore,
     saveQuestionResponse,
-    getQuestionResponse,
-    getQuestionResponsesForStep
+    getQuestionResponse
   } = useProgressStore()
 
   // Funções auxiliares para usar o store global
