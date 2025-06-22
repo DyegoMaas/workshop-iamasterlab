@@ -205,6 +205,7 @@ Complete esta etapa para avançar na torre de desafios!
                   code: ({ children }) => <code className="bg-muted px-2 py-1 rounded text-primary text-sm">{children}</code>,
                   pre: ({ children }) => <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4">{children}</pre>,
                   blockquote: ({ children }) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4">{children}</blockquote>,
+                  a: ({ href, children }) => <a href={href} className="text-primary underline decoration-2 underline-offset-2 hover:text-primary/80 hover:decoration-primary/80 transition-colors" target="_blank" rel="noopener noreferrer">{children}</a>,
                   hr: () => <hr className="border-border my-6" />
                 }}
               >
