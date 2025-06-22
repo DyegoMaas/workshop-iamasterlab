@@ -9,5 +9,4 @@ Abra o Cursor no diretório `/02-finances`. Acesse o agente no painel lateral, o
 ![Agent Mode selected](images/cursor-agentmode-selected.png)
 
 
-Preste atenção no comportamento do agente para responder as perguntas a seguir.
-
+❗**Importante!** Preste atenção no comportamento do agente para responder as perguntas a seguir.

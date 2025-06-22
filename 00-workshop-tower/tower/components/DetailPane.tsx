@@ -6,6 +6,7 @@ import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
 import { type Desafio, type Etapa } from '@/lib/data'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 interface DetailPaneProps {
   currentEtapa: { desafio: Desafio; etapa: Etapa } | null
@@ -19,6 +20,8 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [respostas, setRespostas] = useState<Respostas>({})
+  const [salvandoRespostas, setSalvandoRespostas] = useState(false)
+  const [respostasSalvas, setRespostasSalvas] = useState(false)
 
   // Carregar respostas do localStorage quando a etapa mudar
   useEffect(() => {
@@ -47,6 +50,27 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
 
     const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
     localStorage.setItem(chaveStorage, JSON.stringify(novasRespostas))
+  }
+
+  // Salvar respostas manualmente (para o botão)
+  const salvarRespostasManual = () => {
+    if (!currentEtapa) return
+
+    setSalvandoRespostas(true)
+    
+    // Simular um pequeno delay para feedback visual
+    setTimeout(() => {
+      const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+      localStorage.setItem(chaveStorage, JSON.stringify(respostas))
+      
+      setSalvandoRespostas(false)
+      setRespostasSalvas(true)
+      
+      // Remover feedback após 2 segundos
+      setTimeout(() => {
+        setRespostasSalvas(false)
+      }, 2000)
+    }, 300)
   }
 
   useEffect(() => {
@@ -218,6 +242,29 @@ Complete esta etapa para avançar na torre de desafios!
                     />
                   </div>
                 ))}
+            </div>
+            
+            {/* Botão de Salvar */}
+            <div className="flex justify-end mt-6">
+              <Button
+                onClick={salvarRespostasManual}
+                disabled={salvandoRespostas}
+                className="min-w-[120px]"
+              >
+                {salvandoRespostas ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                    Salvando...
+                  </>
+                ) : respostasSalvas ? (
+                  <>
+                    <span className="mr-2">✓</span>
+                    Salvo!
+                  </>
+                ) : (
+                  'Salvar'
+                )}
+              </Button>
             </div>
           </CardContent>
         </>
