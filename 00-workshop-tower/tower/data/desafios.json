@@ -79,7 +79,23 @@
           "descricao": "Clonar o repositório para o workshop",
           "ordem": 3,
           "tipo": "pratica",
-          "tempoEstimado": 15
+          "tempoEstimado": 15,
+          "checklist": [
+            {
+              "id": "repositorio-clonado",
+              "titulo": "Repositório clonado localmente",
+              "descricao": "Clonar o repositório na máquina local",
+              "ordem": 2,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "branch-criado",
+              "titulo": "Branch do time criado",
+              "descricao": "Criar branch no formato team/{nome-do-seu-time} e fazer push",
+              "ordem": 3,
+              "tipo": "checkbox"
+            }
+          ]
         }
       ]
     },
