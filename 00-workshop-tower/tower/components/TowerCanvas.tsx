@@ -30,14 +30,14 @@ export default function TowerCanvas({
     if (canvasRef.current && currentStepIndex < etapas.length) {
       const container = canvasRef.current.parentElement // o div com overflow-y-auto
       if (container) {
-        const levelHeight = 120
+        const levelHeight = 100 // ajustado para novos blocos
         const containerPadding = 40
         
         // Calcular posição da etapa atual (mesma lógica do getGridPosition)
         const currentStepPosition = currentStepIndex * levelHeight + containerPadding
         
         // Altura total da torre
-        const towerHeight = etapas.length * 120 + 80
+        const towerHeight = etapas.length * 100 + 80 // ajustado
         
         // Altura da viewport
         const viewportHeight = Math.min(towerHeight, 600)
@@ -116,15 +116,7 @@ export default function TowerCanvas({
     }
   }
 
-  const getTypeIcon = (tipo: string) => {
-    switch (tipo) {
-      case 'teoria': return '📚'
-      case 'pratica': return '⚡'
-      case 'projeto': return '🚀'
-      case 'conclusao': return '⭐'
-      default: return '📖'
-    }
-  }
+
 
   // Função para determinar o estilo do conector baseado se as etapas são do mesmo desafio
   const getConnectorStyle = (currentIndex: number) => {
@@ -144,31 +136,22 @@ export default function TowerCanvas({
 
   // Posicionamento vertical tipo torre - de baixo para cima
   const getGridPosition = (index: number) => {
-    const levelHeight = 120 // espaçamento entre níveis da torre (aumentado para evitar sobreposição)
+    const levelHeight = 100 // espaçamento reduzido entre níveis
     const containerPadding = 40
     
     // Torre cresce de baixo para cima: primeiro bloco (index=0) embaixo, último (index=8) em cima
     return {
-      x: -100, // movido para a esquerda
+      x: 0, // centralizado horizontalmente
       y: index * levelHeight + containerPadding
     }
   }
 
   // Calcular altura total da torre
-  const towerHeight = etapas.length * 120 + 80
+  const towerHeight = etapas.length * 100 + 80 // ajustado para novos blocos
 
   // Calcular altura do líquido baseado no progresso (etapas completadas)
   const completedCount = completedSteps.size
   const liquidHeight = Math.max(0, (completedCount / etapas.length) * towerHeight)
-
-  // Determinar qual etapa mostrar no DetailPane (seleção tem prioridade, depois hover, depois atual)
-  let validDisplayStepIndex = currentStepIndex
-  
-  if (typeof selectedStepIndex === 'number' && selectedStepIndex >= 0 && selectedStepIndex < etapas.length) {
-    validDisplayStepIndex = selectedStepIndex
-  } else if (hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex && hoveredStepIndex >= 0 && hoveredStepIndex < etapas.length) {
-    validDisplayStepIndex = hoveredStepIndex
-  }
 
   // Gerar gotas de chuva
   const rainDrops = Array.from({ length: 50 }, (_, i) => ({
@@ -310,17 +293,17 @@ export default function TowerCanvas({
           
           return (
             <div key={`${desafio.id}-${etapa.id}`} className="absolute">
-              {/* Bloco da torre */}
+              {/* Bloco da torre - agora retangular com conteúdo */}
               <div
-                className={`w-24 h-24 rounded-xl border-4 ${colorClass} 
-                  flex flex-col items-center justify-center 
-                  transition-all duration-300 hover:scale-110 hover:shadow-2xl
+                className={`w-80 h-20 rounded-xl border-4 ${colorClass} 
+                  flex items-center justify-start 
+                  transition-all duration-300 hover:scale-105 hover:shadow-2xl
                   ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
                   ${isClickable ? 'cursor-pointer' : 'cursor-default'}
                   backdrop-blur-sm relative z-10
                 `}
                 style={{
-                  left: `${position.x}px`,
+                  left: `${position.x + 150}px`,
                   bottom: `${position.y}px`,
                   transform: 'translateX(-50%)'
                 }}
@@ -329,11 +312,16 @@ export default function TowerCanvas({
                 onMouseLeave={() => setHoveredStepIndex(null)}
                 onClick={handleStepClick}
               >
-                <div className="text-2xl mb-1">
-                  {getTypeIcon(etapa.tipo)}
-                </div>
-                <div className="text-sm text-white font-bold text-center leading-tight">
-                  {index + 1}
+                <div className="text-left p-3 w-full">
+                  <div className="text-xs text-white/70 mb-1 font-medium">
+                    {desafio.titulo}
+                  </div>
+                  <div className="text-sm text-white font-bold mb-1 leading-tight">
+                    {etapa.titulo}
+                  </div>
+                  <div className="text-xs text-white/80 leading-tight line-clamp-1">
+                    {etapa.descricao}
+                  </div>
                 </div>
               </div>
               
@@ -342,9 +330,9 @@ export default function TowerCanvas({
                 <div
                   className={`absolute ${getConnectorStyle(index)} z-0`}
                   style={{
-                    left: `${position.x}px`,
-                    bottom: `${position.y + 96}px`, // Conecta ao bloco de cima
-                    height: '24px', // conecta ao próximo bloco (ajustado para novo espaçamento)
+                    left: `${position.x + 150}px`,
+                    bottom: `${position.y + 80}px`, // Conecta ao bloco de cima (altura do bloco = 80px)
+                    height: '20px', // conecta ao próximo bloco
                     transform: 'translateX(-50%)'
                   }}
                 ></div>
@@ -360,8 +348,8 @@ export default function TowerCanvas({
               flex items-center justify-center text-white font-bold transition-all duration-500
               animate-bounce shadow-lg shadow-purple-500/50 z-10"
             style={{
-              left: `${getGridPosition(currentStepIndex).x + 50}px`,
-              bottom: `${getGridPosition(currentStepIndex).y + 28}px`,
+              left: `${getGridPosition(currentStepIndex).x + 110}px`, // Ajustado para ficar à direita do bloco
+              bottom: `${getGridPosition(currentStepIndex).y + 15}px`,
               transform: 'translateX(-50%)'
             }}
           >
@@ -369,63 +357,22 @@ export default function TowerCanvas({
           </div>
         )}
 
-        {/* Informações da etapa (atual ou em hover) */}
-        {validDisplayStepIndex < etapas.length && (
-          <div
-            className="absolute bg-black/80 backdrop-blur-sm rounded-lg p-4 border border-blue-400/50 
-              shadow-lg shadow-blue-500/30 min-w-[300px] max-w-[400px] z-20 transition-all duration-300 relative"
+        {/* Botão de continuar - apenas para a etapa atual */}
+        {currentStepIndex < etapas.length && (
+          <button
+            onClick={completeCurrentStep}
+            className="absolute bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg 
+              transition-colors duration-200 shadow-lg hover:shadow-green-500/30
+              disabled:bg-gray-600 disabled:cursor-not-allowed font-semibold z-20"
             style={{
-              left: `120px`,
-              bottom: `${getGridPosition(validDisplayStepIndex).y - 5}px`
+              left: `${getGridPosition(currentStepIndex).x + 560}px`, // Posicionado à direita do avatar
+              bottom: `${getGridPosition(currentStepIndex).y + 20}px`,
+              transform: 'translateX(-50%)'
             }}
+            title="Concluir Etapa"
           >
-            <div className="text-blue-400 text-sm font-semibold mb-1">
-              {etapas[validDisplayStepIndex].desafio.titulo}
-            </div>
-            <div className="text-white text-lg font-bold mb-2">
-              {etapas[validDisplayStepIndex].etapa.titulo}
-            </div>
-            <div className="text-gray-300 text-sm leading-relaxed pr-12">
-              {etapas[validDisplayStepIndex].etapa.descricao}
-            </div>
-            
-            {/* Botão de concluir - apenas para o nível atual quando não há seleção */}
-            {validDisplayStepIndex === currentStepIndex && typeof selectedStepIndex !== 'number' && hoveredStepIndex === null && (
-              <button
-                onClick={completeCurrentStep}
-                className="absolute top-1/2 right-4 transform -translate-y-1/2 
-                  bg-green-600 hover:bg-green-700 text-white p-2 rounded-lg 
-                  transition-colors duration-200 shadow-lg hover:shadow-green-500/30
-                  disabled:bg-gray-600 disabled:cursor-not-allowed"
-                title="Concluir Etapa"
-              >
-                <span className="text-lg">✓</span>
-              </button>
-            )}
-            
-            {/* Indicador se é hover, selecionado ou atual */}
-            {typeof selectedStepIndex === 'number' && selectedStepIndex !== currentStepIndex && (
-              <div className="text-purple-400 text-xs mt-2 font-semibold">
-                🎯 Nível selecionado {selectedStepIndex + 1}
-              </div>
-            )}
-            {hoveredStepIndex !== null && hoveredStepIndex !== currentStepIndex && typeof selectedStepIndex !== 'number' && (
-              <div className="text-yellow-400 text-xs mt-2 font-semibold">
-                👁️ Visualizando nível {hoveredStepIndex + 1}
-              </div>
-            )}
-            
-            {/* Seta apontando para o bloco */}
-            <div 
-              className="absolute w-0 h-0 border-t-[8px] border-b-[8px] border-r-[12px] 
-                border-t-transparent border-b-transparent border-r-black/80"
-              style={{
-                left: '-12px',
-                top: '50%',
-                transform: 'translateY(-50%)'
-              }}
-            ></div>
-          </div>
+            ✓ Continuar
+          </button>
         )}
       </div>
     </div>
