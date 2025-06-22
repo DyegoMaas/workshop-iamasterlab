@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
@@ -13,45 +13,100 @@ interface DetailPaneProps {
   currentEtapa: { desafio: Desafio; etapa: Etapa } | null
 }
 
+// Hook personalizado para debounce
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value)
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value)
+    }, delay)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [value, delay])
+
+  return debouncedValue
+}
+
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [salvandoRespostas, setSalvandoRespostas] = useState(false)
   const [respostasSalvas, setRespostasSalvas] = useState(false)
   
-  // Usar o store global para checklist e respostas
-  const { 
-    checklistProgress, 
-    toggleChecklistItem: toggleChecklistItemStore,
-    saveQuestionResponse,
-    getQuestionResponse
-  } = useProgressStore()
+  // Estado local para as respostas (para evitar re-render a cada tecla)
+  const [localResponses, setLocalResponses] = useState<Record<string, string>>({})
+  
+  // Seletores específicos do store para evitar re-renders desnecessários
+  const checklistProgress = useProgressStore(state => state.checklistProgress)
+  const toggleChecklistItemStore = useProgressStore(state => state.toggleChecklistItem)
+  
+  // Não subscrever às funções de questionResponse para evitar re-renders
+  // Vamos acessá-las diretamente quando necessário
 
-  // Funções auxiliares para usar o store global
-  const getCurrentStepId = () => {
+  // Calcular stepId de forma estável usando useMemo
+  const stepId = useMemo(() => {
     if (!currentEtapa) return ''
     return `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-  }
+  }, [currentEtapa?.desafio.id, currentEtapa?.etapa.id])
 
-  const handleToggleChecklistItem = (itemId: string) => {
-    const stepId = getCurrentStepId()
+  // Funções auxiliares
+  const handleToggleChecklistItem = useCallback((itemId: string) => {
     if (stepId) toggleChecklistItemStore(stepId, itemId)
-  }
+  }, [stepId, toggleChecklistItemStore])
 
-  const isChecklistItemChecked = (itemId: string) => {
-    const stepId = getCurrentStepId()
+  const isChecklistItemChecked = useCallback((itemId: string) => {
     return checklistProgress[stepId]?.has(itemId) || false
-  }
+  }, [stepId, checklistProgress])
 
-  const handleSaveQuestionResponse = (questionId: string, response: string) => {
-    const stepId = getCurrentStepId()
-    if (stepId) saveQuestionResponse(stepId, questionId, response)
-  }
+  // Inicializar respostas locais quando a etapa muda
+  useEffect(() => {
+    if (stepId && currentEtapa?.etapa.perguntas) {
+      const store = useProgressStore.getState()
+      const initialResponses: Record<string, string> = {}
+      currentEtapa.etapa.perguntas.forEach(pergunta => {
+        initialResponses[pergunta.id] = store.getQuestionResponse(stepId, pergunta.id) || ''
+      })
+      setLocalResponses(initialResponses)
+    } else {
+      setLocalResponses({})
+    }
+  }, [stepId, currentEtapa?.etapa.perguntas])
 
-  const getQuestionResponseValue = (questionId: string) => {
-    const stepId = getCurrentStepId()
-    return stepId ? getQuestionResponse(stepId, questionId) : ''
-  }
+  // Debounce das respostas locais para salvar no store
+  const debouncedResponses = useDebounce(localResponses, 500)
+
+  // Usar useRef para rastrear o último estado salvo e evitar salvamentos desnecessários
+  const lastSavedResponses = useRef<Record<string, string>>({})
+
+  // Efeito para salvar no store quando as respostas com debounce mudarem
+  useEffect(() => {
+    if (stepId && Object.keys(debouncedResponses).length > 0) {
+      const store = useProgressStore.getState()
+      let hasChanges = false
+      
+      Object.entries(debouncedResponses).forEach(([questionId, response]) => {
+        const lastSaved = lastSavedResponses.current[questionId]
+        if (lastSaved !== response) {
+          const currentStored = store.getQuestionResponse(stepId, questionId)
+          if (currentStored !== response) {
+            store.saveQuestionResponse(stepId, questionId, response)
+            hasChanges = true
+          }
+          lastSavedResponses.current[questionId] = response
+        }
+      })
+    }
+  }, [stepId, debouncedResponses])
+
+  const handleQuestionResponseChange = useCallback((questionId: string, response: string) => {
+    setLocalResponses(prev => ({
+      ...prev,
+      [questionId]: response
+    }))
+  }, [])
 
   useEffect(() => {
     if (!currentEtapa) {
@@ -265,8 +320,8 @@ Complete esta etapa para avançar na torre de desafios!
                     <textarea
                       className="w-full min-h-[100px] p-3 border border-border rounded-md bg-background text-foreground resize-y"
                       placeholder="Digite sua resposta aqui..."
-                      value={getQuestionResponseValue(pergunta.id) || ''}
-                      onChange={(e) => handleSaveQuestionResponse(pergunta.id, e.target.value)}
+                      value={localResponses[pergunta.id] || ''}
+                      onChange={(e) => handleQuestionResponseChange(pergunta.id, e.target.value)}
                     />
                   </div>
                 ))}

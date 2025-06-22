@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, useMemo } from 'react'
 import { type Desafio, type Etapa } from '@/lib/data'
 
 interface TowerCanvasProps {
@@ -27,6 +27,10 @@ export default function TowerCanvas({
   const canvasRef = useRef<HTMLDivElement>(null)
   const [lightningFlash, setLightningFlash] = useState(false)
   const [lightningPosition, setLightningPosition] = useState({ x: 50, rotation: -10 })
+
+  // Calcular valores estáveis para evitar re-execução desnecessária dos useEffects
+  const completedStepsCount = useMemo(() => completedSteps.size, [completedSteps.size])
+  const etapasLength = useMemo(() => etapas.length, [etapas.length])
 
   // Scroll automático para a etapa atual
   useEffect(() => {
@@ -64,13 +68,13 @@ export default function TowerCanvas({
   // Efeito de raio com timing aleatório
   useEffect(() => {
     // Para o efeito de raio no último nível ou se a torre estiver vazia
-    if (etapas.length === 0 || currentStepIndex >= etapas.length - 1) {
+    if (etapasLength === 0 || currentStepIndex >= etapasLength - 1) {
       setLightningFlash(false) // Garante que qualquer raio ativo seja desligado
       return // Impede a criação de novos raios
     }
 
     // Calcular percentual de conclusão
-    const completionPercentage = completedSteps.size / etapas.length
+    const completionPercentage = completedStepsCount / etapasLength
     
     // Multiplicador de intervalo baseado no progresso (1x a 4x)
     // 0% completo = 1x (mais frequente)
@@ -102,7 +106,7 @@ export default function TowerCanvas({
     const timeoutId = setTimeout(triggerLightning, adjustedInitialDelay)
 
     return () => clearTimeout(timeoutId)
-  }, [completedSteps.size, etapas.length, currentStepIndex]) // Reagir às mudanças no progresso e na etapa atual
+  }, [completedStepsCount, etapasLength, currentStepIndex]) // Usar valores estáveis
 
   const getStepStatus = (index: number, desafio: Desafio, etapa: Etapa) => {
     const stepId = `${desafio.id}-${etapa.id}`
