@@ -4,6 +4,7 @@ Uma aplicação NextJS interativa que visualiza o progresso de um aluno no works
 
 ## ✨ Funcionalidades
 
+- 🔐 **Autenticação Secreta**: Senha de acesso ao evento (IAMASTERLAB)
 - 🎮 **Torre Interativa**: Visualização vertical tipo Mortal Kombat dos desafios
 - 📊 **Progresso Persistente**: Estado salvo automaticamente no localStorage
 - 📚 **Conteúdo Dinâmico**: Markdown renderizado com sanitização
@@ -46,9 +47,12 @@ Acesse: [http://localhost:3000](http://localhost:3000)
 /components            # Componentes React
   TowerCanvas.tsx     # Renderização da torre
   DetailPane.tsx      # Painel de detalhes das etapas
+  AuthDialog.tsx      # Modal de autenticação
+  /ui                 # Componentes shadcn/ui
 /lib                  # Utilitários e lógica
   data.ts            # Carregamento de dados
   store.ts           # Estado global (Zustand)
+  useAuth.ts         # Hook de autenticação
 /data                 # Dados estáticos
   desafios.json      # Estrutura dos desafios
 /content/desafios     # Conteúdo Markdown
@@ -116,9 +120,20 @@ Instruções para continuar...
 
 ## 🔒 Segurança
 
-- ✅ Sanitização XSS com `rehype-sanitize`
-- ✅ Validação de tipos com TypeScript
-- ✅ CSR apenas (sem SSR sensível)
+- 🔐 **Autenticação por senha** - Acesso restrito com senha do evento
+- ✅ **Persistência segura** - Estado salvo no localStorage do navegador
+- ✅ **Sanitização XSS** com `rehype-sanitize`
+- ✅ **Validação de tipos** com TypeScript
+- ✅ **CSR apenas** (sem SSR sensível)
+
+### Sistema de Autenticação
+
+O site possui proteção por senha para acesso exclusivo aos participantes do evento:
+
+- **Senha**: `IAMASTERLAB` (hard-coded)
+- **Persistência**: Salva no localStorage após autenticação
+- **Validação**: Mensagens de erro para senhas incorretas
+- **UX**: Modal responsivo com componentes shadcn/ui
 
 ## 🎨 Personalização
 

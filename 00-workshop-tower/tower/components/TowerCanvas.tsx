@@ -153,12 +153,40 @@ export default function TowerCanvas({
   const completedCount = completedSteps.size
   const liquidHeight = Math.max(0, (completedCount / etapas.length) * towerHeight)
 
-  // Gerar gotas de chuva - quantidade diminui com o progresso
+  // Calcular percentual de conclusão para efeitos visuais
   const completionPercentage = completedSteps.size / etapas.length
+  
+  // Gerar gotas de chuva - quantidade diminui com o progresso
   // Começar com 50 gotas e diminuir até 10 gotas quando completo
   const maxRainDrops = 50
   const minRainDrops = 10
   const rainDropCount = Math.round(maxRainDrops - (completionPercentage * (maxRainDrops - minRainDrops)))
+  
+  // Cores do fundo baseadas no progresso
+  const getSkyBackground = (isLightning = false) => {
+    if (isLightning) {
+      // Fundo com raio - transição de tempestade para céu claro com flash
+      if (completionPercentage < 0.3) {
+        return 'linear-gradient(to top, rgba(200, 220, 255, 0.3) 0%, rgba(150, 200, 255, 0.2) 50%, rgba(100, 150, 255, 0.1) 100%)'
+      } else if (completionPercentage < 0.7) {
+        return 'linear-gradient(to top, rgba(220, 240, 255, 0.4) 0%, rgba(180, 220, 255, 0.3) 50%, rgba(140, 180, 255, 0.2) 100%)'
+      } else {
+        return 'linear-gradient(to top, rgba(240, 250, 255, 0.6) 0%, rgba(200, 230, 255, 0.4) 50%, rgba(160, 200, 255, 0.3) 100%)'
+      }
+    } else {
+      // Fundo normal - transição de tempestade escura para céu azul bonito
+      if (completionPercentage < 0.3) {
+        // Início: tempestade escura
+        return 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%)'
+      } else if (completionPercentage < 0.7) {
+        // Meio: transição para céu
+        return 'linear-gradient(to top, rgba(30, 58, 138, 0.6) 0%, rgba(96, 165, 250, 0.3) 50%, rgba(59, 130, 246, 0.2) 100%)'
+      } else {
+        // Final: céu azul bonito
+        return 'linear-gradient(to top, rgba(56, 189, 248, 0.4) 0%, rgba(125, 211, 252, 0.3) 50%, rgba(186, 230, 253, 0.2) 100%)'
+      }
+    }
+  }
   
   const rainDrops = Array.from({ length: rainDropCount }, (_, i) => ({
     id: i,
@@ -176,9 +204,7 @@ export default function TowerCanvas({
         className="relative flex flex-col items-center justify-end min-h-full transition-all duration-100"
         style={{ 
           height: `${towerHeight}px`,
-          background: lightningFlash 
-            ? 'linear-gradient(to top, rgba(200, 220, 255, 0.3) 0%, rgba(150, 200, 255, 0.2) 50%, rgba(100, 150, 255, 0.1) 100%)'
-            : 'linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(59, 130, 246, 0.1) 50%, rgba(0, 0, 0, 0.4) 100%)'
+          background: getSkyBackground(lightningFlash)
         }}
       >
         {/* Efeito de raio */}
