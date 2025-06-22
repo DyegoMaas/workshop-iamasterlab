@@ -18,7 +18,17 @@ function App() {
   const [originalPrompt, setOriginalPrompt] = useState('');
   const [isPromptEdited, setIsPromptEdited] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [selectedFont, setSelectedFont] = useState('orbitron');
   const textareaRef = useRef(null);
+
+  // Opções de fonte
+  const fontOptions = [
+    { value: 'orbitron', label: 'ORBITRON (THEME)' },
+    { value: 'arial', label: 'ARIAL' },
+    { value: 'roboto', label: 'ROBOTO' }
+  ];
+
+
 
   // Função para ajustar altura da textarea automaticamente
   const adjustTextareaHeight = () => {
@@ -245,15 +255,36 @@ function App() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="mb-3 text-sm text-gray-400 font-mono flex items-center">
-                <Edit3 size={14} className="mr-1" />
-                Click to edit the generated prompt
+              <div className="mb-3 text-sm text-gray-400 font-mono flex items-center justify-between">
+                <div className="flex items-center">
+                  <Edit3 size={14} className="mr-1" />
+                  Click to edit the generated prompt
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs">FONT:</span>
+                  <Select value={selectedFont} onValueChange={setSelectedFont}>
+                    <SelectTrigger className="w-48 h-10 text-xs doom-select">
+                      <SelectValue placeholder="Select font..." />
+                    </SelectTrigger>
+                    <SelectContent className="doom-select">
+                      {fontOptions.map(font => (
+                        <SelectItem 
+                          key={font.value} 
+                          value={font.value}
+                          className="text-green-400 focus:bg-orange-600 focus:text-black font-mono text-xs"
+                        >
+                          {font.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
               <Textarea
                 ref={textareaRef}
                 value={generatedPrompt}
                 onChange={handlePromptChange}
-                className="doom-textarea min-h-[250px] text-base leading-relaxed resize-none overflow-hidden"
+                className={`doom-textarea font-${selectedFont} min-h-[250px] text-base leading-relaxed resize-none overflow-hidden`}
                 placeholder="[ EDITABLE ] Your generated prompt will appear here and can be edited..."
               />
               <div className="flex gap-4 mt-6">
