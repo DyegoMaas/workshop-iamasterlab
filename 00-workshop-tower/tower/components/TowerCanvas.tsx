@@ -389,12 +389,12 @@ export default function TowerCanvas({
               transform: 'translateX(-50%)'
             }}
           >
-            {/* Avatar */}
+            {/* Avatar - Equipe */}
             <div className="w-10 h-10 bg-purple-500 rounded-full border-4 border-purple-300 
               flex items-center justify-center text-white font-bold 
               animate-bounce shadow-lg shadow-purple-500/50 hover:scale-110 
               transition-transform duration-200 cursor-pointer">
-              👤
+              👥
             </div>
             
             {/* Nome da equipe centralizado acima do avatar - visível apenas no hover */}
