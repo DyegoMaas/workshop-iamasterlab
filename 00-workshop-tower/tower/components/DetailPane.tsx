@@ -27,6 +27,8 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [salvandoRespostas, setSalvandoRespostas] = useState(false)
   const [respostasSalvas, setRespostasSalvas] = useState(false)
   const [checklistItems, setChecklistItems] = useState<ChecklistItems>({})
+  const [salvandoChecklist, setSalvandoChecklist] = useState(false)
+  const [checklistSalvo, setChecklistSalvo] = useState(false)
 
   // Carregar respostas e checklist do localStorage quando a etapa mudar
   useEffect(() => {
@@ -100,6 +102,27 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
       // Remover feedback após 2 segundos
       setTimeout(() => {
         setRespostasSalvas(false)
+      }, 2000)
+    }, 300)
+  }
+
+  // Salvar checklist manualmente (para o botão)
+  const salvarChecklistManual = () => {
+    if (!currentEtapa) return
+
+    setSalvandoChecklist(true)
+    
+    // Simular um pequeno delay para feedback visual
+    setTimeout(() => {
+      const chaveStorageChecklist = `checklist-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+      localStorage.setItem(chaveStorageChecklist, JSON.stringify(checklistItems))
+      
+      setSalvandoChecklist(false)
+      setChecklistSalvo(true)
+      
+      // Remover feedback após 2 segundos
+      setTimeout(() => {
+        setChecklistSalvo(false)
       }, 2000)
     }, 300)
   }
@@ -284,6 +307,29 @@ Complete esta etapa para avançar na torre de desafios!
                     </div>
                   </div>
                 ))}
+            </div>
+            
+            {/* Botão de Salvar Checklist */}
+            <div className="flex justify-end mt-6">
+              <Button
+                onClick={salvarChecklistManual}
+                disabled={salvandoChecklist}
+                className="min-w-[120px]"
+              >
+                {salvandoChecklist ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
+                    Salvando...
+                  </>
+                ) : checklistSalvo ? (
+                  <>
+                    <span className="mr-2">✓</span>
+                    Salvo!
+                  </>
+                ) : (
+                  'Salvar'
+                )}
+              </Button>
             </div>
           </CardContent>
         </>
