@@ -39,7 +39,7 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      handleSubmit(e as any)
+      handleSubmit(e as React.FormEvent)
     }
   }
 

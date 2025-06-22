@@ -21,7 +21,6 @@ export default function TowerCanvas({
   selectedStepIndex
 }: TowerCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null)
-  const [hoveredStepIndex, setHoveredStepIndex] = useState<number | null>(null)
   const [lightningFlash, setLightningFlash] = useState(false)
   const [lightningPosition, setLightningPosition] = useState({ x: 50, rotation: -10 })
 
@@ -346,8 +345,7 @@ export default function TowerCanvas({
                   transform: 'translateX(-50%)'
                 }}
                 title={`${desafio.titulo} - ${etapa.titulo}`}
-                onMouseEnter={() => setHoveredStepIndex(index)}
-                onMouseLeave={() => setHoveredStepIndex(null)}
+
                 onClick={handleStepClick}
               >
                 <div className="text-left p-3 w-full">
