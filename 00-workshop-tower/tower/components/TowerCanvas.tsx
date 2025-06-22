@@ -60,6 +60,12 @@ export default function TowerCanvas({
 
   // Efeito de raio com timing aleatório
   useEffect(() => {
+    // Para o efeito de raio no último nível ou se a torre estiver vazia
+    if (etapas.length === 0 || currentStepIndex >= etapas.length - 1) {
+      setLightningFlash(false) // Garante que qualquer raio ativo seja desligado
+      return // Impede a criação de novos raios
+    }
+
     // Calcular percentual de conclusão
     const completionPercentage = completedSteps.size / etapas.length
     
@@ -93,7 +99,7 @@ export default function TowerCanvas({
     const timeoutId = setTimeout(triggerLightning, adjustedInitialDelay)
 
     return () => clearTimeout(timeoutId)
-  }, [completedSteps.size, etapas.length]) // Reagir às mudanças no progresso
+  }, [completedSteps.size, etapas.length, currentStepIndex]) // Reagir às mudanças no progresso e na etapa atual
 
   const getStepStatus = (index: number, desafio: Desafio, etapa: Etapa) => {
     const stepId = `${desafio.id}-${etapa.id}`
