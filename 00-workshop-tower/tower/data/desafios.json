@@ -33,34 +33,18 @@
       ]
     },
     {
-      "id": "fundamentos",
-      "titulo": "Fundamentos de IA",
-      "descricao": "Conceitos básicos de inteligência artificial",
+      "id": "aplicacao-financeira",
+      "titulo": "Aplicação Financeira",
+      "descricao": "Aplicação financeira com IA",
       "ordem": 1,
       "etapas": [
         {
-          "id": "introducao",
-          "titulo": "Introdução à IA",
-          "descricao": "O que é inteligência artificial?",
+          "id": "criacao-prompt",
+          "titulo": "Criação de Prompt",
+          "descricao": "Criar o prompt para a aplicação financeira",
           "ordem": 1,
-          "tipo": "teoria",
+          "tipo": "projeto",
           "tempoEstimado": 30
-        },
-        {
-          "id": "historia",
-          "titulo": "História da IA",
-          "descricao": "Evolução da inteligência artificial",
-          "ordem": 2,
-          "tipo": "teoria",
-          "tempoEstimado": 25
-        },
-        {
-          "id": "aplicacoes",
-          "titulo": "Aplicações Práticas",
-          "descricao": "IA no mundo real",
-          "ordem": 3,
-          "tipo": "pratica",
-          "tempoEstimado": 45
         }
       ]
     },

@@ -59,17 +59,17 @@ Bloco 01: Aplicação Financeira
 
 ##### Template visual
 
-Acesse o site [TweakCn](https://tweakcn.com/editor/theme?tab=ai) e gere um template do leaitue da sua preferência:
+Acesse o site [TweakCn](https://tweakcn.com/editor/theme?tab=ai) e vá para a aba *Generate*.
 
+Gere um template do leaitue da sua preferência:
 🎯 Conservative Investor (tons terrosos, layout clean)
 🔥 Day Trader (cores vibrantes, dados em tempo real)
 📈 Growth Investor (azuis e verdes, foco em tendências)
 💎 Crypto Enthusiast (neon, dark mode, volatilidade)
 🎯 @Doom 64
 
-Copie o código CSS para Tailwind.
-
-Dentro do repositório clonado, acesse o diretório /00-resources/prompt-generator
+> Copie o código CSS para Tailwind.
+> Dentro do repositório clonado, acesse o diretório `/01-prompt-generator`
 
 Construa o seguinte prompt no Cursor:
 
