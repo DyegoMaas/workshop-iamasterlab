@@ -24,7 +24,7 @@ export default function Home() {
     getTotalSteps
   } = useProgressStore()
 
-  const { isAuthenticated, isLoading: authLoading, authenticate } = useAuth()
+  const { isAuthenticated, isLoading: authLoading, teamName, authenticate } = useAuth()
 
   // Evitar hidration mismatch
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function Home() {
         </div>
         <AuthDialog 
           isOpen={!isAuthenticated}
-          onAuthenticated={authenticate}
+          onAuthenticated={(teamName: string) => authenticate(teamName)}
         />
       </>
     )
@@ -96,6 +96,7 @@ export default function Home() {
               completeCurrentStep={completeCurrentStep}
               onStepSelect={handleStepSelect}
               selectedStepIndex={selectedStepIndex}
+              teamName={teamName}
             />
           </CardContent>
           

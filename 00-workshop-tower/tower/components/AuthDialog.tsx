@@ -7,12 +7,13 @@ import { Button } from '@/components/ui/button'
 
 interface AuthDialogProps {
   isOpen: boolean
-  onAuthenticated: () => void
+  onAuthenticated: (teamName: string) => void
 }
 
 const SECRET_PASSWORD = 'IAMASTERLAB'
 
 export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps) {
+  const [teamName, setTeamName] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -22,13 +23,20 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
     setIsLoading(true)
     setError('')
 
+    // Validar se o nome da equipe foi preenchido
+    if (!teamName.trim()) {
+      setError('Por favor, digite o nome da sua equipe.')
+      setIsLoading(false)
+      return
+    }
+
     // Simular um pequeno delay para UX
     await new Promise(resolve => setTimeout(resolve, 500))
 
     if (password.trim().toUpperCase() === SECRET_PASSWORD) {
       // Salvar no localStorage
       localStorage.setItem('iamasterlab-authenticated', 'true')
-      onAuthenticated()
+      onAuthenticated(teamName.trim())
     } else {
       setError('Senha incorreta. Tente novamente.')
       setPassword('')
@@ -51,11 +59,23 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
             🔐 Acesso Restrito
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
-            Digite a senha secreta do evento para continuar
+            Digite o nome da sua equipe e a senha secreta do evento
           </DialogDescription>
         </DialogHeader>
         
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Input
+              type="text"
+              placeholder="Nome da Equipe"
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+              className="text-center text-lg h-12"
+              disabled={isLoading}
+              autoFocus
+            />
+          </div>
+          
           <div className="space-y-2">
             <Input
               type="password"
@@ -65,7 +85,6 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
               onKeyPress={handleKeyPress}
               className="text-center text-lg h-12"
               disabled={isLoading}
-              autoFocus
             />
             {error && (
               <p className="text-red-500 text-sm text-center">{error}</p>
@@ -75,7 +94,7 @@ export default function AuthDialog({ isOpen, onAuthenticated }: AuthDialogProps)
           <Button 
             type="submit" 
             className="w-full h-12 text-lg"
-            disabled={isLoading || !password.trim()}
+            disabled={isLoading || !teamName.trim() || !password.trim()}
           >
             {isLoading ? '🔍 Verificando...' : '🚀 Entrar'}
           </Button>
