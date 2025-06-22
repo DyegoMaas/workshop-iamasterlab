@@ -5,6 +5,8 @@ import useProgressStore from '@/lib/store'
 import { getAllEtapas } from '@/lib/data'
 import TowerCanvas from '@/components/TowerCanvas'
 import DetailPane from '@/components/DetailPane'
+import AuthDialog from '@/components/AuthDialog'
+import { useAuth } from '@/lib/useAuth'
 import { Button } from '@/components/ui/button'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 
@@ -22,16 +24,33 @@ export default function Home() {
     getTotalSteps
   } = useProgressStore()
 
+  const { isAuthenticated, isLoading: authLoading, authenticate } = useAuth()
+
   // Evitar hidration mismatch
   useEffect(() => {
     setMounted(true)
   }, [])
 
-  if (!mounted) {
+  if (!mounted || authLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-white text-xl">Carregando torre...</div>
       </div>
+    )
+  }
+
+  // Mostrar dialog de autenticação se não estiver autenticado
+  if (!isAuthenticated) {
+    return (
+      <>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-white text-xl">Aguardando autenticação...</div>
+        </div>
+        <AuthDialog 
+          isOpen={!isAuthenticated}
+          onAuthenticated={authenticate}
+        />
+      </>
     )
   }
 
