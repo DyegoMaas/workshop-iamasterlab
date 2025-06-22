@@ -151,7 +151,31 @@
           "ordem": 2,
           "tipo": "pratica",
           "tempoEstimado": 30,
-          "perguntas": []
+          "checklist": [
+            {
+              "id": "architect-mode-configurado",
+              "titulo": "Architect mode configurado no Cursor",
+              "descricao": "Verificar se o modo Architect foi adicionado aos custom modes",
+              "ordem": 1,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "engineer-mode-configurado", 
+              "titulo": "Engineer mode configurado no Cursor",
+              "descricao": "Verificar se o modo Engineer foi adicionado aos custom modes",
+              "ordem": 2,
+              "tipo": "checkbox"
+            }
+          ],
+          "perguntas": [
+            {
+              "id": "estrutura-agentes",
+              "titulo": "O que você notou da estrutura desses agentes?",
+              "descricao": "O que você notou da estrutura desses agentes?",
+              "ordem": 1,
+              "tipo": "texto"
+            }
+          ]
         }
       ]
     },
