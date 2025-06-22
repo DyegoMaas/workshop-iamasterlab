@@ -134,8 +134,24 @@
               "descricao": "O agente fez exatamente o que você pediu? Foi proativo ou passivo quando enfrentou erros?",
               "ordem": 2,
               "tipo": "texto"
+            },
+            {
+              "id": "agente-padrao-usou-servidores-mcp",
+              "titulo": "O agente utilizou os servidores MCP disponíveis?",
+              "descricao": "",
+              "ordem": 3,
+              "tipo": "texto"
             }
           ]
+        },
+        {
+          "id": "configurar-modos-agentes-customizados",
+          "titulo": "Configurar Modos Agentes Customizados",
+          "descricao": "Configurar modos agentes customizados desenvolvimento",
+          "ordem": 2,
+          "tipo": "pratica",
+          "tempoEstimado": 30,
+          "perguntas": []
         }
       ]
     },
