@@ -8,6 +8,14 @@ export interface Pergunta {
   tipo: 'texto' | 'multipla-escolha' | 'verdadeiro-falso'
 }
 
+export interface ChecklistItem {
+  id: string
+  titulo: string
+  descricao: string
+  ordem: number
+  tipo: 'checkbox'
+}
+
 export interface Etapa {
   id: string
   titulo: string
@@ -16,6 +24,7 @@ export interface Etapa {
   tipo: 'teoria' | 'pratica' | 'projeto'
   tempoEstimado: number
   perguntas?: Pergunta[]
+  checklist?: ChecklistItem[]
 }
 
 export interface Desafio {

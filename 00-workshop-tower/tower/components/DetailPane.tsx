@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
-import { type Desafio, type Etapa } from '@/lib/data'
+import { type Desafio, type Etapa, type ChecklistItem } from '@/lib/data'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 
@@ -16,14 +16,19 @@ interface Respostas {
   [perguntaId: string]: string
 }
 
+interface ChecklistItems {
+  [itemId: string]: boolean
+}
+
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [respostas, setRespostas] = useState<Respostas>({})
   const [salvandoRespostas, setSalvandoRespostas] = useState(false)
   const [respostasSalvas, setRespostasSalvas] = useState(false)
+  const [checklistItems, setChecklistItems] = useState<ChecklistItems>({})
 
-  // Carregar respostas do localStorage quando a etapa mudar
+  // Carregar respostas e checklist do localStorage quando a etapa mudar
   useEffect(() => {
     if (currentEtapa?.etapa.perguntas) {
       const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
@@ -39,6 +44,21 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
         setRespostas({})
       }
     }
+
+    if (currentEtapa?.etapa.checklist) {
+      const chaveStorageChecklist = `checklist-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+      const checklistSalvo = localStorage.getItem(chaveStorageChecklist)
+      if (checklistSalvo) {
+        try {
+          setChecklistItems(JSON.parse(checklistSalvo))
+        } catch (error) {
+          console.error('Erro ao carregar checklist do localStorage:', error)
+          setChecklistItems({})
+        }
+      } else {
+        setChecklistItems({})
+      }
+    }
   }, [currentEtapa])
 
   // Salvar resposta no localStorage
@@ -50,6 +70,17 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
 
     const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
     localStorage.setItem(chaveStorage, JSON.stringify(novasRespostas))
+  }
+
+  // Toggle item do checklist
+  const toggleChecklistItem = (itemId: string) => {
+    if (!currentEtapa) return
+
+    const novosItems = { ...checklistItems, [itemId]: !checklistItems[itemId] }
+    setChecklistItems(novosItems)
+
+    const chaveStorageChecklist = `checklist-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+    localStorage.setItem(chaveStorageChecklist, JSON.stringify(novosItems))
   }
 
   // Salvar respostas manualmente (para o botão)
@@ -215,6 +246,48 @@ Complete esta etapa para avançar na torre de desafios!
           )}
         </div>
       </CardContent>
+
+      {/* Checklist */}
+      {currentEtapa.etapa.checklist && currentEtapa.etapa.checklist.length > 0 && (
+        <>
+          <hr className="border-border my-6" />
+          <CardContent>
+            <CardTitle className="text-xl mb-4">✅ Checklist</CardTitle>
+            <div className="space-y-4">
+              {currentEtapa.etapa.checklist
+                .sort((a, b) => a.ordem - b.ordem)
+                .map((item) => (
+                  <div key={item.id} className="flex items-start space-x-3">
+                    <input
+                      type="checkbox"
+                      id={`checklist-${item.id}`}
+                      checked={checklistItems[item.id] || false}
+                      onChange={() => toggleChecklistItem(item.id)}
+                      className="mt-1 h-4 w-4 text-primary focus:ring-primary border-border rounded"
+                    />
+                    <div className="flex-1">
+                      <label 
+                        htmlFor={`checklist-${item.id}`}
+                        className={`block text-sm font-medium cursor-pointer ${
+                          checklistItems[item.id] ? 'line-through text-muted-foreground' : ''
+                        }`}
+                      >
+                        {item.titulo}
+                      </label>
+                      {item.descricao && (
+                        <p className={`text-sm mt-1 ${
+                          checklistItems[item.id] ? 'line-through text-muted-foreground' : 'text-muted-foreground'
+                        }`}>
+                          {item.descricao}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </CardContent>
+        </>
+      )}
 
       {/* Questionário */}
       {currentEtapa.etapa.perguntas && currentEtapa.etapa.perguntas.length > 0 && (

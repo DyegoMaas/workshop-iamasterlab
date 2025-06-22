@@ -20,7 +20,58 @@
           "descricao": "Instruções para o setup inicial do Cursor",
           "ordem": 2,
           "tipo": "pratica",
-          "tempoEstimado": 15
+          "tempoEstimado": 15,
+          "checklist": [
+            {
+              "id": "cursor-instalado",
+              "titulo": "Cursor instalado",
+              "descricao": "Cursor instalado",
+              "ordem": 1,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "configuracoes-privacy",
+              "titulo": "Configurações de Privacy",
+              "descricao": "Privacy Mode with Storage configurado",
+              "ordem": 2,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "configuracoes-chat",
+              "titulo": "Configurações do Chat",
+              "descricao": "Completion Sound e Custom Modes habilitados",
+              "ordem": 3,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "notepads-habilitado",
+              "titulo": "Notepads habilitado",
+              "descricao": "Beta Notepads habilitado e visível na lateral",
+              "ordem": 4,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "servidores-mcp",
+              "titulo": "Servidores MCP configurados",
+              "descricao": "smithery-ai/server-sequential-thinking, upstash/context7-mcp, @microsoft/playwright-mcp",
+              "ordem": 5,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "perplexity-configurado",
+              "titulo": "Perplexity MCP configurado",
+              "descricao": "Servidor Perplexity MCP configurado com API Key",
+              "ordem": 6,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "extensao-rest-client",
+              "titulo": "Extensão REST Client",
+              "descricao": "Extensão REST Client instalada",
+              "ordem": 7,
+              "tipo": "checkbox"
+            }
+          ]
         },
         {
           "id": "repositorio-workshop",
