@@ -11,7 +11,7 @@
           "titulo": "Boas Vindas",
           "descricao": "Boas vindas ao workshop",
           "ordem": 1,
-          "tipo": "teoria",
+          "tipo": "pratica",
           "tempoEstimado": 15
         },
         {

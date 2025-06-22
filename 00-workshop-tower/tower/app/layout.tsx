@@ -33,7 +33,7 @@ export default function RootLayout({
               IA Master Lab Tower
             </h1>
             <p className="text-slate-300">
-              Conquiste cada desafio e domine a inteligência artificial
+              Conquiste cada desafio e abrace o futuro!
             </p>
           </header>
           <main>{children}</main>

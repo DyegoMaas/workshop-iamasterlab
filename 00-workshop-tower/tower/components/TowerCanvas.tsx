@@ -126,6 +126,22 @@ export default function TowerCanvas({
     }
   }
 
+  // Função para determinar o estilo do conector baseado se as etapas são do mesmo desafio
+  const getConnectorStyle = (currentIndex: number) => {
+    if (currentIndex >= etapas.length - 1) return ''
+    
+    const currentDesafioId = etapas[currentIndex].desafio.id
+    const nextDesafioId = etapas[currentIndex + 1].desafio.id
+    
+    // Se são do mesmo desafio, usar conector mais forte
+    if (currentDesafioId === nextDesafioId) {
+      return 'w-3 bg-gradient-to-t from-blue-400 to-blue-600 shadow-lg shadow-blue-500/50 opacity-90'
+    }
+    
+    // Se são de desafios diferentes, usar conector padrão (mais sutil)
+    return 'w-1 bg-gradient-to-t from-gray-400 to-gray-600 opacity-60'
+  }
+
   // Posicionamento vertical tipo torre - de baixo para cima
   const getGridPosition = (index: number) => {
     const levelHeight = 120 // espaçamento entre níveis da torre (aumentado para evitar sobreposição)
@@ -324,7 +340,7 @@ export default function TowerCanvas({
               {/* Conectores entre níveis */}
               {index < etapas.length - 1 && (
                 <div
-                  className="absolute w-1 bg-gradient-to-t from-gray-400 to-gray-600 opacity-60 z-0"
+                  className={`absolute ${getConnectorStyle(index)} z-0`}
                   style={{
                     left: `${position.x}px`,
                     bottom: `${position.y + 96}px`, // Conecta ao bloco de cima
