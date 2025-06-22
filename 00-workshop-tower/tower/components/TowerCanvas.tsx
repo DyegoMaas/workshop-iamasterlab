@@ -361,9 +361,9 @@ export default function TowerCanvas({
         {currentStepIndex < etapas.length && (
           <button
             onClick={completeCurrentStep}
-            className="absolute bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg 
+            className="absolute bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg 
               transition-colors duration-200 shadow-lg hover:shadow-green-500/30
-              disabled:bg-gray-600 disabled:cursor-not-allowed font-semibold z-20"
+              disabled:bg-gray-600 disabled:cursor-not-allowed font-semibold z-20 whitespace-nowrap"
             style={{
               left: `${getGridPosition(currentStepIndex).x + 560}px`, // Posicionado à direita do avatar
               bottom: `${getGridPosition(currentStepIndex).y + 20}px`,
@@ -371,7 +371,7 @@ export default function TowerCanvas({
             }}
             title="Concluir Etapa"
           >
-            ✓ Continuar
+            ✓ Concluir
           </button>
         )}
       </div>
