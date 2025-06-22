@@ -111,7 +111,16 @@
           "descricao": "Criar o prompt para criar uma aplicação financeira",
           "ordem": 1,
           "tipo": "projeto",
-          "tempoEstimado": 30
+          "tempoEstimado": 30,
+          "perguntas": [
+            {
+              "id": "prompt-gerado",
+              "titulo": "Prompt gerado",
+              "descricao": "Salve o prompt gerado",
+              "ordem": 1,
+              "tipo": "texto"
+            }
+          ]
         },
         {
           "id": "criar-app-com-agente-padrao",
@@ -173,6 +182,37 @@
               "titulo": "O que você notou da estrutura desses agentes?",
               "descricao": "O que você notou da estrutura desses agentes?",
               "ordem": 1,
+              "tipo": "texto"
+            }
+          ]
+        },
+        {
+          "id": "criar-app-com-agente-engineer",
+          "titulo": "Recriar o App Financeiro usando o Engineer",
+          "descricao": "Criar o app financeiro usando o agente Engineer",
+          "ordem": 2,
+          "tipo": "pratica",
+          "tempoEstimado": 30,
+          "perguntas": [
+            {
+              "id": "erros-do-agente",
+              "titulo": "O agente cometeu erros ao longo do caminho?",
+              "descricao": "Foram mais erros que antes? Menos erros?",
+              "ordem": 1,
+              "tipo": "texto"
+            },
+            {
+              "id": "confiabilidade-do-agente",
+              "titulo": "O agente fez exatamente o que você pediu?",
+              "descricao": "Foi proativo ou passivo quando enfrentou erros?",
+              "ordem": 2,
+              "tipo": "texto"
+            },
+            {
+              "id": "experiencia-com-o-agente-customizado",
+              "titulo": "Como foi a experiência de usar o agente customizado?",
+              "descricao": "Como foi diferente de usar o agente padrão?",
+              "ordem": 3,
               "tipo": "texto"
             }
           ]
