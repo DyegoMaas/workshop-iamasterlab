@@ -1,5 +1,13 @@
 import desafiosData from '@/data/desafios.json'
 
+export interface Pergunta {
+  id: string
+  titulo: string
+  descricao: string
+  ordem: number
+  tipo: 'texto' | 'multipla-escolha' | 'verdadeiro-falso'
+}
+
 export interface Etapa {
   id: string
   titulo: string
@@ -7,6 +15,7 @@ export interface Etapa {
   ordem: number
   tipo: 'teoria' | 'pratica' | 'projeto'
   tempoEstimado: number
+  perguntas?: Pergunta[]
 }
 
 export interface Desafio {

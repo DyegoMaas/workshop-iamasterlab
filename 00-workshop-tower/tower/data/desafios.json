@@ -52,7 +52,23 @@
           "descricao": "Criar o app financeiro usando o agente padrão",
           "ordem": 2,
           "tipo": "pratica",
-          "tempoEstimado": 30
+          "tempoEstimado": 30,
+          "perguntas": [
+            {
+              "id": "erros-do-agente",
+              "titulo": "O agente cometeu erros ao longo do caminho?",
+              "descricao": "O agente cometeu erros ao longo do caminho? Se sim, documente-os.",
+              "ordem": 1,
+              "tipo": "texto"
+            },
+            {
+              "id": "confiabilidade-do-agente",
+              "titulo": "O agente fez exatamente o que você pediu? Foi proativo ou passivo quando enfrentou erros?",
+              "descricao": "O agente fez exatamente o que você pediu? Foi proativo ou passivo quando enfrentou erros?",
+              "ordem": 2,
+              "tipo": "texto"
+            }
+          ]
         }
       ]
     },

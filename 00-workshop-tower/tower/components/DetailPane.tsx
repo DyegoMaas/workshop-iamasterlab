@@ -11,9 +11,43 @@ interface DetailPaneProps {
   currentEtapa: { desafio: Desafio; etapa: Etapa } | null
 }
 
+interface Respostas {
+  [perguntaId: string]: string
+}
+
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
+  const [respostas, setRespostas] = useState<Respostas>({})
+
+  // Carregar respostas do localStorage quando a etapa mudar
+  useEffect(() => {
+    if (currentEtapa?.etapa.perguntas) {
+      const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+      const respostasSalvas = localStorage.getItem(chaveStorage)
+      if (respostasSalvas) {
+        try {
+          setRespostas(JSON.parse(respostasSalvas))
+        } catch (error) {
+          console.error('Erro ao carregar respostas do localStorage:', error)
+          setRespostas({})
+        }
+      } else {
+        setRespostas({})
+      }
+    }
+  }, [currentEtapa])
+
+  // Salvar resposta no localStorage
+  const salvarResposta = (perguntaId: string, resposta: string) => {
+    if (!currentEtapa) return
+
+    const novasRespostas = { ...respostas, [perguntaId]: resposta }
+    setRespostas(novasRespostas)
+
+    const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+    localStorage.setItem(chaveStorage, JSON.stringify(novasRespostas))
+  }
 
   useEffect(() => {
     if (!currentEtapa) {
@@ -156,6 +190,38 @@ Complete esta etapa para avançar na torre de desafios!
           )}
         </div>
       </CardContent>
+
+      {/* Questionário */}
+      {currentEtapa.etapa.perguntas && currentEtapa.etapa.perguntas.length > 0 && (
+        <>
+          <hr className="border-border my-6" />
+          <CardContent>
+            <CardTitle className="text-xl mb-4">📋 Documente sua Jornada</CardTitle>
+            <div className="space-y-6">
+              {currentEtapa.etapa.perguntas
+                .sort((a, b) => a.ordem - b.ordem)
+                .map((pergunta) => (
+                  <div key={pergunta.id} className="space-y-2">
+                    <label className="block text-sm font-medium">
+                      {pergunta.titulo}
+                    </label>
+                    {pergunta.descricao && (
+                      <p className="text-sm text-muted-foreground mb-2">
+                        {pergunta.descricao}
+                      </p>
+                    )}
+                    <textarea
+                      className="w-full min-h-[100px] p-3 border border-border rounded-md bg-background text-foreground resize-y"
+                      placeholder="Digite sua resposta aqui..."
+                      value={respostas[pergunta.id] || ''}
+                      onChange={(e) => salvarResposta(pergunta.id, e.target.value)}
+                    />
+                  </div>
+                ))}
+            </div>
+          </CardContent>
+        </>
+      )}
     </Card>
   )
 } 
