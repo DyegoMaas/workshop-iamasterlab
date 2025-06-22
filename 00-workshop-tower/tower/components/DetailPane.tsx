@@ -13,82 +13,45 @@ interface DetailPaneProps {
   currentEtapa: { desafio: Desafio; etapa: Etapa } | null
 }
 
-interface Respostas {
-  [perguntaId: string]: string
-}
-
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
-  const [respostas, setRespostas] = useState<Respostas>({})
   const [salvandoRespostas, setSalvandoRespostas] = useState(false)
   const [respostasSalvas, setRespostasSalvas] = useState(false)
   
-  // Usar o store global para checklist
-  const { checklistProgress, toggleChecklistItem: toggleChecklistItemStore } = useProgressStore()
+  // Usar o store global para checklist e respostas
+  const { 
+    checklistProgress, 
+    toggleChecklistItem: toggleChecklistItemStore,
+    saveQuestionResponse,
+    getQuestionResponse,
+    getQuestionResponsesForStep
+  } = useProgressStore()
 
-  // Carregar respostas do localStorage quando a etapa mudar
-  useEffect(() => {
-    if (currentEtapa?.etapa.perguntas) {
-      const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-      const respostasSalvas = localStorage.getItem(chaveStorage)
-      if (respostasSalvas) {
-        try {
-          setRespostas(JSON.parse(respostasSalvas))
-        } catch (error) {
-          console.error('Erro ao carregar respostas do localStorage:', error)
-          setRespostas({})
-        }
-      } else {
-        setRespostas({})
-      }
-    }
-  }, [currentEtapa])
-
-  // Salvar resposta no localStorage
-  const salvarResposta = (perguntaId: string, resposta: string) => {
-    if (!currentEtapa) return
-
-    const novasRespostas = { ...respostas, [perguntaId]: resposta }
-    setRespostas(novasRespostas)
-
-    const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-    localStorage.setItem(chaveStorage, JSON.stringify(novasRespostas))
+  // Funções auxiliares para usar o store global
+  const getCurrentStepId = () => {
+    if (!currentEtapa) return ''
+    return `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
   }
 
-  // Toggle item do checklist usando store global
   const handleToggleChecklistItem = (itemId: string) => {
-    if (!currentEtapa) return
-    const stepId = `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-    toggleChecklistItemStore(stepId, itemId)
+    const stepId = getCurrentStepId()
+    if (stepId) toggleChecklistItemStore(stepId, itemId)
   }
 
-  // Salvar respostas manualmente (para o botão)
-  const salvarRespostasManual = () => {
-    if (!currentEtapa) return
-
-    setSalvandoRespostas(true)
-    
-    // Simular um pequeno delay para feedback visual
-    setTimeout(() => {
-      const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-      localStorage.setItem(chaveStorage, JSON.stringify(respostas))
-      
-      setSalvandoRespostas(false)
-      setRespostasSalvas(true)
-      
-      // Remover feedback após 2 segundos
-      setTimeout(() => {
-        setRespostasSalvas(false)
-      }, 2000)
-    }, 300)
-  }
-
-  // Função para verificar se um item do checklist está marcado
   const isChecklistItemChecked = (itemId: string) => {
-    if (!currentEtapa) return false
-    const stepId = `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+    const stepId = getCurrentStepId()
     return checklistProgress[stepId]?.has(itemId) || false
+  }
+
+  const handleSaveQuestionResponse = (questionId: string, response: string) => {
+    const stepId = getCurrentStepId()
+    if (stepId) saveQuestionResponse(stepId, questionId, response)
+  }
+
+  const getQuestionResponseValue = (questionId: string) => {
+    const stepId = getCurrentStepId()
+    return stepId ? getQuestionResponse(stepId, questionId) : ''
   }
 
   useEffect(() => {
@@ -173,8 +136,6 @@ Complete esta etapa para avançar na torre de desafios!
 
 *Conteúdo gerado automaticamente. Para personalizar, crie o arquivo markdown correspondente.*`
   }
-
-
 
   if (!currentEtapa) {
     return (
@@ -305,8 +266,8 @@ Complete esta etapa para avançar na torre de desafios!
                     <textarea
                       className="w-full min-h-[100px] p-3 border border-border rounded-md bg-background text-foreground resize-y"
                       placeholder="Digite sua resposta aqui..."
-                      value={respostas[pergunta.id] || ''}
-                      onChange={(e) => salvarResposta(pergunta.id, e.target.value)}
+                      value={getQuestionResponseValue(pergunta.id) || ''}
+                      onChange={(e) => handleSaveQuestionResponse(pergunta.id, e.target.value)}
                     />
                   </div>
                 ))}
@@ -315,7 +276,16 @@ Complete esta etapa para avançar na torre de desafios!
             {/* Botão de Salvar */}
             <div className="flex justify-end mt-6">
               <Button
-                onClick={salvarRespostasManual}
+                onClick={() => {
+                  setSalvandoRespostas(true)
+                  setTimeout(() => {
+                    setSalvandoRespostas(false)
+                    setRespostasSalvas(true)
+                    setTimeout(() => {
+                      setRespostasSalvas(false)
+                    }, 2000)
+                  }, 300)
+                }}
                 disabled={salvandoRespostas}
                 className="min-w-[120px]"
               >

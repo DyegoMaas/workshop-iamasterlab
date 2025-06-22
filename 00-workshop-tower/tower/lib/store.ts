@@ -14,12 +14,16 @@ export interface ProgressState {
   // Progresso dos checklists (stepId -> Set de checklistItemIds completados)
   checklistProgress: Record<string, Set<string>>
   
+  // Respostas das perguntas (stepId -> perguntaId -> resposta)
+  questionResponses: Record<string, Record<string, string>>
+  
   // Ações
   nextStep: () => void
   completeCurrentStep: () => void
   reset: () => void
   goToStep: (index: number) => void
   toggleChecklistItem: (stepId: string, itemId: string) => void
+  saveQuestionResponse: (stepId: string, questionId: string, response: string) => void
   
   // Getters
   getCurrentStep: () => { desafioId: string; etapaId: string } | null
@@ -27,6 +31,8 @@ export interface ProgressState {
   getTotalSteps: () => number
   getCompletionPercentage: () => number
   getChecklistProgressForStep: (stepId: string) => { completed: number; total: number } | null
+  getQuestionResponse: (stepId: string, questionId: string) => string
+  getQuestionResponsesForStep: (stepId: string) => Record<string, string>
 }
 
 const useProgressStore = create<ProgressState>()(
@@ -35,6 +41,7 @@ const useProgressStore = create<ProgressState>()(
       currentStepIndex: 0,
       completedSteps: new Set<string>(),
       checklistProgress: {},
+      questionResponses: {},
       
       nextStep: () => {
         const allEtapas = getAllEtapas()
@@ -66,7 +73,8 @@ const useProgressStore = create<ProgressState>()(
         set({
           currentStepIndex: 0,
           completedSteps: new Set<string>(),
-          checklistProgress: {}
+          checklistProgress: {},
+          questionResponses: {}
         })
       },
       
@@ -133,6 +141,23 @@ const useProgressStore = create<ProgressState>()(
           newChecklistProgress[stepId] = newCompleted
           set({ checklistProgress: newChecklistProgress })
         }
+      },
+      
+      saveQuestionResponse: (stepId: string, questionId: string, response: string) => {
+        const newQuestionResponses = { ...get().questionResponses }
+        if (!newQuestionResponses[stepId]) {
+          newQuestionResponses[stepId] = {}
+        }
+        newQuestionResponses[stepId][questionId] = response
+        set({ questionResponses: newQuestionResponses })
+      },
+      
+      getQuestionResponse: (stepId: string, questionId: string) => {
+        return get().questionResponses[stepId]?.[questionId] || ''
+      },
+      
+      getQuestionResponsesForStep: (stepId: string) => {
+        return get().questionResponses[stepId] || {}
       }
     }),
     {
@@ -141,7 +166,8 @@ const useProgressStore = create<ProgressState>()(
       partialize: (state) => ({
         ...state,
         completedSteps: Array.from(state.completedSteps),
-        checklistProgress: Object.fromEntries(Object.entries(state.checklistProgress).map(([k, v]) => [k, Array.from(v)]))
+        checklistProgress: Object.fromEntries(Object.entries(state.checklistProgress).map(([k, v]) => [k, Array.from(v)])),
+        questionResponses: Object.fromEntries(Object.entries(state.questionResponses).map(([k, v]) => [k, Object.fromEntries(Object.entries(v))]))
       }),
       onRehydrateStorage: () => (state) => {
         if (state && Array.isArray((state as unknown as { completedSteps: string[] }).completedSteps)) {
@@ -155,6 +181,15 @@ const useProgressStore = create<ProgressState>()(
             }
           })
           state.checklistProgress = checklistProgress
+        }
+        if (state && state.questionResponses && typeof state.questionResponses === 'object') {
+          const questionResponses: Record<string, Record<string, string>> = {}
+          Object.entries(state.questionResponses).forEach(([key, value]) => {
+            if (typeof value === 'object' && !Array.isArray(value)) {
+              questionResponses[key] = Object.fromEntries(Object.entries(value))
+            }
+          })
+          state.questionResponses = questionResponses
         }
       }
     }
