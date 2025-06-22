@@ -39,27 +39,31 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   // Estado local para as respostas (para evitar re-render a cada tecla)
   const [localResponses, setLocalResponses] = useState<Record<string, string>>({})
   
-  // Seletores específicos do store para evitar re-renders desnecessários
-  const checklistProgress = useProgressStore(state => state.checklistProgress)
-  const toggleChecklistItemStore = useProgressStore(state => state.toggleChecklistItem)
-  
-  // Não subscrever às funções de questionResponse para evitar re-renders
-  // Vamos acessá-las diretamente quando necessário
-
   // Calcular stepId de forma estável usando useMemo
   const stepId = useMemo(() => {
     if (!currentEtapa) return ''
     return `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
   }, [currentEtapa?.desafio.id, currentEtapa?.etapa.id])
 
-  // Funções auxiliares
+  // Seletor otimizado - só re-renderiza se os itens checados desta etapa específica mudarem
+  const currentStepCheckedItems = useProgressStore(
+    useCallback(
+      (state) => stepId ? state.checklistProgress[stepId] : undefined,
+      [stepId]
+    )
+  )
+  
+  // Função de toggle - não causa re-render pois não está sendo subscrita
+  const toggleChecklistItemStore = useProgressStore(state => state.toggleChecklistItem)
+
+  // Funções auxiliares otimizadas
   const handleToggleChecklistItem = useCallback((itemId: string) => {
     if (stepId) toggleChecklistItemStore(stepId, itemId)
   }, [stepId, toggleChecklistItemStore])
 
   const isChecklistItemChecked = useCallback((itemId: string) => {
-    return checklistProgress[stepId]?.has(itemId) || false
-  }, [stepId, checklistProgress])
+    return currentStepCheckedItems?.has(itemId) || false
+  }, [currentStepCheckedItems])
 
   // Inicializar respostas locais quando a etapa muda
   useEffect(() => {
