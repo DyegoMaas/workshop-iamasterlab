@@ -6,7 +6,6 @@ import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
 import { type Desafio, type Etapa } from '@/lib/data'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import useProgressStore from '@/lib/store'
 
 interface DetailPaneProps {
@@ -41,7 +40,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const stepId = useMemo(() => {
     if (!currentEtapa) return ''
     return `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-  }, [currentEtapa?.desafio.id, currentEtapa?.etapa.id])
+  }, [currentEtapa])
 
   // Seletor otimizado - só re-renderiza se os itens checados desta etapa específica mudarem
   const currentStepCheckedItems = useProgressStore(
@@ -87,7 +86,6 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   useEffect(() => {
     if (stepId && Object.keys(debouncedResponses).length > 0) {
       const store = useProgressStore.getState()
-      let hasChanges = false
       
       Object.entries(debouncedResponses).forEach(([questionId, response]) => {
         const lastSaved = lastSavedResponses.current[questionId]
@@ -95,7 +93,6 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
           const currentStored = store.getQuestionResponse(stepId, questionId)
           if (currentStored !== response) {
             store.saveQuestionResponse(stepId, questionId, response)
-            hasChanges = true
           }
           lastSavedResponses.current[questionId] = response
         }

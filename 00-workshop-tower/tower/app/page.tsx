@@ -38,7 +38,7 @@ export default function Home() {
     return currentStep ? allEtapas.find(
       item => item.desafio.id === currentStep.desafioId && item.etapa.id === currentStep.etapaId
     ) || null : null
-  }, [currentStepIndex, allEtapas])
+  }, [allEtapas])
 
   // Preparar dados de progresso do checklist para o TowerCanvas - memorizado
   const checklistProgressData = useMemo(() => {
