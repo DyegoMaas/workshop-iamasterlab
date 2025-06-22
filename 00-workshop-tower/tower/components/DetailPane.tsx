@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeSanitize from 'rehype-sanitize'
-import { type Desafio, type Etapa, type ChecklistItem } from '@/lib/data'
+import { type Desafio, type Etapa } from '@/lib/data'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import useProgressStore from '@/lib/store'
 
 interface DetailPaneProps {
   currentEtapa: { desafio: Desafio; etapa: Etapa } | null
@@ -16,21 +17,17 @@ interface Respostas {
   [perguntaId: string]: string
 }
 
-interface ChecklistItems {
-  [itemId: string]: boolean
-}
-
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [respostas, setRespostas] = useState<Respostas>({})
   const [salvandoRespostas, setSalvandoRespostas] = useState(false)
   const [respostasSalvas, setRespostasSalvas] = useState(false)
-  const [checklistItems, setChecklistItems] = useState<ChecklistItems>({})
-  const [salvandoChecklist, setSalvandoChecklist] = useState(false)
-  const [checklistSalvo, setChecklistSalvo] = useState(false)
+  
+  // Usar o store global para checklist
+  const { checklistProgress, toggleChecklistItem: toggleChecklistItemStore } = useProgressStore()
 
-  // Carregar respostas e checklist do localStorage quando a etapa mudar
+  // Carregar respostas do localStorage quando a etapa mudar
   useEffect(() => {
     if (currentEtapa?.etapa.perguntas) {
       const chaveStorage = `respostas-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
@@ -46,21 +43,6 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
         setRespostas({})
       }
     }
-
-    if (currentEtapa?.etapa.checklist) {
-      const chaveStorageChecklist = `checklist-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-      const checklistSalvo = localStorage.getItem(chaveStorageChecklist)
-      if (checklistSalvo) {
-        try {
-          setChecklistItems(JSON.parse(checklistSalvo))
-        } catch (error) {
-          console.error('Erro ao carregar checklist do localStorage:', error)
-          setChecklistItems({})
-        }
-      } else {
-        setChecklistItems({})
-      }
-    }
   }, [currentEtapa])
 
   // Salvar resposta no localStorage
@@ -74,15 +56,11 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     localStorage.setItem(chaveStorage, JSON.stringify(novasRespostas))
   }
 
-  // Toggle item do checklist
-  const toggleChecklistItem = (itemId: string) => {
+  // Toggle item do checklist usando store global
+  const handleToggleChecklistItem = (itemId: string) => {
     if (!currentEtapa) return
-
-    const novosItems = { ...checklistItems, [itemId]: !checklistItems[itemId] }
-    setChecklistItems(novosItems)
-
-    const chaveStorageChecklist = `checklist-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-    localStorage.setItem(chaveStorageChecklist, JSON.stringify(novosItems))
+    const stepId = `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+    toggleChecklistItemStore(stepId, itemId)
   }
 
   // Salvar respostas manualmente (para o botão)
@@ -106,25 +84,11 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     }, 300)
   }
 
-  // Salvar checklist manualmente (para o botão)
-  const salvarChecklistManual = () => {
-    if (!currentEtapa) return
-
-    setSalvandoChecklist(true)
-    
-    // Simular um pequeno delay para feedback visual
-    setTimeout(() => {
-      const chaveStorageChecklist = `checklist-${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
-      localStorage.setItem(chaveStorageChecklist, JSON.stringify(checklistItems))
-      
-      setSalvandoChecklist(false)
-      setChecklistSalvo(true)
-      
-      // Remover feedback após 2 segundos
-      setTimeout(() => {
-        setChecklistSalvo(false)
-      }, 2000)
-    }, 300)
+  // Função para verificar se um item do checklist está marcado
+  const isChecklistItemChecked = (itemId: string) => {
+    if (!currentEtapa) return false
+    const stepId = `${currentEtapa.desafio.id}-${currentEtapa.etapa.id}`
+    return checklistProgress[stepId]?.has(itemId) || false
   }
 
   useEffect(() => {
@@ -284,22 +248,22 @@ Complete esta etapa para avançar na torre de desafios!
                     <input
                       type="checkbox"
                       id={`checklist-${item.id}`}
-                      checked={checklistItems[item.id] || false}
-                      onChange={() => toggleChecklistItem(item.id)}
+                      checked={isChecklistItemChecked(item.id)}
+                      onChange={() => handleToggleChecklistItem(item.id)}
                       className="mt-1 h-4 w-4 text-primary focus:ring-primary border-border rounded"
                     />
                     <div className="flex-1">
                       <label 
                         htmlFor={`checklist-${item.id}`}
                         className={`block text-sm font-medium cursor-pointer ${
-                          checklistItems[item.id] ? 'line-through text-muted-foreground' : ''
+                          isChecklistItemChecked(item.id) ? 'line-through text-muted-foreground' : ''
                         }`}
                       >
                         {item.titulo}
                       </label>
                       {item.descricao && (
                         <p className={`text-sm mt-1 ${
-                          checklistItems[item.id] ? 'line-through text-muted-foreground' : 'text-muted-foreground'
+                          isChecklistItemChecked(item.id) ? 'line-through text-muted-foreground' : 'text-muted-foreground'
                         }`}>
                           {item.descricao}
                         </p>
@@ -309,27 +273,11 @@ Complete esta etapa para avançar na torre de desafios!
                 ))}
             </div>
             
-            {/* Botão de Salvar Checklist */}
+            {/* Progresso salvo automaticamente no store global */}
             <div className="flex justify-end mt-6">
-              <Button
-                onClick={salvarChecklistManual}
-                disabled={salvandoChecklist}
-                className="min-w-[120px]"
-              >
-                {salvandoChecklist ? (
-                  <>
-                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2"></div>
-                    Salvando...
-                  </>
-                ) : checklistSalvo ? (
-                  <>
-                    <span className="mr-2">✓</span>
-                    Salvo!
-                  </>
-                ) : (
-                  'Salvar'
-                )}
-              </Button>
+              <p className="text-sm text-muted-foreground">
+                ✓ Progresso salvo automaticamente
+              </p>
             </div>
           </CardContent>
         </>

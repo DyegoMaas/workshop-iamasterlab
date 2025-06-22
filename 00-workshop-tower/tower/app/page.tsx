@@ -21,7 +21,8 @@ export default function Home() {
     reset,
     getCurrentStep,
     getCompletionPercentage,
-    getTotalSteps
+    getTotalSteps,
+    getChecklistProgressForStep
   } = useProgressStore()
 
   const { isAuthenticated, isLoading: authLoading, teamName, authenticate } = useAuth()
@@ -74,6 +75,16 @@ export default function Home() {
     reset()
   }
 
+  // Preparar dados de progresso do checklist para o TowerCanvas
+  const checklistProgressData: Record<string, { completed: number; total: number }> = {}
+  allEtapas.forEach(({ desafio, etapa }) => {
+    const stepId = `${desafio.id}-${etapa.id}`
+    const progress = getChecklistProgressForStep(stepId)
+    if (progress) {
+      checklistProgressData[stepId] = progress
+    }
+  })
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Torre Canvas */}
@@ -97,6 +108,7 @@ export default function Home() {
               onStepSelect={handleStepSelect}
               selectedStepIndex={selectedStepIndex}
               teamName={teamName}
+              checklistProgress={checklistProgressData}
             />
           </CardContent>
           

@@ -11,17 +11,22 @@ export interface ProgressState {
   // Etapas completadas (por ID único: desafioId-etapaId)
   completedSteps: Set<string>
   
+  // Progresso dos checklists (stepId -> Set de checklistItemIds completados)
+  checklistProgress: Record<string, Set<string>>
+  
   // Ações
   nextStep: () => void
   completeCurrentStep: () => void
   reset: () => void
   goToStep: (index: number) => void
+  toggleChecklistItem: (stepId: string, itemId: string) => void
   
   // Getters
   getCurrentStep: () => { desafioId: string; etapaId: string } | null
   isStepCompleted: (desafioId: string, etapaId: string) => boolean
   getTotalSteps: () => number
   getCompletionPercentage: () => number
+  getChecklistProgressForStep: (stepId: string) => { completed: number; total: number } | null
 }
 
 const useProgressStore = create<ProgressState>()(
@@ -29,6 +34,7 @@ const useProgressStore = create<ProgressState>()(
     (set, get) => ({
       currentStepIndex: 0,
       completedSteps: new Set<string>(),
+      checklistProgress: {},
       
       nextStep: () => {
         const allEtapas = getAllEtapas()
@@ -59,7 +65,8 @@ const useProgressStore = create<ProgressState>()(
       reset: () => {
         set({
           currentStepIndex: 0,
-          completedSteps: new Set<string>()
+          completedSteps: new Set<string>(),
+          checklistProgress: {}
         })
       },
       
@@ -97,6 +104,35 @@ const useProgressStore = create<ProgressState>()(
         const total = getAllEtapas().length
         const completed = get().completedSteps.size
         return total > 0 ? Math.round((completed / total) * 100) : 0
+      },
+      
+      getChecklistProgressForStep: (stepId: string) => {
+        const step = getAllEtapas().find(e => `${e.desafio.id}-${e.etapa.id}` === stepId)
+        if (step && step.etapa.checklist) {
+          const completed = get().checklistProgress[stepId]?.size || 0
+          const total = step.etapa.checklist.length
+          return { completed, total }
+        }
+        return null
+      },
+      
+      toggleChecklistItem: (stepId: string, itemId: string) => {
+        const allEtapas = getAllEtapas()
+        const step = allEtapas.find(e => `${e.desafio.id}-${e.etapa.id}` === stepId)
+        if (step) {
+          const newChecklistProgress = { ...get().checklistProgress }
+          const currentCompleted = newChecklistProgress[stepId] || new Set<string>()
+          const newCompleted = new Set(currentCompleted)
+          
+          if (currentCompleted.has(itemId)) {
+            newCompleted.delete(itemId)
+          } else {
+            newCompleted.add(itemId)
+          }
+          
+          newChecklistProgress[stepId] = newCompleted
+          set({ checklistProgress: newChecklistProgress })
+        }
       }
     }),
     {
@@ -104,11 +140,21 @@ const useProgressStore = create<ProgressState>()(
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         ...state,
-        completedSteps: Array.from(state.completedSteps)
+        completedSteps: Array.from(state.completedSteps),
+        checklistProgress: Object.fromEntries(Object.entries(state.checklistProgress).map(([k, v]) => [k, Array.from(v)]))
       }),
       onRehydrateStorage: () => (state) => {
         if (state && Array.isArray((state as unknown as { completedSteps: string[] }).completedSteps)) {
           state.completedSteps = new Set((state as unknown as { completedSteps: string[] }).completedSteps)
+        }
+        if (state && state.checklistProgress && typeof state.checklistProgress === 'object') {
+          const checklistProgress: Record<string, Set<string>> = {}
+          Object.entries(state.checklistProgress).forEach(([key, value]) => {
+            if (Array.isArray(value)) {
+              checklistProgress[key] = new Set(value as string[])
+            }
+          })
+          state.checklistProgress = checklistProgress
         }
       }
     }

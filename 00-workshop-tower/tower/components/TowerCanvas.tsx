@@ -11,6 +11,7 @@ interface TowerCanvasProps {
   onStepSelect?: (index: number | null) => void
   selectedStepIndex?: number | null
   teamName?: string
+  checklistProgress?: Record<string, { completed: number; total: number }>
 }
 
 export default function TowerCanvas({ 
@@ -20,7 +21,8 @@ export default function TowerCanvas({
   completeCurrentStep,
   onStepSelect,
   selectedStepIndex,
-  teamName
+  teamName,
+  checklistProgress
 }: TowerCanvasProps) {
   const canvasRef = useRef<HTMLDivElement>(null)
   const [lightningFlash, setLightningFlash] = useState(false)
@@ -123,7 +125,30 @@ export default function TowerCanvas({
     }
   }
 
+  // Função para obter o progresso do checklist de uma etapa
+  const getChecklistProgress = (desafio: Desafio, etapa: Etapa) => {
+    const stepId = `${desafio.id}-${etapa.id}`
+    const progress = checklistProgress?.[stepId]
+    
+    if (!etapa.checklist || !progress) return null
+    
+    return {
+      percentage: progress.total > 0 ? (progress.completed / progress.total) * 100 : 0,
+      completed: progress.completed,
+      total: progress.total
+    }
+  }
 
+  // Função para obter a cor da barra de progresso baseada na porcentagem
+  const getProgressBarColor = (percentage: number) => {
+    if (percentage === 100) {
+      return 'bg-gradient-to-r from-green-400 to-green-500'
+    } else if (percentage >= 50) {
+      return 'bg-gradient-to-r from-blue-400 to-green-400'
+    } else {
+      return 'bg-gradient-to-r from-yellow-400 to-blue-400'
+    }
+  }
 
   // Função para determinar o estilo do conector baseado se as etapas são do mesmo desafio
   const getConnectorStyle = (currentIndex: number) => {
@@ -320,6 +345,7 @@ export default function TowerCanvas({
           const isSelected = selectedStepIndex === index
           const colorClass = getStepColor(status, isSelected)
           const isClickable = status === 'completed' || status === 'current'
+          const checklistProgress = getChecklistProgress(desafio, etapa)
           
           const handleStepClick = () => {
             if (status === 'completed' && onStepSelect) {
@@ -339,7 +365,7 @@ export default function TowerCanvas({
                   transition-all duration-300 hover:scale-105 hover:shadow-2xl
                   ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
                   ${isClickable ? 'cursor-pointer' : 'cursor-default'}
-                  backdrop-blur-sm relative z-10
+                  backdrop-blur-sm relative z-10 overflow-hidden
                 `}
                 style={{
                   left: `${position.x + 150}px`,
@@ -350,15 +376,35 @@ export default function TowerCanvas({
 
                 onClick={handleStepClick}
               >
-                <div className="text-left p-3 w-full">
+                {/* Barra de progresso do checklist */}
+                {checklistProgress && (
+                  <div
+                    className={`absolute inset-0 ${getProgressBarColor(checklistProgress.percentage)} 
+                      transition-all duration-500 ease-out opacity-30 rounded-lg`}
+                    style={{
+                      width: `${checklistProgress.percentage}%`,
+                      zIndex: -1
+                    }}
+                  />
+                )}
+                
+                <div className="text-left p-3 w-full relative z-10">
                   <div className="text-xs text-white/70 mb-1 font-medium">
                     {desafio.titulo}
                   </div>
                   <div className="text-sm text-white font-bold mb-1 leading-tight">
                     {etapa.titulo}
                   </div>
-                  <div className="text-xs text-white/80 leading-tight line-clamp-1">
-                    {etapa.descricao}
+                  <div className="flex items-center justify-between w-full">
+                    <div className="text-xs text-white/80 leading-tight line-clamp-1 flex-1">
+                      {etapa.descricao}
+                    </div>
+                    {/* Indicador de progresso do checklist */}
+                    {checklistProgress && (
+                      <div className="text-xs text-white/90 font-semibold ml-2 bg-black/20 px-2 py-1 rounded">
+                        {checklistProgress.completed}/{checklistProgress.total}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
