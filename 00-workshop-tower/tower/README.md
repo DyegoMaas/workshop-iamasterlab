@@ -185,3 +185,8 @@ Projeto desenvolvido para o workshop IA Master Lab.
 ---
 
 **Desenvolvido com ❤️ usando NextJS + TypeScript**
+
+
+
+// TODO 
+// - criar um webhook que dispara um agente para corrigir erros de lint toda vez que aparece um no na main

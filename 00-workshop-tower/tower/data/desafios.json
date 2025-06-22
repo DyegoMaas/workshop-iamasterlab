@@ -40,10 +40,18 @@
       "etapas": [
         {
           "id": "criacao-prompt",
-          "titulo": "Criação de Prompt",
-          "descricao": "Criar o prompt para a aplicação financeira",
+          "titulo": "Criação do Prompt",
+          "descricao": "Criar o prompt para criar uma aplicação financeira",
           "ordem": 1,
           "tipo": "projeto",
+          "tempoEstimado": 30
+        },
+        {
+          "id": "criar-app-com-agente-padrao",
+          "titulo": "Criar o App Financeiro usando o Agente Padrão do Cursor",
+          "descricao": "Criar o app financeiro usando o agente padrão",
+          "ordem": 2,
+          "tipo": "pratica",
           "tempoEstimado": 30
         }
       ]
