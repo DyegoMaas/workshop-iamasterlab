@@ -7,6 +7,7 @@ import rehypeSanitize from 'rehype-sanitize'
 import { type Desafio, type Etapa } from '@/lib/data'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import useProgressStore from '@/lib/store'
+import { useAuth } from '@/lib/useAuth'
 
 interface DetailPaneProps {
   currentEtapa: { desafio: Desafio; etapa: Etapa } | null
@@ -30,6 +31,7 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
+  const { isInstructor, teamName, isAuthenticated } = useAuth()
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [instructorContent, setInstructorContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
@@ -121,20 +123,24 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     const loadMarkdown = async () => {
       setLoading(true)
       try {
-        // Tentar carregar conteúdo do instrutor primeiro
-        const instructorResponse = await fetch(
-          `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}_instrutor.md`,
-          { signal: abortController.signal }
-        )
-        
-        // Verificar se a requisição foi cancelada
-        if (abortController.signal.aborted) {
-          return
-        }
-        
-        if (instructorResponse.ok) {
-          const instructorText = await instructorResponse.text()
-          setInstructorContent(instructorText)
+        // Tentar carregar conteúdo do instrutor primeiro - apenas se for instrutor
+        if (isInstructor()) {
+          const instructorResponse = await fetch(
+            `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}_instrutor.md`,
+            { signal: abortController.signal }
+          )
+          
+          // Verificar se a requisição foi cancelada
+          if (abortController.signal.aborted) {
+            return
+          }
+          
+          if (instructorResponse.ok) {
+            const instructorText = await instructorResponse.text()
+            setInstructorContent(instructorText)
+          } else {
+            setInstructorContent('')
+          }
         } else {
           setInstructorContent('')
         }
@@ -179,7 +185,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     return () => {
       abortController.abort()
     }
-  }, [currentEtapa])
+  }, [currentEtapa, teamName, isAuthenticated])
 
   const generateDefaultContent = (etapa: { desafio: Desafio; etapa: Etapa }) => {
     return `# ${etapa.etapa.titulo}
@@ -244,8 +250,8 @@ Complete esta etapa para avançar na torre de desafios!
             </div>
           ) : (
             <div className="text-foreground">
-              {/* Bloco do Instrutor - se existir */}
-              {instructorContent && (
+              {/* Bloco do Instrutor - se existir e usuário for instrutor */}
+              {instructorContent && isInstructor() && (
                 <div className="mb-8 p-6 border-2 border-amber-500/30 bg-amber-500/5 rounded-lg">
                   <div className="flex items-center mb-4">
                     <div className="text-2xl mr-3">👨‍🏫</div>

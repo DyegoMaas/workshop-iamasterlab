@@ -23,7 +23,7 @@ export default function Home() {
   const getTotalSteps = useProgressStore(state => state.getTotalSteps)
   const checklistProgress = useProgressStore(state => state.checklistProgress)
 
-  const { isAuthenticated, isLoading: authLoading, teamName, authenticate } = useAuth()
+  const { isAuthenticated, isLoading: authLoading, teamName, authenticate, logout } = useAuth()
 
   // Evitar hidration mismatch
   useEffect(() => {
@@ -101,8 +101,13 @@ export default function Home() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle className="text-2xl">Torre de Desafios</CardTitle>
-              <div className="text-sm text-muted-foreground">
-                {getCompletionPercentage()}% completo ({completedSteps.size}/{getTotalSteps()})
+              <div className="flex items-center gap-4">
+                <div className="text-sm text-muted-foreground">
+                  {getCompletionPercentage()}% completo ({completedSteps.size}/{getTotalSteps()})
+                </div>
+                <Button onClick={logout} variant="outline" size="sm">
+                  Logout ({teamName})
+                </Button>
               </div>
             </div>
           </CardHeader>
