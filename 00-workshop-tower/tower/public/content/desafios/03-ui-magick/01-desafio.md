@@ -1,10 +1,25 @@
-Agora é hora de colocar a mão na massa! Vamos criar uma aplicação web completa que funcione como um **wrapper** para o ImageMagick, permitindo que usuários manipulem imagens através de uma interface moderna e intuitiva.
+Agora é hora de colocar a mão na massa! Vamos trabalhar em dois desafios importantes para melhorar nossa aplicação de manipulação de imagens.
 
-## 🎯 Objetivo
+A aplicação está disponível no diretório `/03-magick-web-interface` deste repositório.
 
-Desenvolver uma aplicação web full-stack que permita aos usuários:
-- Fazer upload de imagens
-- Aplicar diversas transformações usando ImageMagick
-- Visualizar e baixar os resultados
-- Ter uma experiência de usuário moderna e responsiva
-Boa sorte com o desenvolvimento! 🎉 
+![Image Magick WebUI](images/image-magick-webui.png)
+
+## 🎯 Objetivos
+
+### Desafio 1: Documentação Inteligente
+
+Utilizar um agente para analisar e explicar o repositório, fornecendo insights sobre:
+- Estrutura do código
+- Funcionalidades implementadas
+- Padrões utilizados
+- Gerar um diagrama mermaid do projeto
+
+### Desafio 2: Refatoração de Componentes
+
+Refatorar os componentes de filtros para maximizar a reutilização de código:
+- Extrair um componente genérico para aplicação de filtros
+- Consolidar a lógica comum entre sharpen e blur
+- Manter a flexibilidade para futuros filtros
+- Melhorar a manutenibilidade do código
+
+Boa sorte com o desenvolvimento! 🎉

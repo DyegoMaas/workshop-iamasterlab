@@ -65,10 +65,17 @@
               "tipo": "checkbox"
             },
             {
+              "id": "extensao-mermaid-preview",
+              "titulo": "Extensão Markdown Preview Mermaid Support",
+              "descricao": "Extensão Markdown Preview Mermaid Support instalada",
+              "ordem": 7,
+              "tipo": "checkbox"
+            },
+            {
               "id": "extensao-rest-client",
               "titulo": "Extensão REST Client",
               "descricao": "Extensão REST Client instalada",
-              "ordem": 7,
+              "ordem": 8,
               "tipo": "checkbox"
             }
           ]
@@ -318,28 +325,21 @@
           "titulo": "Desafio: Criar Interface Web para ImageMagick",
           "descricao": "Criar uma aplicação para manipular imagens",
           "ordem": 2,
-          "tipo": "projeto",
+          "tipo": "atividade-guiada",
           "tempoEstimado": 90,
           "checklist": [
             {
-              "id": "frontend-react-criado",
-              "titulo": "Frontend React criado",
-              "descricao": "Interface para upload e visualização de imagens",
+              "id": "documentacao-inteligente",
+              "titulo": "Documentação Inteligente",
+              "descricao": "Utilizar agente para analisar e explicar o repositório com insights sobre estrutura, funcionalidades, padrões e diagrama mermaid",
               "ordem": 1,
               "tipo": "checkbox"
             },
             {
-              "id": "backend-nodejs-implementado",
-              "titulo": "Backend Node.js implementado",
-              "descricao": "API que processa imagens usando ImageMagick",
+              "id": "refatoracao-componentes",
+              "titulo": "Refatoração de Componentes",
+              "descricao": "Extrair componente genérico para filtros, consolidar lógica entre sharpen e blur, manter flexibilidade para futuros filtros",
               "ordem": 2,
-              "tipo": "checkbox"
-            },
-            {
-              "id": "operacoes-basicas-funcionando",
-              "titulo": "Operações básicas funcionando",
-              "descricao": "Resize e conversão de formato",
-              "ordem": 3,
               "tipo": "checkbox"
             }
           ],

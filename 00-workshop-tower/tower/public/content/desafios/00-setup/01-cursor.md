@@ -44,6 +44,7 @@ Esta instalação será manual, através das configurações do Cursor:
 ## Extensões
 
 Instale as seguintes extensões:
-1. REST Client: será usada para testes, dispensando Postman ou Insomnia
+1. Markdown Preview Mermaid Support: será utilizada para visualizar diagramas gerados
+2. REST Client: será usada para testes, dispensando Postman ou Insomnia
 
 💡Lembrete: a instalação de extensões no Cursor funciona exatamente como no VSCode.
