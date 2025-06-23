@@ -6,7 +6,9 @@ alwaysApply: false
 Para criar um novo desafio, um novo item deve ser adicionado em [desafios.json](mdc:data/desafios.json), seguindo a estrutura definida abaixo. Precisamos seguir algumas regras:
 1. Criar um desafio novo com uma etapa.
 2. Se não não for informado o tipo, assuma que o tipo é "pratica"
-3. Criar com array vazio as propriedades "perguntas" e "checklist" 
+3. Criar com array vazio as propriedades "perguntas" e "checklist"
+
+Após criar a estrutura lógica, será necessário criar um diretório em `/public/content/desafios/{id-desafio}` para o novo desafio, e o arquivo markdown da etapa dentro deste novo diretório, no formato `/public/content/desafios/{id-desafio}/{id-etapa}.md`.
 
 Estrutura de desafio:
 ```json
