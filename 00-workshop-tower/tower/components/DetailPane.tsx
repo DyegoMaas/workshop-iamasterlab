@@ -31,6 +31,7 @@ function useDebounce<T>(value: T, delay: number): T {
 
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [markdownContent, setMarkdownContent] = useState<string>('')
+  const [instructorContent, setInstructorContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   
   // Estado local para as respostas (para evitar re-render a cada tecla)
@@ -110,6 +111,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   useEffect(() => {
     if (!currentEtapa) {
       setMarkdownContent('')
+      setInstructorContent('')
       return
     }
 
@@ -119,6 +121,24 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     const loadMarkdown = async () => {
       setLoading(true)
       try {
+        // Tentar carregar conteúdo do instrutor primeiro
+        const instructorResponse = await fetch(
+          `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}_instrutor.md`,
+          { signal: abortController.signal }
+        )
+        
+        // Verificar se a requisição foi cancelada
+        if (abortController.signal.aborted) {
+          return
+        }
+        
+        if (instructorResponse.ok) {
+          const instructorText = await instructorResponse.text()
+          setInstructorContent(instructorText)
+        } else {
+          setInstructorContent('')
+        }
+
         // Tentar carregar markdown da etapa com signal para cancelamento
         const response = await fetch(
           `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}.md`,
@@ -144,6 +164,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
         }
         console.error('Erro ao carregar markdown:', error)
         setMarkdownContent(generateDefaultContent(currentEtapa))
+        setInstructorContent('')
       } finally {
         // Só atualizar loading se não foi cancelado
         if (!abortController.signal.aborted) {
@@ -223,6 +244,37 @@ Complete esta etapa para avançar na torre de desafios!
             </div>
           ) : (
             <div className="text-foreground">
+              {/* Bloco do Instrutor - se existir */}
+              {instructorContent && (
+                <div className="mb-8 p-6 border-2 border-amber-500/30 bg-amber-500/5 rounded-lg">
+                  <div className="flex items-center mb-4">
+                    <div className="text-2xl mr-3">👨‍🏫</div>
+                    <h3 className="text-lg font-semibold text-amber-400">Orientações do Instrutor</h3>
+                  </div>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeSanitize]}
+                    components={{
+                      h1: ({ children }) => <h1 className="text-xl font-bold mb-3">{children}</h1>,
+                      h2: ({ children }) => <h2 className="text-lg font-semibold mb-2 mt-4">{children}</h2>,
+                      h3: ({ children }) => <h3 className="text-base font-medium mb-2 mt-3">{children}</h3>,
+                      p: ({ children }) => <p className="mb-3 leading-relaxed">{children}</p>,
+                      ul: ({ children }) => <ul className="list-disc list-inside mb-3 space-y-1">{children}</ul>,
+                      ol: ({ children }) => <ol className="list-decimal list-inside mb-3 space-y-1">{children}</ol>,
+                      li: ({ children }) => <li>{children}</li>,
+                      code: ({ children }) => <code className="bg-amber-900/20 px-2 py-1 rounded text-amber-200 text-sm">{children}</code>,
+                      pre: ({ children }) => <pre className="bg-amber-900/20 p-4 rounded-lg overflow-x-auto mb-3">{children}</pre>,
+                      blockquote: ({ children }) => <blockquote className="border-l-4 border-amber-400 pl-4 italic text-amber-200 mb-3">{children}</blockquote>,
+                      a: ({ href, children }) => <a href={href} className="text-amber-300 underline decoration-2 underline-offset-2 hover:text-amber-200 hover:decoration-amber-200 transition-colors" target="_blank" rel="noopener noreferrer">{children}</a>,
+                      hr: () => <hr className="border-amber-500/30 my-4" />
+                    }}
+                  >
+                    {instructorContent}
+                  </ReactMarkdown>
+                </div>
+              )}
+
+              {/* Conteúdo principal */}
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeSanitize]}
