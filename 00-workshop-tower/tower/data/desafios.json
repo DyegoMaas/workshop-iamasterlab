@@ -257,6 +257,29 @@
           "tipo": "atividade-guiada",
           "tempoEstimado": 20,
           "instrutor": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        },
+        {
+          "id": "01-implementacao-pratica",
+          "titulo": "Desafio: Melhorias no Gerador de Templates",
+          "descricao": "Implementar novas funcionalidades",
+          "ordem": 2,
+          "tipo": "pratica",
+          "tempoEstimado": 60,
+          "checklist": [
+            {
+              "id": "criar-interface-templates",
+              "titulo": "Criar interface para novos templates",
+              "descricao": "Implemente uma UI que permita ao usuário criar e gerenciar templates personalizados.",
+              "ordem": 1
+            },
+            {
+              "id": "persistir-prompts-banco-de-dados",
+              "titulo": "Persistir prompts com Banco de Dados",
+              "descricao": "Migre os templates existentes para um banco de dados e implemente persistência de dados.",
+              "ordem": 2
+            }
+          ],
+          "perguntas": []
         }
       ]
     },

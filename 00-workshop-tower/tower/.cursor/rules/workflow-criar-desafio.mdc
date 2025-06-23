@@ -4,7 +4,7 @@ globs:
 alwaysApply: false
 ---
 Para criar um novo desafio, um novo item deve ser adicionado em [desafios.json](mdc:data/desafios.json), seguindo a estrutura definida abaixo. Precisamos seguir algumas regras:
-1. Criar um desafio
+1. Criar um desafio no json. Se não for informada a posição do mesmo, pergunte. 
 2. Criar o diretório `/public/content/desafios/{ordem-desafio}-{id-desafio}`, que alojará os arquivos descritivos das etapas (`ordem-desafio` formatado com dois dígitos)
 2. Adicionar uma etapa seguindo as regras definidas em [workflow-adicionar-etapa-a-desafio.mdc](mdc:.cursor/rules/workflow-adicionar-etapa-a-desafio.mdc)
 

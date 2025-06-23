@@ -6,10 +6,9 @@ alwaysApply: false
 Uma nova etapa deve ser sempre adicionada a um desafio pré-existente, definido em [desafios.json](mdc:data/desafios.json), seguindo a estrutura do exemplo mais abaixo. Precisamos seguir algumas regras:
 1. Se não não for informado o tipo, assuma que o tipo é "pratica".
 2. Para perguntas e checklists, se não tiver sido mencionadas inicialize os campos com array vazio.
+3. Após criar a estrutura lógica, crie um arquivo markdown da etapa dentro do diretório do desafio, em `/public/content/desafios/{ordem-desafio}-{id-desafio}/{ordem-etapa}-{id-etapa}.md` (`ordem-etapa` formatado com dois dígitos).
 
-Após criar a estrutura lógica, será necessário criar um arquivo markdown da etapa dentro do diretório do desafio, em `/public/content/desafios/{ordem-desafio}-{id-desafio}/{ordem-etapa}-{id-etapa}.md` (`ordem-etapa` formatado com dois dígitos).
-
-Estrutura de desafio, com etapas:
+Estrutura de desafio, com etapas, para referência:
 ```json
 {
     "id": "01-machine-learning",
