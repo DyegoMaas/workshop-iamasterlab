@@ -1,0 +1,63 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+Para criar um novo desafio, um novo item deve ser adicionado em [desafios.json](mdc:data/desafios.json), seguindo a estrutura definida abaixo. Precisamos seguir algumas regras:
+1. Criar um desafio novo com uma etapa.
+2. Se não não for informado o tipo, assuma que o tipo é "pratica"
+3. Criar com array vazio as propriedades "perguntas" e "checklist" 
+
+Estrutura de desafio:
+```json
+{
+    "id": "machine-learning",
+    "titulo": "Machine Learning",
+    "descricao": "Aprendizado de máquina na prática",
+    "ordem": 1,
+    "etapas": [
+        {
+            "id": "conceitos",
+            "titulo": "Conceitos de ML",
+            "descricao": "Fundamentos do aprendizado de máquina",
+            "ordem": 1,
+            "tipo": "teoria",
+            "tempoEstimado": 40
+        },
+        {
+            "id": "projeto",
+            "titulo": "Primeiro Projeto",
+            "descricao": "Construindo seu primeiro modelo",
+            "ordem": 3,
+            "tipo": "projeto",
+            "tempoEstimado": 90,
+            "checklist": [
+                {
+                    "id": "cursor-instalado",
+                    "titulo": "Cursor instalado",
+                    "descricao": "Cursor instalado",
+                    "ordem": 1,
+                    "tipo": "checkbox"
+                },
+                {
+                    "id": "configuracoes-privacy",
+                    "titulo": "Configurações de Privacy",
+                    "descricao": "Privacy Mode with Storage configurado",
+                    "ordem": 2,
+                    "tipo": "checkbox"
+                }
+            ],
+            "perguntas": [
+                {
+                    "id": "prompt-gerado",
+                    "titulo": "Prompt gerado",
+                    "descricao": "Salve o prompt gerado",
+                    "ordem": 1,
+                    "tipo": "texto"
+                }
+          ]
+        }
+    ]
+}
+
+```
