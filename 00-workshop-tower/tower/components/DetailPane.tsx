@@ -36,6 +36,9 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const [instructorContent, setInstructorContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   
+  // Memoizar o valor de isInstructor para evitar re-renders
+  const isInstructorMemo = useMemo(() => isInstructor(), [isInstructor, teamName, isAuthenticated])
+  
   // Estado local para as respostas (para evitar re-render a cada tecla)
   const [localResponses, setLocalResponses] = useState<Record<string, string>>({})
   
@@ -124,6 +127,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
       setLoading(true)
       try {
         // Tentar carregar conteúdo do instrutor primeiro - apenas se for instrutor
+        // Chamar isInstructor() aqui dentro do useEffect em vez de usar como dependência
         if (isInstructor()) {
           const instructorResponse = await fetch(
             `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}_instrutor.md`,
@@ -185,7 +189,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     return () => {
       abortController.abort()
     }
-  }, [currentEtapa, teamName, isAuthenticated, isInstructor])
+  }, [currentEtapa, teamName, isAuthenticated]) // Removido isInstructor das dependências
 
   const generateDefaultContent = (etapa: { desafio: Desafio; etapa: Etapa }) => {
     return `# ${etapa.etapa.titulo}
@@ -251,10 +255,9 @@ Complete esta etapa para avançar na torre de desafios!
           ) : (
             <div className="text-foreground">
               {/* Bloco do Instrutor - se existir e usuário for instrutor */}
-              {instructorContent && isInstructor() && (
+              {instructorContent && isInstructorMemo && (
                 <div className="mb-8 p-6 border-2 border-amber-500/30 bg-amber-500/5 rounded-lg">
                   <div className="flex items-center mb-4">
-                    <div className="text-2xl mr-3">👨‍🏫</div>
                     <h3 className="text-lg font-semibold text-amber-400">Orientações do Instrutor</h3>
                   </div>
                   <ReactMarkdown
