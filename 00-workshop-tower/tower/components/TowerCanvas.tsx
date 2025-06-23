@@ -443,7 +443,7 @@ export default function TowerCanvas({
                 <div
                   className={`absolute ${getConnectorStyle(index)} z-0`}
                   style={{
-                    left: `${position.x + 150}px`,
+                    left: `${position.x + (etapa.tipo === 'discussao' ? 30 : 150)}px`,
                     bottom: `${position.y + 80}px`, // Conecta ao bloco de cima (altura do bloco = 80px)
                     height: '20px', // conecta ao próximo bloco
                     transform: 'translateX(-50%)'
