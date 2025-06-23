@@ -37,14 +37,14 @@ export default function TowerCanvas({
     if (canvasRef.current && currentStepIndex < etapas.length) {
       const container = canvasRef.current.parentElement // o div com overflow-y-auto
       if (container) {
-        const levelHeight = 100 // ajustado para novos blocos
+        const levelHeight = 110 // ajustado para novos blocos
         const containerPadding = 40
         
         // Calcular posição da etapa atual (mesma lógica do getGridPosition)
         const currentStepPosition = currentStepIndex * levelHeight + containerPadding
         
         // Altura total da torre
-        const towerHeight = etapas.length * 100 + 80 // ajustado
+        const towerHeight = etapas.length * 110 + 80 // ajustado
         
         // Altura da viewport
         const viewportHeight = Math.min(towerHeight, 600)
@@ -172,7 +172,7 @@ export default function TowerCanvas({
 
   // Posicionamento vertical tipo torre - de baixo para cima
   const getGridPosition = (index: number) => {
-    const levelHeight = 100 // espaçamento reduzido entre níveis
+    const levelHeight = 110 // espaçamento ajustado para blocos maiores
     const containerPadding = 40
     
     // Torre cresce de baixo para cima: primeiro bloco (index=0) embaixo, último (index=8) em cima
@@ -183,7 +183,7 @@ export default function TowerCanvas({
   }
 
   // Calcular altura total da torre
-  const towerHeight = etapas.length * 100 + 80 // ajustado para novos blocos
+  const towerHeight = etapas.length * 110 + 80 // ajustado para novos blocos
 
   // Calcular altura do líquido baseado no progresso (etapas completadas)
   const completedCount = completedSteps.size
@@ -412,7 +412,7 @@ export default function TowerCanvas({
               ) : (
                 // Bloco retangular para outros tipos
                 <div
-                  className={`w-80 h-20 rounded-xl border-4 ${colorClass} 
+                  className={`w-80 h-24 rounded-xl border-4 ${colorClass} 
                     flex items-center justify-start 
                     transition-all duration-300 hover:scale-105 hover:shadow-2xl
                     ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
@@ -462,17 +462,29 @@ export default function TowerCanvas({
               )}
               
               {/* Conectores entre níveis */}
-              {index < etapas.length - 1 && (
-                <div
-                  className={`absolute ${getConnectorStyle(index)} z-0`}
-                  style={{
-                    left: `${position.x + (etapa.tipo === 'discussao' || etapa.tipo === 'atividade-guiada' ? 30 : 150)}px`,
-                    bottom: `${position.y + 80}px`, // Conecta ao bloco de cima (altura do bloco = 80px)
-                    height: '20px', // conecta ao próximo bloco
-                    transform: 'translateX(-50%)'
-                  }}
-                ></div>
-              )}
+              {index < etapas.length - 1 && (() => {
+                const currentIsCircle = etapa.tipo === 'discussao' || etapa.tipo === 'atividade-guiada'
+                const nextEtapa = etapas[index + 1].etapa
+                const nextIsCircle = nextEtapa.tipo === 'discussao' || nextEtapa.tipo === 'atividade-guiada'
+                
+                // Altura do elemento atual
+                const currentHeight = currentIsCircle ? 80 : 96
+                
+                // Calcular altura do conector baseado no gap entre elementos
+                const connectorHeight = 110 - currentHeight // gap restante após o elemento atual
+                
+                return (
+                  <div
+                    className={`absolute ${getConnectorStyle(index)} z-0`}
+                    style={{
+                      left: `${position.x + (currentIsCircle ? 30 : 150)}px`,
+                      bottom: `${position.y + currentHeight}px`,
+                      height: `${connectorHeight}px`,
+                      transform: 'translateX(-50%)'
+                    }}
+                  ></div>
+                )
+              })()}
             </div>
           )
         })}
