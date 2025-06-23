@@ -203,3 +203,35 @@ Fase 4 – Especificação Técnica
 
 6. **Respostas e decisões**
    *(Aguardando confirmação do usuário)*
+
+Fase 5 – Decisão de Transição
+=============================
+
+1. **Fase atual**
+   Fase 5 – Decisão de Transição
+
+2. **Achados / entregáveis**
+   - **Resumo da recomendação arquitetural**
+     • Adotar **Monólito Node + React Integrado** executando localmente, onde Express serve API e assets estáticos do React.  
+     • Backend oferece endpoints `POST /convert`, `POST /blur` e `GET /files/:id`, invocando ImageMagick via `execFile`.  
+     • Frontend Vite/React com shadcn/ui provê UI para upload, seleção de formato ou blur e download do resultado.  
+     • Segurança garantida via validação de inputs, diretório temporário e limites de recursos.
+   - **Roadmap de implementação**
+     1. Inicializar repositório Node + Vite, configurar scripts.  
+     2. Implementar backend Express com upload via multer.  
+     3. Criar serviço ImageProcessor e FileStore.  
+     4. Desenvolver frontend com componentes Upload, Form de conversão e blur, Preview e Download.  
+     5. Integração end-to-end e testes manuais.  
+     6. Implementar limpeza automática de arquivos temporários.  
+     7. Ajustes finais, logging e documentação.
+
+3. **Confidence:** 90 %
+
+4. **Perguntas em aberto**
+   *Nenhuma.*
+
+5. **Próximos passos**
+   • Criar arquivo `plan-ai.md` com o plano final e aguardar troca para Agent mode.
+
+6. **Respostas e decisões**
+   *(Não aplicável – pronto para transição)*
