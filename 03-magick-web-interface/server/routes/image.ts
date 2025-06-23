@@ -1,7 +1,10 @@
 import express, { Request, Response, NextFunction } from 'express';
 import multer from 'multer';
 import path from 'path';
-import { nanoid } from 'nanoid';
+// Simple ID generator to replace nanoid
+function generateId(): string {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
 import { convertImage, blurImage, validateImageFile } from '../services/imageProcessor';
 import { getFilePath, scheduleCleanup } from '../services/fileStore';
 
@@ -15,7 +18,7 @@ const upload = multer({
       cb(null, tmpDir);
     },
     filename: (req, file, cb) => {
-      const id = nanoid();
+      const id = generateId();
       const ext = path.extname(file.originalname);
       cb(null, `input-${id}${ext}`);
     }
@@ -48,7 +51,7 @@ router.post('/convert', upload.single('file'), async (req: Request, res: Respons
     }
 
     const outputPath = await convertImage(req.file.path, targetFormat.toLowerCase());
-    const fileId = nanoid();
+    const fileId = generateId();
     
     // Schedule cleanup for both input and output files
     scheduleCleanup(req.file.path, 30); // 30 minutes
@@ -89,7 +92,7 @@ router.post('/blur', upload.single('file'), async (req: Request, res: Response, 
     }
 
     const outputPath = await blurImage(req.file.path, radiusNum, sigmaNum);
-    const fileId = nanoid();
+    const fileId = generateId();
     
     // Schedule cleanup for both input and output files
     scheduleCleanup(req.file.path, 30); // 30 minutes
@@ -122,6 +125,10 @@ router.get('/files/:filename', (req: Request, res: Response) => {
       return;
     }
 
+    // Set proper headers for file download
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    
     res.download(filePath, filename, (err) => {
       if (err) {
         console.error('Download error:', err);

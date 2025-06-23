@@ -2,7 +2,10 @@ import { execFile } from 'child_process';
 import { promisify } from 'util';
 import path from 'path';
 import fs from 'fs';
-import { nanoid } from 'nanoid';
+// Simple ID generator to replace nanoid
+function generateId(): string {
+  return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
 
 const execFileAsync = promisify(execFile);
 
@@ -25,7 +28,7 @@ export async function convertImage(inputPath: string, targetFormat: string): Pro
     throw new Error(`Unsupported target format: ${targetFormat}`);
   }
 
-  const outputId = nanoid();
+  const outputId = generateId();
   const outputPath = path.join(
     path.dirname(inputPath),
     `output-${outputId}.${targetFormat}`
@@ -71,7 +74,7 @@ export async function blurImage(inputPath: string, radius: number, sigma: number
     throw new Error('Sigma must be between 1 and 10');
   }
 
-  const outputId = nanoid();
+  const outputId = generateId();
   const outputPath = path.join(
     path.dirname(inputPath),
     `blur-${outputId}.png`

@@ -112,10 +112,33 @@ function App() {
     }
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (result) {
-      window.open(result.downloadUrl, '_blank');
+      try {
+        const response = await fetch(result.downloadUrl);
+        if (!response.ok) {
+          throw new Error('Download failed');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = result.originalName.replace(/\.[^/.]+$/, '') + '_processed' + getFileExtension(result.downloadUrl);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error('Download error:', error);
+        setError('Download failed. Please try again.');
+      }
     }
+  };
+
+  const getFileExtension = (filename: string) => {
+    const match = filename.match(/\.[^/.]+$/);
+    return match ? match[0] : '.png';
   };
 
   return (
