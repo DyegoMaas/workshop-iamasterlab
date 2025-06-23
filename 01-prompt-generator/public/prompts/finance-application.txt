@@ -18,14 +18,14 @@ shadcn/ui instalado; wrapper src/ui/ShadThemeProvider.tsx (tema "light"); exempl
 Dashboard Financeiro (/)
 • Header fixo “💹 TechStocks Pro” + navegação fictícia.
 • Hero com CTA “Adicionar ação”.
-• Stock Grid SSR: NVDA, GOOG, AMZN, MSFT, META.
+• Stock Grid SSR (Short Sale Restriction): NVDA, GOOG, AMZN, MSFT, META.
 – Mostrar preço, variação diária (%), última atualização.
-– Preço atual vindo do endpoint Alpha Vantage:
+– Preço atual vindo do endpoint Alpha Vantage (implementar no servidor usando SSR (server-side rendering)):
 https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${SYMBOL}&apikey=${process.env.ALPHA_VANTAGE_KEY}.
 • Gráfico Histórico: componente StockChart.tsx (Recharts AreaChart) exibindo os preços de fechamento dos últimos 12 meses;
 – Buscar via TIME_SERIES_DAILY_ADJUSTED & outputsize=full;
 – Permitir filtrar período com DateRangePicker (ex.: YTD, 6 M, 1 M, intervalo personalizado).
-– Filtragem executada no cliente após o fetch SSR.
+– Filtragem executada no cliente após o fetch SSR (server-side rendering).
 – Quando process.env.FETCH_STOCKS_OFFLINE === "true" usar src/lib/mockSeries.ts.
 
 Boas Práticas
@@ -43,9 +43,9 @@ Dockerfile multi-stage (node:lts-alpine) gerando imagem slim.
 📁 ESTRUTURA ESPERADA
 ──────────────────────
 /
-├─ app/
-│ └─ page.tsx # dashboard SSR
 ├─ src/
+│ ├── app/
+│ │  └─ page.tsx # dashboard SSR (Short Sale Restriction)
 │ ├─ components/
 │ │ ├─ StockSparkline.tsx
 │ │ └─ StockChart.tsx
@@ -64,7 +64,6 @@ Dockerfile multi-stage (node:lts-alpine) gerando imagem slim.
 🌱 EXTRAS OPCIONAIS (se caber nos tokens)
 ──────────────────────
 • .env.example com ALPHA_VANTAGE_KEY, ALPHA_VANTAGE_URL, FETCH_STOCKS_OFFLINE.
-• GitHub Actions CI (lint → test → build).
 
 ──────────────────────
 🎨 [template-css]
