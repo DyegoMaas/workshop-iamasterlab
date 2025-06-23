@@ -1,0 +1,2 @@
+Pesquise o funcionamento da ferramenta imagemagick (https://imagemagick.org/script/command-line-tools.php).
+Então vamos planejar como construir um wrapper para a ferramenta usando React + Node.
