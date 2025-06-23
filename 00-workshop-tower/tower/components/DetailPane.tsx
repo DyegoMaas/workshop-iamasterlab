@@ -185,7 +185,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     return () => {
       abortController.abort()
     }
-  }, [currentEtapa, teamName, isAuthenticated])
+  }, [currentEtapa, teamName, isAuthenticated, isInstructor])
 
   const generateDefaultContent = (etapa: { desafio: Desafio; etapa: Etapa }) => {
     return `# ${etapa.etapa.titulo}
