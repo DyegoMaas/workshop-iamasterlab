@@ -1,0 +1,89 @@
+---
+description: Descreve regras do ESLint e como resolver problemas de linting
+globs: 
+alwaysApply: false
+---
+# Configuração ESLint para Memoização
+
+## 🔧 Regras ESLint Recomendadas
+
+Adicione ao seu `eslint.config.mjs` ou `.eslintrc`:
+
+```javascript
+{
+  "rules": {
+    // Detecta dependências faltantes ou desnecessárias em useEffect
+    "react-hooks/exhaustive-deps": "error",
+    
+    // Detecta uso incorreto de hooks
+    "react-hooks/rules-of-hooks": "error",
+    
+    // Avisos personalizados para padrões problemáticos
+    "no-unstable-nested-components": "error",
+    
+    // Detecta objetos inline que causam re-renders
+    "react/jsx-no-constructed-context-values": "error"
+  },
+  
+  // Plugin adicional para React performance
+  "plugins": ["react-hooks", "react"]
+}
+```
+
+## 🚨 Avisos Automáticos do Cursor
+
+O Cursor deve alertar quando detectar:
+
+### 1. **Função nas dependências do useEffect**
+```typescript
+// O Cursor deve destacar este padrão:
+useEffect(() => {
+  someFunction()
+}, [someFunction]) // ⚠️ ALERTA: Função instável detectada
+```
+
+### 2. **Objeto inline como dependência**
+```typescript
+// O Cursor deve destacar este padrão:
+useEffect(() => {
+  // ...
+}, [{ key: 'value' }]) // ⚠️ ALERTA: Objeto inline detectado
+```
+
+### 3. **Array inline como dependência**
+```typescript
+// O Cursor deve destacar este padrão:
+useEffect(() => {
+  // ...
+}, [item1, item2]) // ⚠️ VERIFICAR: Array de dependências complexo
+```
+
+## 📝 **Sugestões Automáticas**
+
+Quando o Cursor detectar esses padrões, deve sugerir:
+
+1. **Para funções**: "Mover função para dentro do useEffect ou usar useCallback"
+2. **Para objetos**: "Usar useMemo para estabilizar o objeto"
+3. **Para arrays**: "Verificar se todas as dependências são necessárias"
+
+## 🎯 **Configuração Adicional**
+
+```json
+{
+  "cursor.lint.autoFix": true,
+  "cursor.suggestions.memoization": {
+    "enabled": true,
+    "severity": "error",
+    "patterns": [
+      "useEffect with function dependencies",
+      "useEffect with object dependencies",
+      "useEffect with inline callbacks"
+    ]
+  }
+}
+```
+
+---
+
+**Esta regra funciona em conjunto com `memoizacao-react.mdc` para fornecer detecção automática e manual de problemas de memoização.**
+

@@ -1,0 +1,132 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Regra de Memoização React
+
+## 🚨 CRÍTICO: Prevenção de Re-renders Infinitos
+
+### Cenários que SEMPRE exigem atenção:
+
+#### 1. **useEffect com Funções como Dependências**
+```typescript
+// ❌ PROBLEMÁTICO - Função recriada a cada render
+const { isInstructor } = useAuth()
+useEffect(() => {
+  if (isInstructor()) { /* ... */ }
+}, [currentEtapa, isInstructor]) // isInstructor causa loop!
+
+// ✅ CORRETO - Chamar dentro do useEffect
+useEffect(() => {
+  if (isInstructor()) { /* ... */ }
+}, [currentEtapa]) // Remover função das dependências
+
+// ✅ ALTERNATIVA - Memoizar o valor
+const isInstructorMemo = useMemo(() => isInstructor(), [isInstructor, teamName, isAuthenticated])
+```
+
+#### 2. **Objetos/Arrays como Dependências**
+```typescript
+// ❌ PROBLEMÁTICO - Novo objeto a cada render
+const config = { apiUrl: '/api', retries: 3 }
+useEffect(() => {
+  fetchData(config)
+}, [config]) // config sempre novo!
+
+// ✅ CORRETO - useMemo para estabilizar
+const config = useMemo(() => ({ 
+  apiUrl: '/api', 
+  retries: 3 
+}), [])
+```
+
+#### 3. **Callbacks Inline em useEffect**
+```typescript
+// ❌ PROBLEMÁTICO - Callback recriado
+useEffect(() => {
+  const callback = () => { /* ... */ }
+  api.subscribe(callback)
+  return () => api.unsubscribe(callback)
+}, [dependency])
+
+// ✅ CORRETO - useCallback para estabilizar
+const callback = useCallback(() => { /* ... */ }, [])
+useEffect(() => {
+  api.subscribe(callback)
+  return () => api.unsubscribe(callback)
+}, [callback])
+```
+
+### 🔍 **Checklist de Verificação OBRIGATÓRIA**
+
+Antes de cada commit, verificar:
+
+- [ ] **useEffect**: Todas as dependências são primitivas ou memoizadas?
+- [ ] **Funções**: São estáveis (useCallback) ou chamadas dentro do useEffect?
+- [ ] **Objetos/Arrays**: São memoizados com useMemo ou useState?
+- [ ] **Custom Hooks**: Retornam valores estáveis?
+
+### 🛠 **Ferramentas de Debug**
+
+```typescript
+// Adicionar temporariamente para debug
+useEffect(() => {
+  console.log('🔥 useEffect executou:', {
+    currentEtapa: currentEtapa?.etapa.id,
+    teamName,
+    isAuthenticated,
+    timestamp: Date.now()
+  })
+}, [currentEtapa, teamName, isAuthenticated])
+```
+
+### ⚡ **Padrões Seguros**
+
+#### Hook personalizado estável:
+```typescript
+export function useStableValue<T>(value: T, deps: any[]): T {
+  return useMemo(() => value, deps)
+}
+
+// Uso:
+const stableConfig = useStableValue({ api: '/endpoint' }, [])
+```
+
+#### Seletor otimizado para Zustand:
+```typescript
+const currentData = useStore(
+  useCallback(
+    (state) => stepId ? state.data[stepId] : undefined,
+    [stepId]
+  )
+)
+```
+
+### 🚨 **Sinais de Alerta**
+
+1. **Componente pisca/flicker**
+2. **Requests HTTP repetidos**
+3. **Console.log executando infinitamente**
+4. **Performance degradada**
+5. **React DevTools mostrando muitos re-renders**
+
+### 📋 **Ação Imediata ao Detectar Problema**
+
+1. **Identificar o useEffect problemático**
+2. **Verificar as dependências uma por uma**
+3. **Memoizar ou remover dependências instáveis**
+4. **Testar no navegador**
+5. **Confirmar que não há mais loops**
+
+---
+
+**Esta regra deve ser aplicada SEMPRE que:**
+- Criar novos useEffect
+- Modificar dependências existentes  
+- Integrar com hooks customizados
+- Trabalhar com dados complexos (objetos/arrays)
+- Notar problemas de performance
+
+**Lembre-se: Prevenir é melhor que corrigir! 🎯**
+

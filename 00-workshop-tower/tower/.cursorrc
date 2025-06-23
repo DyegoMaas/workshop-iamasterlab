@@ -1,0 +1,32 @@
+# Cursor Configuration - Memoização React
+# Regras que executam SEMPRE durante o desenvolvimento
+
+# Configurações de linting
+lint.autoFix=true
+lint.showInlineErrors=true
+
+# Configurações específicas para React
+react.hooks.exhaustiveDeps=error
+react.performance.warnOnMemoization=true
+
+# Avisos automáticos para padrões problemáticos
+warnings.memoization.enabled=true
+warnings.memoization.patterns=useEffect,useMemo,useCallback
+warnings.memoization.severity=error
+
+# Sugestões inteligentes
+suggestions.memoization.enabled=true
+suggestions.memoization.autoSuggest=true
+
+# Configurações de análise de código
+codeAnalysis.performance.enabled=true
+codeAnalysis.performance.detectInfiniteLoops=true
+codeAnalysis.performance.warnOnRepeatedRenders=true
+
+# Configurações de debug
+debug.logRerenders=false
+debug.showPerformanceWarnings=true
+
+# Configurações para hooks customizados
+customHooks.patterns=use*
+customHooks.checkMemoization=true 
