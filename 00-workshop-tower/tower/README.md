@@ -74,7 +74,7 @@ Cada etapa contém:
 - `titulo`: Nome da etapa
 - `descricao`: Descrição breve
 - `ordem`: Ordem dentro do desafio
-- `tipo`: 'teoria' | 'pratica' | 'projeto' | 'discussao' | 'conclusao'
+- `tipo`: 'teoria' | 'pratica' | 'projeto' | 'discussao' | 'atividade-guiada' | 'conclusao'
 - `tempoEstimado`: Minutos estimados
 
 ## 🎯 Estado da Aplicação
@@ -158,6 +158,7 @@ cp .env.local.example .env.local
 - ⚡ **Prática**: Amarelo
 - 🚀 **Projeto**: Roxo
 - 💬 **Discussão**: Círculo (mesmo sistema de cores baseado no status)
+- 🎯 **Atividade Guiada**: Círculo (mesmo sistema de cores baseado no status)
 - ⭐ **Conclusão**: Dourado (nível final)
 
 ### Estados da Torre
@@ -168,13 +169,14 @@ cp .env.local.example .env.local
 
 ## 🏰 Estrutura da Torre
 
-A torre possui **11 etapas** distribuídas em 5 desafios:
+A torre possui **17 etapas** distribuídas em 6 desafios:
 
-1. **Setup Inicial** (1 etapa)
-2. **Fundamentos de IA** (3 etapas)
-3. **Machine Learning** (3 etapas)
-4. **Deep Learning** (3 etapas)
-5. **⭐ Conclusão** (1 etapa) - Nível especial com congratulações e materiais pós-curso
+1. **Setup Workshop** (3 etapas)
+2. **Aplicação Financeira** (4 etapas) 
+3. **Prompt Builder** (1 etapa) - Novo desafio com atividade guiada
+4. **Machine Learning** (3 etapas)
+5. **Deep Learning** (3 etapas)
+6. **⭐ Conclusão** (1 etapa) - Nível especial com congratulações e materiais pós-curso
 
 ## 📊 Métricas
 

@@ -3,22 +3,21 @@ description:
 globs: 
 alwaysApply: false
 ---
-Uma nova etapa deve ser sempre adicionada a um desafio pré-existente, definido em [desafios.json](mdc:data/desafios.json), seguindo a estrutura do exemplo mais abaixo. Precisamos seguir algumas regras:
-1. Se não não for informado o tipo, assuma que o tipo é "pratica".
-2. Para perguntas e checklists, se não tiver sido mencionadas inicialize os campos com array vazio.
+Para criar um novo desafio, um novo item deve ser adicionado em [desafios.json](mdc:data/desafios.json), seguindo a estrutura definida abaixo. Precisamos seguir algumas regras:
+1. Criar um desafio
+2. Criar o diretório `/public/content/desafios/{ordem-desafio}-{id-desafio}`, que alojará os arquivos descritivos das etapas (`ordem-desafio` formatado com dois dígitos)
+2. Adicionar uma etapa seguindo as regras definidas em [workflow-adicionar-etapa-a-desafio.mdc](mdc:.cursor/rules/workflow-adicionar-etapa-a-desafio.mdc)
 
-Após criar a estrutura lógica, será necessário criar um arquivo markdown da etapa dentro do diretório do desafio, em `/public/content/desafios/{id-desafio}/{id-etapa}.md`.
-
-Estrutura de desafio, com etapas:
+Estrutura de desafio:
 ```json
 {
-    "id": "machine-learning",
+    "id": "01-machine-learning",
     "titulo": "Machine Learning",
     "descricao": "Aprendizado de máquina na prática",
     "ordem": 1,
     "etapas": [
         {
-            "id": "conceitos",
+            "id": "00-conceitos",
             "titulo": "Conceitos de ML",
             "descricao": "Fundamentos do aprendizado de máquina",
             "ordem": 1,
@@ -26,7 +25,7 @@ Estrutura de desafio, com etapas:
             "tempoEstimado": 40
         },
         {
-            "id": "projeto",
+            "id": "01-projeto",
             "titulo": "Primeiro Projeto",
             "descricao": "Construindo seu primeiro modelo",
             "ordem": 3,
@@ -61,4 +60,3 @@ Estrutura de desafio, com etapas:
     ]
 }
 ```
-

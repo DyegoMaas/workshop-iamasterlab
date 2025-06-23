@@ -169,7 +169,7 @@ ${etapa.etapa.descricao}
 
 ### Informações da Etapa
 
-- **Tipo:** ${etapa.etapa.tipo === 'teoria' ? 'Teórica' : etapa.etapa.tipo === 'pratica' ? 'Prática' : 'Projeto'}
+- **Tipo:** ${etapa.etapa.tipo === 'teoria' ? 'Teórica' : etapa.etapa.tipo === 'pratica' ? 'Prática' : etapa.etapa.tipo === 'projeto' ? 'Projeto' : etapa.etapa.tipo === 'discussao' ? 'Discussão' : etapa.etapa.tipo === 'atividade-guiada' ? 'Atividade Guiada' : 'Outro'}
 - **Tempo Estimado:** ${etapa.etapa.tempoEstimado} minutos
 - **Ordem:** ${etapa.etapa.ordem}
 

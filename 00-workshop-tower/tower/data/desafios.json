@@ -103,7 +103,7 @@
       "id": "01-aplicacao-financeira",
       "titulo": "Aplicação Financeira",
       "descricao": "Aplicação financeira com IA",
-      "ordem": 1,
+      "ordem": 2,
       "etapas": [
         {
           "id": "00-criacao-prompt",
@@ -244,10 +244,26 @@
       ]
     },
     {
-      "id": "02-machine-learning",
+      "id": "02-prompt-builder",
+      "titulo": "Prompt Builder",
+      "descricao": "Construção e otimização de prompts eficazes",
+      "ordem": 3,
+      "etapas": [
+        {
+          "id": "00-reformulacao-visual",
+          "titulo": "Reformulação visual do Prompt Generator",
+          "descricao": "Atividade guiada",
+          "ordem": 1,
+          "tipo": "atividade-guiada",
+          "tempoEstimado": 20
+        }
+      ]
+    },
+    {
+      "id": "03-machine-learning",
       "titulo": "Machine Learning",
       "descricao": "Aprendizado de máquina na prática",
-      "ordem": 2,
+      "ordem": 4,
       "etapas": [
         {
           "id": "conceitos",
@@ -276,10 +292,10 @@
       ]
     },
     {
-      "id": "03-deep-learning",
+      "id": "04-deep-learning",
       "titulo": "Deep Learning",
       "descricao": "Redes neurais profundas",
-      "ordem": 3,
+      "ordem": 5,
       "etapas": [
         {
           "id": "redes-neurais",
@@ -308,10 +324,10 @@
       ]
     },
     {
-      "id": "04-pos-curso",
+      "id": "05-pos-curso",
       "titulo": "Parabéns! Curso Concluído",
       "descricao": "Você completou todos os desafios do IA Master Lab!",
-      "ordem": 4,
+      "ordem": 6,
       "etapas": [
         {
           "id": "00-congratulacoes",

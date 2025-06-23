@@ -362,7 +362,7 @@ export default function TowerCanvas({
           
           return (
             <div key={`${desafio.id}-${etapa.id}`} className="absolute">
-              {/* Renderizar círculo para discussões ou retângulo para outros tipos */}
+              {/* Renderizar círculo para discussões e atividades guiadas ou retângulo para outros tipos */}
               {etapa.tipo === 'discussao' ? (
                 // Círculo para discussões
                 <div
@@ -384,6 +384,29 @@ export default function TowerCanvas({
                   {/* Ícone de discussão */}
                   <div className="text-2xl text-white">
                     💬
+                  </div>
+                </div>
+              ) : etapa.tipo === 'atividade-guiada' ? (
+                // Círculo para atividades guiadas
+                <div
+                  className={`w-20 h-20 rounded-full border-4 ${colorClass} 
+                    flex items-center justify-center 
+                    transition-all duration-300 hover:scale-105 hover:shadow-2xl
+                    ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
+                    ${isClickable ? 'cursor-pointer' : 'cursor-default'}
+                    backdrop-blur-sm relative z-10 overflow-hidden
+                  `}
+                  style={{
+                    left: `${position.x + 30}px`,
+                    bottom: `${position.y}px`,
+                    transform: 'translateX(-50%)'
+                  }}
+                  title={`${desafio.titulo} - ${etapa.titulo}`}
+                  onClick={handleStepClick}
+                >
+                  {/* Ícone de atividade guiada */}
+                  <div className="text-2xl text-white">
+                    🎯
                   </div>
                 </div>
               ) : (
@@ -443,7 +466,7 @@ export default function TowerCanvas({
                 <div
                   className={`absolute ${getConnectorStyle(index)} z-0`}
                   style={{
-                    left: `${position.x + (etapa.tipo === 'discussao' ? 30 : 150)}px`,
+                    left: `${position.x + (etapa.tipo === 'discussao' || etapa.tipo === 'atividade-guiada' ? 30 : 150)}px`,
                     bottom: `${position.y + 80}px`, // Conecta ao bloco de cima (altura do bloco = 80px)
                     height: '20px', // conecta ao próximo bloco
                     transform: 'translateX(-50%)'

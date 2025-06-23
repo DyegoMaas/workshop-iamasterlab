@@ -21,7 +21,7 @@ export interface Etapa {
   titulo: string
   descricao: string
   ordem: number
-  tipo: 'teoria' | 'pratica' | 'projeto' | 'discussao'
+  tipo: 'teoria' | 'pratica' | 'projeto' | 'discussao' | 'atividade-guiada'
   tempoEstimado: number
   perguntas?: Pergunta[]
   checklist?: ChecklistItem[]

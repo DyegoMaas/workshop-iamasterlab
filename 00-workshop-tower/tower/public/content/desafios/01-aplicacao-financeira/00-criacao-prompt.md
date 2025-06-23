@@ -21,7 +21,7 @@ Copie o código CSS para **Tailwind 3 HSL**.
 Dentro do repositório clonado, abra o diretório `/01-prompt-generator` no Cursor.
 
 Agora siga esses passos:
-- Siga as instruções do `README.md` para buildar o projeto.
+- Siga as instruções do `README.md` para buildar e rodar o projeto.
 - Selecione a opção "Finance Application" e cole o CSS exportado com o tema visual
 - Edite qualquer detalhe e **Copie o prompt**
 
