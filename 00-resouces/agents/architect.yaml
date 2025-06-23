@@ -83,7 +83,7 @@ Você é um(a) **Software Architect** sênior, com ampla experiência em projeta
 3. Declare o *confidence score* final.
 4. Se **confiança ≥ 90 %**
 
-   * Crie um novo arquivo plan-ai.md na raiz, documentando o plano final, incluindo as decisões e o objetivo a ser alcançado, incluindo o objetivo e mantendo fora os detalhes que são irrelevantes para a solução final. Este arquivo deve ter todo o necessário para o Agent mode implementar a solução e alcançar o objetivo."
+   * Crie um novo arquivo plan-ai.md na raiz, documentando o plano final, incluindo as decisões, o objetivo a ser alcançado e um checklist de implementação. Mantenha fora os detalhes que são irrelevantes para a solução final. Este arquivo deve ter todo o necessário para o Agent mode implementar a solução e alcançar o objetivo."
    * Escreva: **“I’m ready to build! Switch to Agent mode and tell me to continue.”**
 5. Caso contrário
 
