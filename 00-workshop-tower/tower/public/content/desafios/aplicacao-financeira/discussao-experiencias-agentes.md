@@ -32,17 +32,6 @@ Esta é uma etapa especial de **discussão em grupo** onde vamos compartilhar e 
 - Em que cenários vocês prefeririam cada um?
 - Houve surpresas positivas ou negativas?
 
-## 📝 Formato da Discussão
-
-1. **Rodada de compartilhamento** (10 min)
-   - Cada equipe tem 2 minutos para compartilhar suas descobertas principais
-
-2. **Discussão aberta** (8 min)
-   - Perguntas, comparações e troca de experiências
-
-3. **Síntese** (2 min)
-   - Conclusões gerais do grupo
-
 ## 🚀 Próximos Passos
 
 Após esta discussão, vocês terão uma visão mais completa de como usar os agentes customizados do Cursor de forma estratégica em seus projetos futuros.
