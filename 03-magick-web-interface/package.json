@@ -1,0 +1,39 @@
+{
+  "name": "magick-web-interface",
+  "version": "1.0.0",
+  "description": "ImageMagick Web Interface - Convert and blur images via web interface",
+  "main": "dist/server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "nodemon --exec ts-node server/index.ts",
+    "client:dev": "cd client && npm run dev",
+    "build": "npm run server:build && npm run client:build",
+    "server:build": "tsc -p server/tsconfig.json",
+    "client:build": "cd client && npm run build",
+    "start": "node dist/server/index.js",
+    "clean": "rimraf dist tmp/magick",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["imagemagick", "image-processing", "web-interface", "react", "express"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^3.3.6",
+    "morgan": "^1.10.0",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.5",
+    "@types/express": "^4.17.21",
+    "@types/multer": "^1.4.11",
+    "@types/morgan": "^1.9.9",
+    "@types/cors": "^2.8.17",
+    "ts-node": "^10.9.2",
+    "nodemon": "^3.0.2",
+    "concurrently": "^8.2.2",
+    "rimraf": "^5.0.5"
+  }
+}
