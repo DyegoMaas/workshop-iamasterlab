@@ -284,6 +284,85 @@
       ]
     },
     {
+      "id": "03-ui-magick",
+      "titulo": "UI para magick",
+      "descricao": "Interface web para manipulação de imagens com ImageMagick",
+      "ordem": 4,
+      "etapas": [
+        {
+          "id": "00-setup",
+          "titulo": "Setup do ImageMagick",
+          "descricao": "Instalação e configuração do ImageMagick",
+          "ordem": 1,
+          "tipo": "pratica",
+          "tempoEstimado": 20,
+          "checklist": [
+            {
+              "id": "imagemagick-instalado",
+              "titulo": "ImageMagick instalado",
+              "descricao": "ImageMagick instalado no sistema operacional",
+              "ordem": 1,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "verificacao-versao",
+              "titulo": "Verificação da versão",
+              "descricao": "Executar magick -version para confirmar instalação",
+              "ordem": 3,
+              "tipo": "checkbox"
+            }
+          ]
+        },
+        {
+          "id": "01-desafio",
+          "titulo": "Desafio: Criar Interface Web para ImageMagick",
+          "descricao": "Criar uma aplicação para manipular imagens",
+          "ordem": 2,
+          "tipo": "projeto",
+          "tempoEstimado": 90,
+          "checklist": [
+            {
+              "id": "frontend-react-criado",
+              "titulo": "Frontend React criado",
+              "descricao": "Interface para upload e visualização de imagens",
+              "ordem": 1,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "backend-nodejs-implementado",
+              "titulo": "Backend Node.js implementado",
+              "descricao": "API que processa imagens usando ImageMagick",
+              "ordem": 2,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "operacoes-basicas-funcionando",
+              "titulo": "Operações básicas funcionando",
+              "descricao": "Resize e conversão de formato",
+              "ordem": 3,
+              "tipo": "checkbox"
+            }
+          ],
+          "perguntas": [
+            {
+              "id": "desafios-encontrados",
+              "titulo": "Quais foram os principais desafios técnicos?",
+              "descricao": "Documente os desafios encontrados durante o desenvolvimento",
+              "ordem": 1,
+              "tipo": "texto"
+            },
+            {
+              "id": "funcionalidades-implementadas",
+              "titulo": "Que funcionalidades extras você implementou?",
+              "descricao": "Além do básico, que funcionalidades adicionais foram criadas?",
+              "ordem": 2,
+              "tipo": "texto"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "05-pos-curso",
       "titulo": "Parabéns! Curso Concluído",
       "descricao": "Você completou todos os desafios do IA Master Lab!",

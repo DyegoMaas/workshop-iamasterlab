@@ -169,14 +169,15 @@ cp .env.local.example .env.local
 
 ## 🏰 Estrutura da Torre
 
-A torre possui **17 etapas** distribuídas em 6 desafios:
+A torre possui **19 etapas** distribuídas em 7 desafios:
 
 1. **Setup Workshop** (3 etapas)
 2. **Aplicação Financeira** (4 etapas) 
-3. **Prompt Builder** (1 etapa) - Novo desafio com atividade guiada
-4. **Machine Learning** (3 etapas)
-5. **Deep Learning** (3 etapas)
-6. **⭐ Conclusão** (1 etapa) - Nível especial com congratulações e materiais pós-curso
+3. **Prompt Builder** (2 etapas) - Desafio com atividade guiada
+4. **UI para magick** (2 etapas) - Interface web para manipulação de imagens com ImageMagick
+5. **Machine Learning** (3 etapas)
+6. **Deep Learning** (3 etapas)
+7. **⭐ Conclusão** (1 etapa) - Nível especial com congratulações e materiais pós-curso
 
 ## 📊 Métricas
 
@@ -191,7 +192,7 @@ A torre possui **17 etapas** distribuídas em 6 desafios:
 
 O projeto está pronto para deploy em:
 - **Vercel** (recomendado)
-- **Netlify**
+- **Netlify** (selecionado)
 - **GitHub Pages**
 
 ```bash
