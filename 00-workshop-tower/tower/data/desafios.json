@@ -1,13 +1,13 @@
 {
   "desafios": [
     {
-      "id": "setup",
+      "id": "00-setup",
       "titulo": "Setup Workshop",
       "descricao": "Configuração inicial do Cursor para o desafio",
       "ordem": 1,
       "etapas": [
         {
-          "id": "boas-vindas",
+          "id": "00-boas-vindas",
           "titulo": "Boas Vindas",
           "descricao": "Boas vindas ao workshop",
           "ordem": 1,
@@ -15,7 +15,7 @@
           "tempoEstimado": 15
         },
         {
-          "id": "cursor",
+          "id": "01-cursor",
           "titulo": "Instruções",
           "descricao": "Instruções para o setup inicial do Cursor",
           "ordem": 2,
@@ -74,7 +74,7 @@
           ]
         },
         {
-          "id": "repositorio-workshop",
+          "id": "02-repositorio-workshop",
           "titulo": "Clonar Repositório",
           "descricao": "Clonar o repositório para o workshop",
           "ordem": 3,
@@ -100,13 +100,13 @@
       ]
     },
     {
-      "id": "aplicacao-financeira",
+      "id": "01-aplicacao-financeira",
       "titulo": "Aplicação Financeira",
       "descricao": "Aplicação financeira com IA",
       "ordem": 1,
       "etapas": [
         {
-          "id": "criacao-prompt",
+          "id": "00-criacao-prompt",
           "titulo": "Criação do Prompt",
           "descricao": "Criar o prompt para criar uma aplicação financeira",
           "ordem": 1,
@@ -123,7 +123,7 @@
           ]
         },
         {
-          "id": "criar-app-com-agente-padrao",
+          "id": "01-criar-app-com-agente-padrao",
           "titulo": "Criar o App Financeiro usando o Agente Padrão do Cursor",
           "descricao": "Criar o app financeiro usando o agente padrão",
           "ordem": 2,
@@ -154,7 +154,7 @@
           ]
         },
         {
-          "id": "configurar-modos-agentes-customizados",
+          "id": "02-configurar-modos-agentes-customizados",
           "titulo": "Configurar Modos Agentes Customizados",
           "descricao": "Configurar modos agentes customizados desenvolvimento",
           "ordem": 2,
@@ -187,7 +187,7 @@
           ]
         },
         {
-          "id": "criar-app-com-agente-engineer",
+          "id": "03-criar-app-com-agente-engineer",
           "titulo": "Recriar o App Financeiro usando o Engineer",
           "descricao": "Criar o app financeiro usando o agente Engineer",
           "ordem": 2,
@@ -218,7 +218,7 @@
           ]
         },
         {
-          "id": "discussao-experiencias-agentes",
+          "id": "04-discussao-experiencias-agentes",
           "titulo": "Discussão: Experiências com Agentes",
           "descricao": "Compartilhe e discuta as diferentes experiências com agentes padrão vs customizados",
           "ordem": 3,
@@ -244,7 +244,7 @@
       ]
     },
     {
-      "id": "machine-learning",
+      "id": "02-machine-learning",
       "titulo": "Machine Learning",
       "descricao": "Aprendizado de máquina na prática",
       "ordem": 2,
@@ -276,7 +276,7 @@
       ]
     },
     {
-      "id": "deep-learning",
+      "id": "03-deep-learning",
       "titulo": "Deep Learning",
       "descricao": "Redes neurais profundas",
       "ordem": 3,
@@ -308,13 +308,13 @@
       ]
     },
     {
-      "id": "pos-curso",
+      "id": "04-pos-curso",
       "titulo": "Parabéns! Curso Concluído",
       "descricao": "Você completou todos os desafios do IA Master Lab!",
       "ordem": 4,
       "etapas": [
         {
-          "id": "congratulacoes",
+          "id": "00-congratulacoes",
           "titulo": "Certificação e Próximos Passos",
           "descricao": "Acesse seus materiais de conclusão e próximos passos",
           "ordem": 1,
