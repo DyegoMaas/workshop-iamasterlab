@@ -6,6 +6,7 @@ Uma aplicação web moderna para processamento de imagens usando ImageMagick, co
 
 - **Conversão de Formato**: Converta imagens entre PNG, JPG, JPEG e WEBP
 - **Aplicação de Blur**: Aplique efeitos de desfoque com controles personalizáveis
+- **Aplicação de Sharpen**: Aplique efeitos de nitidez para melhorar a definição das imagens
 - **Interface Drag & Drop**: Upload fácil de imagens por arrastar e soltar
 - **Preview em Tempo Real**: Visualize suas imagens antes do processamento
 - **Download Instantâneo**: Baixe os resultados processados imediatamente
@@ -168,6 +169,24 @@ Aplica efeito de blur na imagem.
   "originalName": "image.jpg",
   "size": 1024000,
   "blurSettings": { "radius": 5, "sigma": 4 }
+}
+```
+
+### POST /api/sharpen
+Aplica efeito de nitidez na imagem.
+
+**Body (multipart/form-data):**
+- `file`: Arquivo de imagem
+- `sigma`: Força da nitidez (0.1-3.0, padrão: 1.0)
+
+**Response:**
+```json
+{
+  "id": "unique-id",
+  "downloadUrl": "/api/files/sharpen-xxx.png",
+  "originalName": "image.jpg",
+  "size": 1024000,
+  "sharpenSettings": { "sigma": 1.0 }
 }
 ```
 

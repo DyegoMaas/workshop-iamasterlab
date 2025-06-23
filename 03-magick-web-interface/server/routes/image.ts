@@ -5,7 +5,7 @@ import path from 'path';
 function generateId(): string {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
-import { convertImage, blurImage, validateImageFile } from '../services/imageProcessor';
+import { convertImage, blurImage, sharpenImage, validateImageFile } from '../services/imageProcessor';
 import { getFilePath, scheduleCleanup } from '../services/fileStore';
 
 const router = express.Router();
@@ -109,6 +109,47 @@ router.post('/blur', upload.single('file'), async (req: Request, res: Response, 
     console.error('Blur error:', error);
     res.status(500).json({ 
       error: 'Image blur failed',
+      message: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// POST /api/sharpen - Apply sharpen effect
+router.post('/sharpen', upload.single('file'), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({ error: 'No file uploaded' });
+      return;
+    }
+
+    const { sigma = 1.0 } = req.body;
+    const sigmaNum = parseFloat(sigma);
+
+    if (isNaN(sigmaNum) || sigmaNum < 0.1 || sigmaNum > 3.0) {
+      res.status(400).json({ 
+        error: 'Invalid sharpen parameters. Sigma: 0.1-3.0' 
+      });
+      return;
+    }
+
+    const outputPath = await sharpenImage(req.file.path, sigmaNum);
+    const fileId = generateId();
+    
+    // Schedule cleanup for both input and output files
+    scheduleCleanup(req.file.path, 30); // 30 minutes
+    scheduleCleanup(outputPath, 30);
+    
+    res.json({
+      id: fileId,
+      downloadUrl: `/api/files/${path.basename(outputPath)}`,
+      originalName: req.file.originalname,
+      size: req.file.size,
+      sharpenSettings: { sigma: sigmaNum }
+    });
+  } catch (error) {
+    console.error('Sharpen error:', error);
+    res.status(500).json({ 
+      error: 'Image sharpen failed',
       message: error instanceof Error ? error.message : 'Unknown error'
     });
   }

@@ -110,4 +110,48 @@ export async function blurImage(inputPath: string, radius: number, sigma: number
     }
     throw new Error('Image blur failed: Unknown error');
   }
+}
+
+export async function sharpenImage(inputPath: string, sigma: number): Promise<string> {
+  // Validate parameters
+  if (sigma < 0.1 || sigma > 3.0) {
+    throw new Error('Sigma must be between 0.1 and 3.0');
+  }
+
+  const outputId = generateId();
+  const outputPath = path.join(
+    path.dirname(inputPath),
+    `sharpen-${outputId}.png`
+  );
+
+  try {
+    // Use ImageMagick to apply sharpen with security limits
+    await execFileAsync('magick', [
+      inputPath,
+      '-limit', 'memory', '256MB',
+      '-limit', 'time', '60',
+      '-sharpen', `0x${sigma}`,
+      outputPath
+    ], {
+      timeout: 60000, // 60 seconds timeout
+      cwd: path.dirname(inputPath)
+    });
+
+    // Verify output file was created
+    if (!fs.existsSync(outputPath)) {
+      throw new Error('Output file was not created');
+    }
+
+    return outputPath;
+  } catch (error) {
+    // Clean up output file if it exists
+    if (fs.existsSync(outputPath)) {
+      fs.unlinkSync(outputPath);
+    }
+    
+    if (error instanceof Error) {
+      throw new Error(`Image sharpen failed: ${error.message}`);
+    }
+    throw new Error('Image sharpen failed: Unknown error');
+  }
 } 

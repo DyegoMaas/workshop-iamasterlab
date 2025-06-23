@@ -7,14 +7,16 @@ interface ProcessedFile {
   originalName: string;
   size: number;
   blurSettings?: { radius: number; sigma: number };
+  sharpenSettings?: { sigma: number };
 }
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'convert' | 'blur'>('convert');
+  const [activeTab, setActiveTab] = useState<'convert' | 'blur' | 'sharpen'>('convert');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [targetFormat, setTargetFormat] = useState('png');
   const [blurRadius, setBlurRadius] = useState(0);
   const [blurSigma, setBlurSigma] = useState(4);
+  const [sharpenSigma, setSharpenSigma] = useState(1.0);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<ProcessedFile | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -112,6 +114,36 @@ function App() {
     }
   };
 
+  const handleSharpen = async () => {
+    if (!selectedFile) return;
+
+    setLoading(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('sigma', sharpenSigma.toString());
+
+    try {
+      const response = await fetch('/api/sharpen', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Sharpen failed');
+      }
+
+      const data = await response.json();
+      setResult(data);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Sharpen failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleDownload = async () => {
     if (result) {
       try {
@@ -149,7 +181,7 @@ function App() {
             ImageMagick Web Interface
           </h1>
           <p className="text-gray-600">
-            Convert image formats and apply blur effects using ImageMagick
+            Convert image formats and apply blur or sharpen effects using ImageMagick
           </p>
         </header>
 
@@ -175,6 +207,16 @@ function App() {
               }`}
             >
               Apply Blur
+            </button>
+            <button
+              onClick={() => setActiveTab('sharpen')}
+              className={`px-6 py-2 rounded-md font-medium transition-colors ${
+                activeTab === 'sharpen'
+                  ? 'bg-blue-500 text-white shadow-sm'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Sharpen
             </button>
           </div>
         </div>
@@ -270,11 +312,37 @@ function App() {
                   </div>
                 </div>
               )}
+
+              {activeTab === 'sharpen' && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Strength (Sigma): {sharpenSigma}
+                  </label>
+                  <input
+                    type="range"
+                    min="0.1"
+                    max="3.0"
+                    step="0.1"
+                    value={sharpenSigma}
+                    onChange={(e) => setSharpenSigma(parseFloat(e.target.value))}
+                    className="w-full"
+                  />
+                  <div className="text-xs text-gray-500 mt-1">
+                    0.5-1.0: Natural sharpening | 1.0+: Stronger effect
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Process Button */}
             <button
-              onClick={activeTab === 'convert' ? handleConvert : handleBlur}
+              onClick={
+                activeTab === 'convert' 
+                  ? handleConvert 
+                  : activeTab === 'blur' 
+                    ? handleBlur 
+                    : handleSharpen
+              }
               disabled={!selectedFile || loading}
               className="w-full mt-6 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
             >
@@ -285,7 +353,12 @@ function App() {
                 </>
               ) : (
                 <>
-                  {activeTab === 'convert' ? 'Convert Image' : 'Apply Blur'}
+                  {activeTab === 'convert' 
+                    ? 'Convert Image' 
+                    : activeTab === 'blur' 
+                      ? 'Apply Blur' 
+                      : 'Sharpen Image'
+                  }
                 </>
               )}
             </button>
@@ -325,6 +398,11 @@ function App() {
                   {result.blurSettings && (
                     <p className="text-sm text-green-600">
                       Blur applied: radius {result.blurSettings.radius}, sigma {result.blurSettings.sigma}
+                    </p>
+                  )}
+                  {result.sharpenSettings && (
+                    <p className="text-sm text-green-600">
+                      Sharpen applied: sigma {result.sharpenSettings.sigma}
                     </p>
                   )}
                 </div>
