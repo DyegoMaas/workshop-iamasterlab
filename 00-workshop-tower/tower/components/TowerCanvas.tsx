@@ -362,129 +362,82 @@ export default function TowerCanvas({
           
           return (
             <div key={`${desafio.id}-${etapa.id}`} className="absolute">
-              {/* Renderizar círculo para discussões e atividades guiadas ou retângulo para outros tipos */}
-              {etapa.tipo === 'discussao' ? (
-                // Círculo para discussões
-                <div
-                  className={`w-20 h-20 rounded-full border-4 ${colorClass} 
-                    flex items-center justify-center 
-                    transition-all duration-300 hover:scale-105 hover:shadow-2xl
-                    ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
-                    ${isClickable ? 'cursor-pointer' : 'cursor-default'}
-                    backdrop-blur-sm relative z-10 overflow-hidden
-                  `}
-                  style={{
-                    left: `${position.x + 30}px`,
-                    bottom: `${position.y}px`,
-                    transform: 'translateX(-50%)'
-                  }}
-                  title={`${desafio.titulo} - ${etapa.titulo}`}
-                  onClick={handleStepClick}
-                >
-                  {/* Ícone de discussão */}
-                  <div className="text-2xl text-white">
-                    💬
-                  </div>
+              {/* Bloco retangular arredondado para todos os tipos */}
+              <div
+                className={`w-80 h-24 rounded-2xl border-4 ${colorClass} 
+                  flex items-center justify-start 
+                  transition-all duration-300 hover:scale-105 hover:shadow-2xl
+                  ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
+                  ${isClickable ? 'cursor-pointer' : 'cursor-default'}
+                  backdrop-blur-sm relative z-10 overflow-hidden
+                `}
+                style={{
+                  left: `${position.x + 150}px`,
+                  bottom: `${position.y}px`,
+                  transform: 'translateX(-50%)'
+                }}
+                title={`${desafio.descricao}`}
+                onClick={handleStepClick}
+              >
+                {/* Barra de progresso do checklist */}
+                {checklistProgress && (
+                  <div
+                    className={`absolute inset-0 ${getProgressBarColor(checklistProgress.percentage)} 
+                      transition-all duration-500 ease-out opacity-30 rounded-2xl`}
+                    style={{
+                      width: `${checklistProgress.percentage}%`,
+                      zIndex: -1
+                    }}
+                  />
+                )}
+                
+                {/* Ícone específico do tipo à esquerda */}
+                <div className="text-2xl text-white ml-4 mr-3 flex-shrink-0">
+                  {etapa.tipo === 'discussao' ? '💬' : 
+                   etapa.tipo === 'atividade-guiada' ? '🎯' : '📝'}
                 </div>
-              ) : etapa.tipo === 'atividade-guiada' ? (
-                // Círculo para atividades guiadas
-                <div
-                  className={`w-20 h-20 rounded-full border-4 ${colorClass} 
-                    flex items-center justify-center 
-                    transition-all duration-300 hover:scale-105 hover:shadow-2xl
-                    ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
-                    ${isClickable ? 'cursor-pointer' : 'cursor-default'}
-                    backdrop-blur-sm relative z-10 overflow-hidden
-                  `}
-                  style={{
-                    left: `${position.x + 30}px`,
-                    bottom: `${position.y}px`,
-                    transform: 'translateX(-50%)'
-                  }}
-                  title={`${desafio.titulo} - ${etapa.titulo}`}
-                  onClick={handleStepClick}
-                >
-                  {/* Ícone de atividade guiada */}
-                  <div className="text-2xl text-white">
-                    🎯
-                  </div>
-                </div>
-              ) : (
-                // Bloco retangular para outros tipos
-                <div
-                  className={`w-80 h-24 rounded-xl border-4 ${colorClass} 
-                    flex items-center justify-start 
-                    transition-all duration-300 hover:scale-105 hover:shadow-2xl
-                    ${status === 'current' ? 'ring-4 ring-blue-300 ring-opacity-60' : ''}
-                    ${isClickable ? 'cursor-pointer' : 'cursor-default'}
-                    backdrop-blur-sm relative z-10 overflow-hidden
-                  `}
-                  style={{
-                    left: `${position.x + 150}px`,
-                    bottom: `${position.y}px`,
-                    transform: 'translateX(-50%)'
-                  }}
-                  title={`${desafio.titulo} - ${etapa.titulo}`}
-                  onClick={handleStepClick}
-                >
-                  {/* Barra de progresso do checklist */}
-                  {checklistProgress && (
-                    <div
-                      className={`absolute inset-0 ${getProgressBarColor(checklistProgress.percentage)} 
-                        transition-all duration-500 ease-out opacity-30 rounded-lg`}
-                      style={{
-                        width: `${checklistProgress.percentage}%`,
-                        zIndex: -1
-                      }}
-                    />
-                  )}
-                  
-                  <div className="text-left p-3 w-full relative z-10">
-                    <div className="text-xs text-white/70 mb-1 font-medium">
+                
+                <div className="text-left flex-1 pr-3 relative z-10">
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="text-xs text-white/70 font-medium">
                       {desafio.titulo}
                     </div>
-                    <div className="text-sm text-white font-bold mb-1 leading-tight">
-                      {etapa.titulo}
-                    </div>
-                    <div className="flex items-center justify-between w-full">
-                      <div className="text-xs text-white/80 leading-tight line-clamp-1 flex-1">
-                        {etapa.descricao}
+                    {/* Label para atividades guiadas */}
+                    {etapa.tipo === 'atividade-guiada' && (
+                      <div className="text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-2 py-1 rounded-full shadow-lg border-2 border-yellow-300 animate-pulse">
+                        GUIADO
                       </div>
-                      {/* Indicador de progresso do checklist */}
-                      {checklistProgress && (
-                        <div className="text-xs text-white/90 font-semibold ml-2 bg-black/20 px-2 py-1 rounded">
-                          {checklistProgress.completed}/{checklistProgress.total}
-                        </div>
-                      )}
+                    )}
+                  </div>
+                  <div className="text-sm text-white font-bold mb-1 leading-tight">
+                    {etapa.titulo}
+                  </div>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="text-xs text-white/80 leading-tight line-clamp-1 flex-1">
+                      {etapa.descricao}
                     </div>
+                    {/* Indicador de progresso do checklist */}
+                    {checklistProgress && (
+                      <div className="text-xs text-white/90 font-semibold ml-2 bg-black/20 px-2 py-1 rounded">
+                        {checklistProgress.completed}/{checklistProgress.total}
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
+              </div>
               
               {/* Conectores entre níveis */}
-              {index < etapas.length - 1 && (() => {
-                const currentIsCircle = etapa.tipo === 'discussao' || etapa.tipo === 'atividade-guiada'
-                const nextEtapa = etapas[index + 1].etapa
-                const nextIsCircle = nextEtapa.tipo === 'discussao' || nextEtapa.tipo === 'atividade-guiada'
-                
-                // Altura do elemento atual
-                const currentHeight = currentIsCircle ? 80 : 96
-                
-                // Calcular altura do conector baseado no gap entre elementos
-                const connectorHeight = 110 - currentHeight // gap restante após o elemento atual
-                
-                return (
-                  <div
-                    className={`absolute ${getConnectorStyle(index)} z-0`}
-                    style={{
-                      left: `${position.x + (currentIsCircle ? 30 : 150)}px`,
-                      bottom: `${position.y + currentHeight}px`,
-                      height: `${connectorHeight}px`,
-                      transform: 'translateX(-50%)'
-                    }}
-                  ></div>
-                )
-              })()}
+              {index < etapas.length - 1 && (
+                <div
+                  className={`absolute ${getConnectorStyle(index)} z-0`}
+                  style={{
+                    left: `${position.x + 150}px`,
+                    bottom: `${position.y + 96}px`, // altura do bloco (24*4 = 96px)
+                    height: `14px`, // gap restante (110 - 96 = 14px)
+                    transform: 'translateX(-50%)'
+                  }}
+                ></div>
+              )}
             </div>
           )
         })}

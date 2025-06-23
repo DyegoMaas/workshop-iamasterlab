@@ -16,8 +16,8 @@
         },
         {
           "id": "01-cursor",
-          "titulo": "Instruções",
-          "descricao": "Instruções para o setup inicial do Cursor",
+          "titulo": "Configuração do Cursor",
+          "descricao": "Configuração do Cursor para o workshop",
           "ordem": 2,
           "tipo": "pratica",
           "tempoEstimado": 15,
