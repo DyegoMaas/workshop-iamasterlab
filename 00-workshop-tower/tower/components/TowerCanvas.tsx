@@ -374,7 +374,7 @@ export default function TowerCanvas({
                     backdrop-blur-sm relative z-10 overflow-hidden
                   `}
                   style={{
-                    left: `${position.x + 150}px`,
+                    left: `${position.x + 30}px`,
                     bottom: `${position.y}px`,
                     transform: 'translateX(-50%)'
                   }}
