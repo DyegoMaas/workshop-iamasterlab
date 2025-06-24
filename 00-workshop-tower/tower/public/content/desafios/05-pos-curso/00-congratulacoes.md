@@ -13,7 +13,7 @@ Você completou com sucesso todos os desafios do **IA Master Lab** e agora faz p
 - Compartilhe no LinkedIn e destaque suas conquistas
 
 ### 📚 Materiais Complementares
-- ...
+- Você receberá o material de apoio, incluindo o Cheatsheet, via e-mail.
 
 ## 🙏 Obrigado por Fazer Parte Desta Jornada!
 
