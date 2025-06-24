@@ -25,7 +25,7 @@
 ## ⚡ Atalhos Importantes
 
 ### Cursor Shortcuts
-- `Ctrl + K` - Chat rápido
+- `Ctrl + K` - Chat rápido (tente selecionar um trecho de código e usar o atalho), funciona também no terminal
 - `Ctrl + L` - Chat com contexto do arquivo
 - `Ctrl + Shift + L` - Chat com contexto selecionado
 - `Ctrl + I` - Edição inline
@@ -43,26 +43,17 @@
 ## 💡 Dicas Importantes
 
 ### Configuração do Cursor
-- ✅ **Privacy Mode**: Sempre ative o "Privacy Mode with Storage" para proteger seus dados
+- ✅ **Privacy Mode**: Sempre ative o "Privacy Mode" para proteger seus dados. Deste modo, somente os pesos da vetorização do código são armazenados em nuvem. Ideal para ambientes corporativos.
+- ✅ **Privacy Mode With Storage**: Ative o "Privacy Mode With Storage" para permitir que a Anysphere (empresa do Cursor) armazene os códigos na nuvem. Este recurso habilita o uso dos Background Agents.
 - ✅ **Custom Modes**: Configure agentes personalizados para diferentes tipos de tarefas
-- ✅ **Notepads**: Use o Notepads para manter contexto entre conversas
-- ✅ **MCP Servers**: Configure servidores MCP para funcionalidades avançadas
+- ✅ **Notepads**: Use o Notepads para manter contexto entre conversas. Pense neles como prompts reutilizáveis.
+- ✅ **MCP Servers**: Configure servidores MCP para dar super poderes aos agentes
 
 ### Boas Práticas com IA
 - 📝 **Seja específico**: Prompts detalhados geram melhores resultados
 - 🎯 **Uma tarefa por vez**: Divida problemas complexos em tarefas menores
 - 🔍 **Revise o código**: Sempre revise e teste o código gerado pela IA
 - 📚 **Use contexto**: Forneça contexto relevante para melhores respostas
-
-### Troubleshooting
-- 🔧 **Erro de conexão**: Verifique sua chave API e conexão com internet
-- 🔄 **Cache**: Limpe o cache do Cursor se houver comportamentos estranhos
-- 📋 **Logs**: Verifique os logs em caso de problemas (`Ctrl + Shift + P` → "Developer: Toggle Developer Tools")
-
-### Organização do Projeto
-- 📁 **Estrutura**: Mantenha uma estrutura de pastas clara e consistente
-- 🏷️ **Nomenclatura**: Use nomes descritivos para arquivos e variáveis
-- 📄 **Documentação**: Documente decisões importantes e arquitetura
 - 🔀 **Git**: Faça commits pequenos e frequentes com mensagens claras
 
 ## 🚀 Recursos Avançados
@@ -77,7 +68,6 @@
 - **Mermaid Preview**: Para visualizar diagramas
 - **REST Client**: Para testar APIs
 - **GitLens**: Para melhor integração com Git
-- **Thunder Client**: Para testes de API (alternativa ao Postman)
 
 ---
 
