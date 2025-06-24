@@ -10,12 +10,22 @@
           "id": "00-boas-vindas",
           "titulo": "Boas Vindas",
           "descricao": "Boas vindas ao workshop",
-          "ordem": 1,
+          "ordem": 0,
           "tipo": "pratica",
           "tempoEstimado": 15
         },
         {
-          "id": "01-cursor",
+          "id": "01-recursos-para-o-workshop",
+          "titulo": "Recursos para o workshop",
+          "descricao": "Listas de links úteis, atalhos e dicas",
+          "ordem": 1,
+          "tipo": "pratica",
+          "tempoEstimado": 10,
+          "checklist": [],
+          "perguntas": []
+        },
+        {
+          "id": "02-cursor",
           "titulo": "Configuração do Cursor",
           "descricao": "Configuração do Cursor para o workshop",
           "ordem": 2,
@@ -81,7 +91,7 @@
           ]
         },
         {
-          "id": "02-repositorio-workshop",
+          "id": "03-repositorio-workshop",
           "titulo": "Clonar Repositório",
           "descricao": "Clonar o repositório para o workshop",
           "ordem": 3,
