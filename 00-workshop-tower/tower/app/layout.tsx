@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "IA Master Lab Tower",
+  title: "IA Master Lab - Dev do Futuro",
   description: "Torre de desafios interativa para o workshop IA Master Lab",
 };
 
@@ -30,7 +30,7 @@ export default function RootLayout({
         <div className="container mx-auto px-4 py-8">
           <header className="text-center mb-8">
             <h1 className="text-4xl font-bold text-white mb-2">
-              IA Master Lab Tower
+            IA Master Lab - Dev do Futuro
             </h1>
             <p className="text-slate-300">
               Conquiste cada desafio e abrace o futuro!
