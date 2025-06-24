@@ -34,6 +34,14 @@ export async function convertImage(inputPath: string, targetFormat: string): Pro
     `output-${outputId}.${targetFormat}`
   );
 
+  const inputExt = path.extname(inputPath).toLowerCase().slice(1);
+  const normalizedInputExt = inputExt === 'jpg' ? 'jpeg' : inputExt;
+  const normalizedTargetFormat = targetFormat === 'jpg' ? 'jpeg' : targetFormat;
+  
+  if (normalizedInputExt === normalizedTargetFormat) {
+    return outputPath;
+  }
+
   try {
     // Use ImageMagick to convert with security limits
     await execFileAsync('magick', [
