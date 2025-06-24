@@ -62,13 +62,13 @@ const mainMarkdownComponents = {
 }
 
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
-  const { isInstructor, teamName, isAuthenticated } = useAuth()
+  const { isInstructor } = useAuth()
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [instructorContent, setInstructorContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   
-  // Memoizar o valor de isInstructor usando dependências primitivas estáveis
-  const isInstructorMemo = useMemo(() => isInstructor(), [teamName, isAuthenticated])
+  // Memoizar o valor de isInstructor usando apenas a dependência necessária
+  const isInstructorMemo = useMemo(() => isInstructor(), [isInstructor])
   
   // Estado local para as respostas (para evitar re-render a cada tecla)
   const [localResponses, setLocalResponses] = useState<Record<string, string>>({})
@@ -161,8 +161,8 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
       setLoading(true)
       try {
         // Tentar carregar conteúdo do instrutor primeiro - apenas se for instrutor
-        // Chamar isInstructor() dentro do useEffect - função não precisa ser dependência
-        if (isInstructor()) {
+        // Usar valor memoizado para evitar problemas de dependência
+        if (isInstructorMemo) {
           const instructorResponse = await fetch(
             `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}_instrutor.md`,
             { signal: abortController.signal }
@@ -223,7 +223,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     return () => {
       abortController.abort()
     }
-  }, [currentEtapa]) // Removido isInstructor - função é chamada dentro do useEffect
+  }, [currentEtapa, isInstructorMemo]) // Adicionado isInstructorMemo como dependência
 
   const generateDefaultContent = (etapa: { desafio: Desafio; etapa: Etapa }) => {
     return `# ${etapa.etapa.titulo}
