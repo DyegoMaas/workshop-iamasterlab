@@ -11,16 +11,16 @@ Para criar um novo desafio, um novo item deve ser adicionado em [desafios.json](
 Estrutura de desafio:
 ```json
 {
-    "id": "01-machine-learning",
+    "id": "00-machine-learning",
     "titulo": "Machine Learning",
     "descricao": "Aprendizado de máquina na prática",
-    "ordem": 1,
+    "ordem": 0,
     "etapas": [
         {
             "id": "00-conceitos",
             "titulo": "Conceitos de ML",
             "descricao": "Fundamentos do aprendizado de máquina",
-            "ordem": 1,
+            "ordem": 0,
             "tipo": "teoria",
             "tempoEstimado": 40
         },
@@ -28,7 +28,7 @@ Estrutura de desafio:
             "id": "01-projeto",
             "titulo": "Primeiro Projeto",
             "descricao": "Construindo seu primeiro modelo",
-            "ordem": 3,
+            "ordem": 1,
             "tipo": "projeto",
             "tempoEstimado": 90,
             "checklist": [

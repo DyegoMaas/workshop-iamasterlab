@@ -30,14 +30,45 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue
 }
 
+// Componentes memoizados para ReactMarkdown - definidos fora do render
+const instructorMarkdownComponents = {
+  h1: (props: React.ComponentProps<'h1'>) => <h1 className="text-xl font-bold mb-3" {...props} />,
+  h2: (props: React.ComponentProps<'h2'>) => <h2 className="text-lg font-semibold mb-2 mt-4" {...props} />,
+  h3: (props: React.ComponentProps<'h3'>) => <h3 className="text-base font-medium mb-2 mt-3" {...props} />,
+  p: (props: React.ComponentProps<'p'>) => <p className="mb-3 leading-relaxed" {...props} />,
+  ul: (props: React.ComponentProps<'ul'>) => <ul className="list-disc list-inside mb-3 space-y-1" {...props} />,
+  ol: (props: React.ComponentProps<'ol'>) => <ol className="list-decimal list-inside mb-3 space-y-1" {...props} />,
+  li: (props: React.ComponentProps<'li'>) => <li {...props} />,
+  code: (props: React.ComponentProps<'code'>) => <code className="bg-amber-900/20 px-2 py-1 rounded text-amber-200 text-sm" {...props} />,
+  pre: (props: React.ComponentProps<'pre'>) => <pre className="bg-amber-900/20 p-4 rounded-lg overflow-x-auto mb-3" {...props} />,
+  blockquote: (props: React.ComponentProps<'blockquote'>) => <blockquote className="border-l-4 border-amber-400 pl-4 italic text-amber-200 mb-3" {...props} />,
+  a: (props: React.ComponentProps<'a'>) => <a className="text-amber-300 underline decoration-2 underline-offset-2 hover:text-amber-200 hover:decoration-amber-200 transition-colors" target="_blank" rel="noopener noreferrer" {...props} />,
+  hr: (props: React.ComponentProps<'hr'>) => <hr className="border-amber-500/30 my-4" {...props} />
+}
+
+const mainMarkdownComponents = {
+  h1: (props: React.ComponentProps<'h1'>) => <h1 className="text-2xl font-bold mb-4" {...props} />,
+  h2: (props: React.ComponentProps<'h2'>) => <h2 className="text-xl font-semibold mb-3 mt-6" {...props} />,
+  h3: (props: React.ComponentProps<'h3'>) => <h3 className="text-lg font-medium mb-2 mt-4" {...props} />,
+  p: (props: React.ComponentProps<'p'>) => <p className="mb-4 leading-relaxed" {...props} />,
+  ul: (props: React.ComponentProps<'ul'>) => <ul className="list-disc list-inside mb-4 space-y-1" {...props} />,
+  ol: (props: React.ComponentProps<'ol'>) => <ol className="list-decimal list-inside mb-4 space-y-1" {...props} />,
+  li: (props: React.ComponentProps<'li'>) => <li {...props} />,
+  code: (props: React.ComponentProps<'code'>) => <code className="bg-muted px-2 py-1 rounded text-primary text-sm" {...props} />,
+  pre: (props: React.ComponentProps<'pre'>) => <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4" {...props} />,
+  blockquote: (props: React.ComponentProps<'blockquote'>) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4" {...props} />,
+  a: (props: React.ComponentProps<'a'>) => <a className="text-primary underline decoration-2 underline-offset-2 hover:text-primary/80 hover:decoration-primary/80 transition-colors" target="_blank" rel="noopener noreferrer" {...props} />,
+  hr: (props: React.ComponentProps<'hr'>) => <hr className="border-border my-6" {...props} />
+}
+
 export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   const { isInstructor, teamName, isAuthenticated } = useAuth()
   const [markdownContent, setMarkdownContent] = useState<string>('')
   const [instructorContent, setInstructorContent] = useState<string>('')
   const [loading, setLoading] = useState(false)
   
-  // Memoizar o valor de isInstructor para evitar re-renders
-  const isInstructorMemo = useMemo(() => isInstructor(), [isInstructor, teamName, isAuthenticated])
+  // Memoizar o valor de isInstructor usando dependências primitivas estáveis
+  const isInstructorMemo = useMemo(() => isInstructor(), [teamName, isAuthenticated])
   
   // Estado local para as respostas (para evitar re-render a cada tecla)
   const [localResponses, setLocalResponses] = useState<Record<string, string>>({})
@@ -83,6 +114,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
   }, [stepId, currentEtapa?.etapa.perguntas])
 
   // Debounce das respostas locais para salvar no store
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debouncedResponses = useDebounce(localResponses, 500)
 
   // Usar useRef para rastrear o último estado salvo e evitar salvamentos desnecessários
@@ -113,6 +145,8 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     }))
   }, [])
 
+
+
   useEffect(() => {
     if (!currentEtapa) {
       setMarkdownContent('')
@@ -127,7 +161,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
       setLoading(true)
       try {
         // Tentar carregar conteúdo do instrutor primeiro - apenas se for instrutor
-        // Chamar isInstructor() aqui dentro do useEffect em vez de usar como dependência
+        // Chamar isInstructor() dentro do useEffect - função não precisa ser dependência
         if (isInstructor()) {
           const instructorResponse = await fetch(
             `/content/desafios/${currentEtapa.desafio.id}/${currentEtapa.etapa.id}_instrutor.md`,
@@ -189,7 +223,7 @@ export default function DetailPane({ currentEtapa }: DetailPaneProps) {
     return () => {
       abortController.abort()
     }
-  }, [currentEtapa, teamName, isAuthenticated]) // Removido isInstructor das dependências
+  }, [currentEtapa]) // Removido isInstructor - função é chamada dentro do useEffect
 
   const generateDefaultContent = (etapa: { desafio: Desafio; etapa: Etapa }) => {
     return `# ${etapa.etapa.titulo}
@@ -263,20 +297,7 @@ Complete esta etapa para avançar na torre de desafios!
                   <ReactMarkdown
                     remarkPlugins={[remarkGfm]}
                     rehypePlugins={[rehypeSanitize]}
-                    components={{
-                      h1: ({ children }) => <h1 className="text-xl font-bold mb-3">{children}</h1>,
-                      h2: ({ children }) => <h2 className="text-lg font-semibold mb-2 mt-4">{children}</h2>,
-                      h3: ({ children }) => <h3 className="text-base font-medium mb-2 mt-3">{children}</h3>,
-                      p: ({ children }) => <p className="mb-3 leading-relaxed">{children}</p>,
-                      ul: ({ children }) => <ul className="list-disc list-inside mb-3 space-y-1">{children}</ul>,
-                      ol: ({ children }) => <ol className="list-decimal list-inside mb-3 space-y-1">{children}</ol>,
-                      li: ({ children }) => <li>{children}</li>,
-                      code: ({ children }) => <code className="bg-amber-900/20 px-2 py-1 rounded text-amber-200 text-sm">{children}</code>,
-                      pre: ({ children }) => <pre className="bg-amber-900/20 p-4 rounded-lg overflow-x-auto mb-3">{children}</pre>,
-                      blockquote: ({ children }) => <blockquote className="border-l-4 border-amber-400 pl-4 italic text-amber-200 mb-3">{children}</blockquote>,
-                      a: ({ href, children }) => <a href={href} className="text-amber-300 underline decoration-2 underline-offset-2 hover:text-amber-200 hover:decoration-amber-200 transition-colors" target="_blank" rel="noopener noreferrer">{children}</a>,
-                      hr: () => <hr className="border-amber-500/30 my-4" />
-                    }}
+                    components={instructorMarkdownComponents}
                   >
                     {instructorContent}
                   </ReactMarkdown>
@@ -287,20 +308,7 @@ Complete esta etapa para avançar na torre de desafios!
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeSanitize]}
-                components={{
-                  h1: ({ children }) => <h1 className="text-2xl font-bold mb-4">{children}</h1>,
-                  h2: ({ children }) => <h2 className="text-xl font-semibold mb-3 mt-6">{children}</h2>,
-                  h3: ({ children }) => <h3 className="text-lg font-medium mb-2 mt-4">{children}</h3>,
-                  p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
-                  ul: ({ children }) => <ul className="list-disc list-inside mb-4 space-y-1">{children}</ul>,
-                  ol: ({ children }) => <ol className="list-decimal list-inside mb-4 space-y-1">{children}</ol>,
-                  li: ({ children }) => <li>{children}</li>,
-                  code: ({ children }) => <code className="bg-muted px-2 py-1 rounded text-primary text-sm">{children}</code>,
-                  pre: ({ children }) => <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4">{children}</pre>,
-                  blockquote: ({ children }) => <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground mb-4">{children}</blockquote>,
-                  a: ({ href, children }) => <a href={href} className="text-primary underline decoration-2 underline-offset-2 hover:text-primary/80 hover:decoration-primary/80 transition-colors" target="_blank" rel="noopener noreferrer">{children}</a>,
-                  hr: () => <hr className="border-border my-6" />
-                }}
+                components={mainMarkdownComponents}
               >
                 {markdownContent}
               </ReactMarkdown>

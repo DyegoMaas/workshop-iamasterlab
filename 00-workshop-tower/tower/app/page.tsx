@@ -33,12 +33,8 @@ export default function Home() {
   const allEtapas = useMemo(() => getAllEtapas(), [])
 
   const currentEtapa = useMemo(() => {
-    const storeState = useProgressStore.getState()
-    const currentStep = storeState.getCurrentStep()
-    return currentStep ? allEtapas.find(
-      item => item.desafio.id === currentStep.desafioId && item.etapa.id === currentStep.etapaId
-    ) || null : null
-  }, [allEtapas])
+    return allEtapas[currentStepIndex] || null
+  }, [allEtapas, currentStepIndex])
 
   // Preparar dados de progresso do checklist para o TowerCanvas - memorizado
   const checklistProgressData = useMemo(() => {

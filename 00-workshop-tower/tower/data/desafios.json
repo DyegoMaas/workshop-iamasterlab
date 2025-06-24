@@ -300,7 +300,7 @@
           "id": "00-setup",
           "titulo": "Setup do ImageMagick",
           "descricao": "Instalação e configuração do ImageMagick",
-          "ordem": 1,
+          "ordem": 0,
           "tipo": "pratica",
           "tempoEstimado": 20,
           "checklist": [
@@ -321,44 +321,251 @@
           ]
         },
         {
-          "id": "01-desafio",
-          "titulo": "Desafio: Criar Interface Web para ImageMagick",
-          "descricao": "Criar uma aplicação para manipular imagens",
-          "ordem": 2,
-          "tipo": "atividade-guiada",
-          "tempoEstimado": 90,
+          "id": "01-documentacao-inteligente",
+          "titulo": "Documentação Inteligente do Repositório",
+          "descricao": "Utilizar agente para analisar e explicar o repositório",
+          "ordem": 1,
+          "tipo": "pratica",
+          "tempoEstimado": 45,
           "checklist": [
             {
-              "id": "documentacao-inteligente",
-              "titulo": "Documentação Inteligente",
-              "descricao": "Utilizar agente para analisar e explicar o repositório com insights sobre estrutura, funcionalidades, padrões e diagrama mermaid",
+              "id": "documentacao-repositorio-analisada",
+              "titulo": "Repositório analisado pelo agente",
+              "descricao": "Utilizar agente para fazer análise completa da estrutura do código",
               "ordem": 1,
               "tipo": "checkbox"
             },
             {
-              "id": "refatoracao-componentes",
-              "titulo": "Refatoração de Componentes",
-              "descricao": "Extrair componente genérico para filtros, consolidar lógica entre sharpen e blur, manter flexibilidade para futuros filtros",
+              "id": "insights-funcionalidades-identificados",
+              "titulo": "Insights sobre funcionalidades identificados",
+              "descricao": "Documentar as funcionalidades implementadas identificadas pelo agente",
               "ordem": 2,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "padroes-codigo-documentados",
+              "titulo": "Padrões de código documentados",
+              "descricao": "Documentar os padrões utilizados no projeto",
+              "ordem": 3,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "diagrama-mermaid-gerado",
+              "titulo": "Diagrama mermaid gerado",
+              "descricao": "Gerar diagrama mermaid representando a estrutura do projeto",
+              "ordem": 4,
               "tipo": "checkbox"
             }
           ],
           "perguntas": [
             {
-              "id": "desafios-encontrados",
-              "titulo": "Quais foram os principais desafios técnicos?",
-              "descricao": "Documente os desafios encontrados durante o desenvolvimento",
+              "id": "principais-insights-encontrados",
+              "titulo": "Quais foram os principais insights encontrados?",
+              "descricao": "Documente os insights mais importantes sobre a estrutura e funcionalidades",
               "ordem": 1,
               "tipo": "texto"
             },
             {
-              "id": "funcionalidades-implementadas",
-              "titulo": "Que funcionalidades extras você implementou?",
-              "descricao": "Além do básico, que funcionalidades adicionais foram criadas?",
+              "id": "padroes-mais-interessantes",
+              "titulo": "Quais padrões de código chamaram mais atenção?",
+              "descricao": "Identifique os padrões mais interessantes ou únicos do projeto",
               "ordem": 2,
               "tipo": "texto"
             }
           ]
+        },
+        {
+          "id": "03-criar-workflows",
+          "titulo": "Criar Workflows",
+          "descricao": "Documentar regras para agentes criarem filtros de forma automatizada",
+          "ordem": 3,
+          "tipo": "pratica",
+          "tempoEstimado": 30,
+          "checklist": [
+            {
+              "id": "regras-agente-documentadas",
+              "titulo": "Regras para o agente documentadas",
+              "descricao": "Criar documentação clara sobre como o agente deve proceder para criar filtros",
+              "ordem": 1,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "passo-a-passo-filtro-criado",
+              "titulo": "Passo a passo para criar filtro definido",
+              "descricao": "Documentar o processo completo desde a análise até a implementação do filtro",
+              "ordem": 2,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "exemplos-praticos-incluidos",
+              "titulo": "Exemplos práticos incluídos",
+              "descricao": "Incluir exemplos concretos de filtros e suas implementações",
+              "ordem": 3,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "workflow-testado",
+              "titulo": "Workflow testado com agente",
+              "descricao": "Testar as regras documentadas com um agente real",
+              "ordem": 4,
+              "tipo": "checkbox"
+            }
+          ],
+          "perguntas": [
+            {
+              "id": "eficacia-regras",
+              "titulo": "Quão eficazes foram as regras criadas?",
+              "descricao": "O agente conseguiu seguir as regras e criar filtros corretamente?",
+              "ordem": 1,
+              "tipo": "texto"
+            },
+            {
+              "id": "melhorias-workflow",
+              "titulo": "Quais melhorias você faria no workflow?",
+              "descricao": "Que ajustes tornaram o processo mais eficiente?",
+              "ordem": 2,
+              "tipo": "texto"
+            }
+          ]
+        },
+        {
+          "id": "04-criar-regras-projetos",
+          "titulo": "Criar regras de projetos",
+          "descricao": "Estabelecer convenções e regras de desenvolvimento baseadas na análise do projeto",
+          "ordem": 4,
+          "tipo": "pratica",
+          "tempoEstimado": 40,
+          "checklist": [
+            {
+              "id": "regras-nomenclatura-estabelecidas",
+              "titulo": "Regras de nomenclatura estabelecidas",
+              "descricao": "Definir padrões para nomes de arquivos, funções, variáveis e componentes",
+              "ordem": 1,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "estrutura-arquivos-definida",
+              "titulo": "Padrões de estrutura de arquivos definidos",
+              "descricao": "Estabelecer organização de diretórios e arquivos do projeto",
+              "ordem": 2,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "convenções-codigo-documentadas",
+              "titulo": "Convenções de código documentadas",
+              "descricao": "Criar guia de estilo e boas práticas de desenvolvimento",
+              "ordem": 3,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "regras-commit-estabelecidas",
+              "titulo": "Regras de commit e versionamento estabelecidas",
+              "descricao": "Definir padrões para commits e gestão de versões",
+              "ordem": 4,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "guidelines-testes-definidas",
+              "titulo": "Guidelines de testes definidas",
+              "descricao": "Estabelecer padrões para criação e organização de testes",
+              "ordem": 5,
+              "tipo": "checkbox"
+            }
+          ],
+          "perguntas": [
+            {
+              "id": "regras-mais-importantes",
+              "titulo": "Quais regras foram mais importantes para o projeto?",
+              "descricao": "Identifique as regras que mais impactam a qualidade e manutenibilidade",
+              "ordem": 1,
+              "tipo": "texto"
+            },
+            {
+              "id": "impacto-futuro-desenvolvimento",
+              "titulo": "Como essas regras vão impactar futuros desenvolvimentos?",
+              "descricao": "Avalie como as regras estabelecidas facilitarão o desenvolvimento futuro",
+              "ordem": 2,
+              "tipo": "texto"
+            }
+          ]
+        },
+        {
+          "id": "02-refatoracao-componentes",
+          "titulo": "Refatoração de Componentes",
+          "descricao": "Extrair componente genérico para filtros e consolidar lógica",
+          "ordem": 3,
+          "tipo": "pratica",
+          "tempoEstimado": 45,
+          "checklist": [
+            {
+              "id": "componente-generico-criado",
+              "titulo": "Componente genérico para filtros criado",
+              "descricao": "Extrair um componente genérico que possa ser usado para aplicação de filtros",
+              "ordem": 1,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "logica-consolidada",
+              "titulo": "Lógica consolidada entre sharpen e blur",
+              "descricao": "Consolidar a lógica comum entre os filtros sharpen e blur",
+              "ordem": 2,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "flexibilidade-mantida",
+              "titulo": "Flexibilidade para futuros filtros mantida",
+              "descricao": "Garantir que a solução permita adicionar novos filtros facilmente",
+              "ordem": 3,
+              "tipo": "checkbox"
+            },
+            {
+              "id": "manutenibilidade-melhorada",
+              "titulo": "Manutenibilidade do código melhorada",
+              "descricao": "Verificar se o código ficou mais fácil de manter e entender",
+              "ordem": 4,
+              "tipo": "checkbox"
+            }
+          ],
+          "perguntas": [
+            {
+              "id": "desafios-refatoracao",
+              "titulo": "Quais foram os principais desafios da refatoração?",
+              "descricao": "Documente os desafios encontrados durante o processo de refatoração",
+              "ordem": 1,
+              "tipo": "texto"
+            },
+            {
+              "id": "melhorias-implementadas",
+              "titulo": "Que melhorias adicionais você implementou?",
+              "descricao": "Além da refatoração básica, que outras melhorias foram feitas?",
+              "ordem": 2,
+              "tipo": "texto"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "04-projeto-livre",
+      "titulo": "Projeto Livre",
+      "descricao": "Desenvolvimento de um projeto personalizado aplicando os conhecimentos adquiridos",
+      "ordem": 5,
+      "etapas": [
+        {
+          "id": "00-criar-demo",
+          "titulo": "Criar Demo",
+          "descricao": "Desenvolver uma demonstração prática do projeto escolhido",
+          "ordem": 1,
+          "tipo": "pratica",
+          "tempoEstimado": 90
+        },
+        {
+          "id": "01-apresentacao",
+          "titulo": "Apresentação",
+          "descricao": "Apresentar o projeto desenvolvido e compartilhar experiências",
+          "ordem": 2,
+          "tipo": "discussao",
+          "tempoEstimado": 30
         }
       ]
     },

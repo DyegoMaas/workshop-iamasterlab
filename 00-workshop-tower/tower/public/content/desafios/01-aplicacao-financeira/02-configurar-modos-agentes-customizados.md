@@ -41,3 +41,9 @@ Equivalente ao comando `/dev` em algumas ferramentas, construído para realizar 
 - **Debugging avançado**: Para resolver problemas complexos de forma sistemática
 - **Integração de sistemas**: Ao conectar diferentes partes da aplicação
 - **Otimização de performance**: Para melhorar a eficiência do código
+
+## Extra: Refactor
+
+Existe um site que tem um repositório de Custom Modes, [Playbook.com](https://playbooks.com/modes). Acesse e encontre o modelo chamado **Refactor**.
+
+**Dica**: não precisa seguir a configuração do site à risca. Mude o agente. Mude as ferramentas. Edite o prompt. O agente é seu, e é você quem vai usar!

@@ -169,12 +169,12 @@ cp .env.local.example .env.local
 
 ## 🏰 Estrutura da Torre
 
-A torre possui **19 etapas** distribuídas em 7 desafios:
+A torre possui **21 etapas** distribuídas em 7 desafios:
 
 1. **Setup Workshop** (3 etapas)
 2. **Aplicação Financeira** (4 etapas) 
 3. **Prompt Builder** (2 etapas) - Desafio com atividade guiada
-4. **UI para magick** (2 etapas) - Interface web para manipulação de imagens com ImageMagick
+4. **UI para magick** (4 etapas) - Interface web para manipulação de imagens com ImageMagick
 5. **Machine Learning** (3 etapas)
 6. **Deep Learning** (3 etapas)
 7. **⭐ Conclusão** (1 etapa) - Nível especial com congratulações e materiais pós-curso
