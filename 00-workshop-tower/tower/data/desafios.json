@@ -553,7 +553,7 @@
       "etapas": [
         {
           "id": "00-criar-demo",
-          "titulo": "Criar Demo",
+          "titulo": "Desafio: Criar Demo",
           "descricao": "Desenvolver uma demonstração prática do projeto escolhido",
           "ordem": 1,
           "tipo": "pratica",
