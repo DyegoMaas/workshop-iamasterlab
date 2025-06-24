@@ -48,3 +48,43 @@ Instale as seguintes extensões:
 2. REST Client: será usada para testes, dispensando Postman ou Insomnia
 
 💡Lembrete: a instalação de extensões no Cursor funciona exatamente como no VSCode.
+
+## Background Agents
+
+Os **Background Agents** são uma funcionalidade poderosa do Cursor IDE que permite executar tarefas automatizadas em segundo plano, como rodar testes automáticos, análises de código ou outras operações que não precisam interromper seu fluxo de trabalho.
+
+### Como Habilitar Background Agents
+
+#### 1. Desabilitar Privacy Mode
+- Acesse **Settings** (`Ctrl + ,`)
+- Procure por **Privacy Mode** 
+- Selecione **Privacy Mode With Storage** esta opção (essencial para o funcionamento dos Background Agents)
+
+#### 2. Habilitar Background Agent
+- Ainda em **Settings**, procure por **Background Agent**
+- **Ative** esta funcionalidade
+- Um ícone de nuvem ☁️ aparecerá na interface do chat
+
+#### 3. Acessar e Controlar
+- Use `Ctrl + E` para abrir o painel de controle dos Background Agents
+- Alternativamente, clique no ícone de nuvem ☁️ no chat
+- Você pode listar agentes ativos, criar novos e monitorar tarefas
+
+### Funcionalidades Principais
+
+- **Execução isolada**: Cada agente roda tarefas independentemente
+- **Monitoramento**: Acompanhe o status das tarefas em tempo real  
+- **Automação**: Configure tarefas recorrentes como testes automáticos
+- **Controle**: Gerencie múltiplos agentes simultaneamente
+
+### Exemplo de Uso
+
+```
+"Execute os testes unitários automaticamente após cada salvamento de arquivo"
+```
+
+O Background Agent pode ficar rodando essa tarefa em segundo plano enquanto você continua desenvolvendo.
+
+---
+
+**💡 Dica**: Os Background Agents são especialmente úteis para tarefas repetitivas que você normalmente faria manualmente, liberando você para focar no desenvolvimento. 

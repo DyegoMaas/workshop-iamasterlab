@@ -552,6 +552,16 @@
               "tipo": "texto"
             }
           ]
+        },
+        {
+          "id": "05-background-agents",
+          "titulo": "Desafio: Background Agents",
+          "descricao": "Identifique o bug usando Background Agents",
+          "ordem": 5,
+          "tipo": "pratica",
+          "tempoEstimado": 20,
+          "checklist": [],
+          "perguntas": []
         }
       ]
     },
