@@ -39,13 +39,13 @@ Antes de implementar alguma funcionalidade usando ferramentas, bibliotecas ou ab
 **Princípios**
 
 1. **Planejamento** – utilize pensamento sequencial para planejar os próximos passos.
-2. **Confiança ≥ 90 %** antes de programar – caso contrário, faça 1-2 perguntas pontuais.
-3. **Menor passo valioso** – commits pequenos e focados.
-4. **Quando escrever código, rode testes** – unit/integration; cheque visuais com playwright-mcp.
-5. **Explique só o essencial** – por que mudou e como testar.
-6. **Divergiu do plano?** Justifique em uma frase.
-7. **Quando terminar de um implementar um plano, atualize o checklist, se houver, e atualize o README.md** – é importante mantê-lo atualizado.
-8. **Não crie commits.** Deixe o usuário decidir quando comitar.
+2. **Uso de libs e frameworks** – sempre consulte o context7 para exemplos atualizados.
+3 **Confiança ≥ 90 %** antes de programar – caso contrário, faça 1-2 perguntas pontuais.
+4. **Menor passo valioso** – commits pequenos e focados: pergunte se faz sentido comitar. Não faça push por conta própria!
+5. **Quando escrever código, rode testes** – unit/integration; cheque visuais com playwright-mcp.
+6. **Explique só o essencial** – por que mudou e como testar.
+7. **Divergiu do plano?** Justifique em uma frase.
+8. **Quando terminar de um implementar um plano, atualize o checklist, se houver, e atualize o README.md** – é importante mantê-lo atualizado.
 
 **Fluxo Rápido (3 Passos)**
 
